@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>Week Editor | Jordy's Casuarina</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -483,9 +484,111 @@
     margin-top: 4px;
     line-height: 1.5;
   }
+
+  /* PASSCODE GATE */
+  .gate {
+    position: fixed;
+    inset: 0;
+    background: var(--dark);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .gate-card {
+    max-width: 420px;
+    width: 100%;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .gate-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 6px; height: 100%;
+    background: var(--terracotta);
+  }
+  .gate-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 10px;
+  }
+  .gate-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--dark);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .gate-sub {
+    font-size: 13px;
+    color: var(--mid);
+    margin-bottom: 24px;
+  }
+  .gate-input {
+    width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: var(--white);
+    color: var(--dark);
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+  .gate-input:focus {
+    outline: none;
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 3px rgba(194,114,76,0.12);
+  }
+  .gate-error {
+    color: #b04a3a;
+    font-size: 12px;
+    margin-bottom: 12px;
+    min-height: 16px;
+  }
+  .gate-btn {
+    width: 100%;
+    background: var(--terracotta);
+    color: var(--white);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 13px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .gate-btn:hover { background: var(--terracotta-light); }
+  body.is-locked { overflow: hidden; }
+  body:not(.is-unlocked) .editor-shell,
+  body:not(.is-unlocked) .toast { display: none; }
 </style>
 </head>
-<body>
+<body class="is-locked">
+
+<!-- GATE -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="gate-label">Editor access</div>
+    <h1 class="gate-title">Jordy's Casuarina</h1>
+    <div class="gate-sub">Enter passcode to continue.</div>
+    <input type="password" id="gate-input" class="gate-input" placeholder="passcode" autocomplete="off" autofocus>
+    <div class="gate-error" id="gate-error">&nbsp;</div>
+    <button class="gate-btn" id="gate-btn" type="button">Unlock</button>
+  </div>
+</div>
 
 <div class="editor-shell">
 
@@ -749,6 +852,56 @@
 </div>
 
 <script>
+// =========================================================================
+// PASSCODE GATE
+// =========================================================================
+// SHA-256 of "!Jordys480!"
+const GATE_HASH = '5faa7a8dfcc8bb8dae98d93f24355c4b7493995a5216ee4503e12223b6e54a85';
+const GATE_SESSION_KEY = 'jordys-admin-unlocked';
+
+async function gateSha256(text) {
+  const buf = new TextEncoder().encode(text);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+function gateUnlock() {
+  document.body.classList.remove('is-locked');
+  document.body.classList.add('is-unlocked');
+  const g = document.getElementById('gate');
+  if (g) g.style.display = 'none';
+  sessionStorage.setItem(GATE_SESSION_KEY, '1');
+}
+
+async function gateCheck() {
+  const input = document.getElementById('gate-input');
+  const error = document.getElementById('gate-error');
+  const value = input.value;
+  if (!value) {
+    error.textContent = 'Enter a passcode.';
+    return;
+  }
+  const hash = await gateSha256(value);
+  if (hash === GATE_HASH) {
+    error.textContent = '';
+    gateUnlock();
+  } else {
+    error.textContent = 'Wrong passcode.';
+    input.select();
+  }
+}
+
+if (sessionStorage.getItem(GATE_SESSION_KEY) === '1') {
+  gateUnlock();
+}
+
+document.getElementById('gate-btn').addEventListener('click', gateCheck);
+document.getElementById('gate-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') gateCheck();
+});
+
 // =========================================================================
 // STATE & STORAGE
 // =========================================================================
