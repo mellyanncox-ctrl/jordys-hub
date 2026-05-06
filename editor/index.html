@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week Editor | Jordy's Casuarina</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  :root {
+    --terracotta: #c2724c;
+    --terracotta-light: #d4896a;
+    --terracotta-pale: #f5ede8;
+    --dark: #1a1a1a;
+    --mid: #444;
+    --light: #888;
+    --border: #e8e0db;
+    --bg: #faf8f6;
+    --white: #ffffff;
+    --green: #4a7c59;
+    --green-pale: #edf3ef;
+    --amber: #b5821a;
+    --amber-pale: #fdf6e7;
+    --red: #b04a3a;
+    --red-pale: #fdf0ee;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .editor-shell {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+  }
+  .editor-side {
+    background: var(--dark);
+    color: rgba(255,255,255,0.85);
+    padding: 32px 24px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .editor-main {
+    padding: 0;
+    max-width: 920px;
+  }
+  .side-brand {
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .side-brand-mark {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 6px;
+  }
+  .side-brand-name {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .side-brand-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 3px;
+    font-weight: 300;
+  }
+  .side-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 12px;
+    margin-top: 20px;
+  }
+  .toc {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .toc li a {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 10px;
+    border-radius: 4px;
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .toc li a:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--white);
+  }
+  .toc-num {
+    color: var(--terracotta);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+  .side-actions {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .side-btn {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .side-btn-primary {
+    background: var(--terracotta);
+    color: var(--white);
+  }
+  .side-btn-primary:hover { background: var(--terracotta-light); }
+  .side-btn-ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    border-color: rgba(255,255,255,0.15);
+  }
+  .side-btn-ghost:hover {
+    background: rgba(255,255,255,0.05);
+    color: var(--white);
+    border-color: rgba(255,255,255,0.3);
+  }
+  .side-status {
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .side-status strong {
+    color: rgba(255,255,255,0.7);
+    font-weight: 700;
+  }
+
+  /* MAIN */
+  .editor-header {
+    background: var(--dark);
+    color: var(--white);
+    padding: 36px 48px 32px;
+    position: relative;
+  }
+  .editor-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    background: var(--terracotta);
+  }
+  .editor-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 10px;
+  }
+  .editor-title {
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .editor-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 300;
+  }
+  .editor-content {
+    padding: 32px 48px 80px;
+  }
+  @media (max-width: 800px) {
+    .editor-shell { grid-template-columns: 1fr; }
+    .editor-side { position: static; height: auto; }
+    .editor-header { padding: 24px; }
+    .editor-content { padding: 24px 24px 60px; }
+  }
+
+  .section {
+    margin-bottom: 36px;
+    scroll-margin-top: 20px;
+  }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--terracotta);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--dark);
+  }
+  .section-meta {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--light);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+  }
+
+  /* FORM */
+  .field { margin-bottom: 14px; }
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 600px) { .field-row { grid-template-columns: 1fr; } }
+
+  .label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 5px;
+  }
+  .label-helper {
+    font-weight: 400;
+    color: var(--light);
+    text-transform: none;
+    letter-spacing: 0;
+    margin-left: 6px;
+  }
+  input[type="text"], input[type="date"], input[type="time"], textarea, select {
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--white);
+    color: var(--dark);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--terracotta);
+    box-shadow: 0 0 0 3px rgba(194,114,76,0.12);
+  }
+  textarea {
+    resize: vertical;
+    min-height: 60px;
+    font-family: inherit;
+  }
+  textarea.code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    min-height: 220px;
+    line-height: 1.5;
+  }
+  input[type="file"] {
+    font-family: inherit;
+    font-size: 12px;
+    padding: 8px;
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    background: var(--white);
+    width: 100%;
+    cursor: pointer;
+  }
+  input[type="file"]:hover {
+    border-color: var(--terracotta-light);
+  }
+
+  .card-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .card-block-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .card-block-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .card-block-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--terracotta-pale);
+    color: var(--terracotta);
+  }
+  .card-block-tag.tag-social { background: #f3eaf5; color: #8b4d8e; }
+  .card-block-tag.tag-website { background: var(--amber-pale); color: var(--amber); }
+
+  .image-preview {
+    margin-top: 8px;
+    display: none;
+  }
+  .image-preview.has-file {
+    display: block;
+  }
+  .image-preview img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .image-preview .filename {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--light);
+  }
+
+  .stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .story-block {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .story-block-num {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 8px;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--dark);
+    color: var(--white);
+    padding: 14px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.25s;
+    z-index: 100;
+    max-width: 360px;
+  }
+  .toast.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .toast-title {
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .toast-body {
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+  }
+  .toast.is-error { background: var(--red); }
+  .toast.is-success::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6dc788;
+    margin-right: 8px;
+    transform: translateY(-2px);
+  }
+
+  /* INSTRUCTIONS BLOCK */
+  .instructions {
+    background: var(--terracotta-pale);
+    border-left: 4px solid var(--terracotta);
+    padding: 16px 20px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 28px;
+    font-size: 13px;
+  }
+  .instructions strong {
+    color: var(--terracotta);
+    font-weight: 700;
+  }
+  .instructions code {
+    background: var(--white);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .helper-text {
+    font-size: 11px;
+    color: var(--light);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="editor-shell">
+
+  <aside class="editor-side">
+    <div class="side-brand">
+      <div class="side-brand-mark">The Service Edit</div>
+      <div class="side-brand-name">Week Editor</div>
+      <div class="side-brand-sub">Jordy's Casuarina</div>
+    </div>
+
+    <div class="side-section-title">Sections</div>
+    <ul class="toc">
+      <li><a href="#sec-meta"><span>Week setup</span><span class="toc-num">00</span></a></li>
+      <li><a href="#sec-overview"><span>Weekly overview</span><span class="toc-num">01</span></a></li>
+      <li><a href="#sec-email"><span>Email campaign</span><span class="toc-num">02</span></a></li>
+      <li><a href="#sec-posts"><span>Instagram posts</span><span class="toc-num">03</span></a></li>
+      <li><a href="#sec-stories"><span>Instagram stories</span><span class="toc-num">04</span></a></li>
+      <li><a href="#sec-website"><span>Website updates</span><span class="toc-num">05</span></a></li>
+    </ul>
+
+    <div class="side-actions">
+      <button class="side-btn side-btn-ghost" type="button" onclick="saveDraft()">Save draft <span>↓</span></button>
+      <button class="side-btn side-btn-ghost" type="button" onclick="loadDraft()">Load draft <span>↑</span></button>
+      <button class="side-btn side-btn-ghost" type="button" onclick="previewWeek()">Preview <span>👁</span></button>
+      <button class="side-btn side-btn-primary" type="button" onclick="generateZip()">Generate zip <span>⤓</span></button>
+    </div>
+
+    <div class="side-status" id="side-status">
+      <strong>Auto-saving</strong> to your browser as you type.
+    </div>
+  </aside>
+
+  <main class="editor-main">
+
+    <header class="editor-header">
+      <div class="editor-label">Week editor</div>
+      <h1 class="editor-title">Build a weekly plan</h1>
+      <div class="editor-sub">Fill in the form, generate a zip, drop it into the matching <code style="background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:3px;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;">weeks/YYYY-MM-DD/</code> folder in your repo.</div>
+    </header>
+
+    <div class="editor-content">
+
+      <div class="instructions">
+        <strong>Workflow:</strong> fill in everything you have, leave fields blank for "to confirm" placeholders, hit <strong>Generate zip</strong>. Extract the zip into <code>weeks/YYYY-MM-DD/</code> in your local repo (overwriting the placeholder files), then <code>git add . && git commit -m "Week of [date]" && git push</code>.
+      </div>
+
+      <!-- 00 META -->
+      <section class="section" id="sec-meta">
+        <div class="section-head">
+          <div class="section-num">00</div>
+          <h2 class="section-title">Week setup</h2>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="label">Week commencing <span class="label-helper">(Monday)</span></label>
+            <input type="date" id="week-date" value="2026-05-04">
+            <div class="helper-text">Sets the page header date and the zip filename.</div>
+          </div>
+          <div class="field">
+            <label class="label">Folder name</label>
+            <input type="text" id="folder-name" value="2026-05-04" readonly style="background: var(--bg); color: var(--light);">
+            <div class="helper-text">Auto-derived from the date above.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 01 OVERVIEW -->
+      <section class="section" id="sec-overview">
+        <div class="section-head">
+          <div class="section-num">01</div>
+          <h2 class="section-title">Weekly overview</h2>
+        </div>
+        <div class="field">
+          <label class="label">Main campaign focus</label>
+          <input type="text" id="overview-focus" placeholder="e.g. Mother's Day reactivation push">
+        </div>
+        <div class="field">
+          <label class="label">Key offer / special</label>
+          <input type="text" id="overview-offer" placeholder="e.g. $10 wed/thu drinks">
+        </div>
+        <div class="field">
+          <label class="label">Main customer message</label>
+          <input type="text" id="overview-message" placeholder="e.g. mum eats free with any pizza">
+        </div>
+        <div class="field">
+          <label class="label">Primary CTA</label>
+          <input type="text" id="overview-cta" placeholder="e.g. book a table for sunday">
+        </div>
+      </section>
+
+      <!-- 02 EMAIL -->
+      <section class="section" id="sec-email">
+        <div class="section-head">
+          <div class="section-num">02</div>
+          <h2 class="section-title">Email campaign</h2>
+          <div class="section-meta">1 per week</div>
+        </div>
+        <div class="card-block">
+          <div class="card-block-head">
+            <div class="card-block-title">Klaviyo / TalkBox details</div>
+            <span class="card-block-tag">Email</span>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="label">Send date</label>
+              <input type="date" id="email-date">
+            </div>
+            <div class="field">
+              <label class="label">Send time</label>
+              <input type="time" id="email-time">
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Segments</label>
+            <input type="text" id="email-segments" placeholder="e.g. Clicked email 6, openers excluded">
+          </div>
+          <div class="field">
+            <label class="label">Subject line</label>
+            <input type="text" id="email-subject" placeholder="actual subject as it'll send">
+          </div>
+          <div class="field">
+            <label class="label">Preview text</label>
+            <input type="text" id="email-preview" placeholder="the bit shown after the subject in the inbox">
+          </div>
+          <div class="field">
+            <label class="label">Campaign HTML <span class="label-helper">(paste from Klaviyo or TalkBox)</span></label>
+            <textarea id="email-html" class="code" placeholder="<style>...</style>&#10;<div>...campaign body...</div>"></textarea>
+            <div class="helper-text">Paste only the inner content (style block + body content), not the outer HTML shell — same as your Klaviyo workflow.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 INSTAGRAM POSTS -->
+      <section class="section" id="sec-posts">
+        <div class="section-head">
+          <div class="section-num">03</div>
+          <h2 class="section-title">Instagram posts</h2>
+          <div class="section-meta">2 per week</div>
+        </div>
+
+        <div class="card-block">
+          <div class="card-block-head">
+            <div class="card-block-title">Post 1</div>
+            <span class="card-block-tag tag-social">IG post</span>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="label">Scheduled date</label>
+              <input type="date" id="post1-date">
+            </div>
+            <div class="field">
+              <label class="label">Image <span class="label-helper">(jpg/png)</span></label>
+              <input type="file" id="post1-image" accept="image/*">
+              <div class="image-preview" id="post1-preview">
+                <img src="" alt="">
+                <div class="filename"></div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Caption</label>
+            <textarea id="post1-caption" placeholder="lowercase, no emojis, no exclamation marks"></textarea>
+          </div>
+        </div>
+
+        <div class="card-block">
+          <div class="card-block-head">
+            <div class="card-block-title">Post 2</div>
+            <span class="card-block-tag tag-social">IG post</span>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="label">Scheduled date</label>
+              <input type="date" id="post2-date">
+            </div>
+            <div class="field">
+              <label class="label">Image</label>
+              <input type="file" id="post2-image" accept="image/*">
+              <div class="image-preview" id="post2-preview">
+                <img src="" alt="">
+                <div class="filename"></div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Caption</label>
+            <textarea id="post2-caption"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 INSTAGRAM STORIES -->
+      <section class="section" id="sec-stories">
+        <div class="section-head">
+          <div class="section-num">04</div>
+          <h2 class="section-title">Instagram stories</h2>
+          <div class="section-meta">5 per week</div>
+        </div>
+        <div class="stories-grid" id="stories-grid">
+          <!-- 5 story blocks injected by JS -->
+        </div>
+      </section>
+
+      <!-- 05 WEBSITE -->
+      <section class="section" id="sec-website">
+        <div class="section-head">
+          <div class="section-num">05</div>
+          <h2 class="section-title">Website updates</h2>
+        </div>
+        <div class="card-block">
+          <div class="card-block-head">
+            <div class="card-block-title">This week's website change</div>
+            <span class="card-block-tag tag-website">Website</span>
+          </div>
+          <div class="field">
+            <label class="label">Title</label>
+            <input type="text" id="web-title" placeholder="e.g. functions enquiry form live">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="label">Page or section</label>
+              <input type="text" id="web-page" placeholder="e.g. /functions">
+            </div>
+            <div class="field">
+              <label class="label">Live date</label>
+              <input type="date" id="web-date">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="label">What's changing</label>
+              <input type="text" id="web-what" placeholder="short description">
+            </div>
+            <div class="field">
+              <label class="label">Why</label>
+              <input type="text" id="web-why" placeholder="reason / business context">
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">URL</label>
+            <input type="text" id="web-url" placeholder="https://jordyscasuarina.com.au/functions">
+          </div>
+          <div class="field">
+            <label class="label">Mockup screenshot <span class="label-helper">(optional)</span></label>
+            <input type="file" id="web-image" accept="image/*">
+            <div class="image-preview" id="web-preview">
+              <img src="" alt="">
+              <div class="filename"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-title" id="toast-title">Saved</div>
+  <div class="toast-body" id="toast-body"></div>
+</div>
+
+<script>
+// =========================================================================
+// STATE & STORAGE
+// =========================================================================
+
+const STORAGE_KEY = 'jordys-week-editor-draft';
+
+// All scalar form fields (text/date/time/textarea)
+const SCALAR_FIELDS = [
+  'week-date', 'overview-focus', 'overview-offer', 'overview-message', 'overview-cta',
+  'email-date', 'email-time', 'email-segments', 'email-subject', 'email-preview', 'email-html',
+  'post1-date', 'post1-caption', 'post2-date', 'post2-caption',
+  'web-title', 'web-page', 'web-date', 'web-what', 'web-why', 'web-url',
+];
+
+// Story fields are injected dynamically
+for (let i = 1; i <= 5; i++) SCALAR_FIELDS.push(`story${i}-caption`);
+
+// File slots: id -> {file, dataURL, filename}
+const fileSlots = {
+  'post1-image': null,
+  'post2-image': null,
+  'web-image': null,
+  'story1-image': null, 'story2-image': null, 'story3-image': null, 'story4-image': null, 'story5-image': null,
+};
+
+// =========================================================================
+// BUILD STORIES GRID
+// =========================================================================
+
+function buildStoriesGrid() {
+  const grid = document.getElementById('stories-grid');
+  grid.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const block = document.createElement('div');
+    block.className = 'story-block';
+    block.innerHTML = `
+      <div class="story-block-num">Story ${i}</div>
+      <div class="field">
+        <label class="label">Image <span class="label-helper">(1080×1920)</span></label>
+        <input type="file" id="story${i}-image" accept="image/*">
+        <div class="image-preview" id="story${i}-preview">
+          <img src="" alt="">
+          <div class="filename"></div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Caption</label>
+        <textarea id="story${i}-caption" rows="2"></textarea>
+      </div>
+    `;
+    grid.appendChild(block);
+  }
+}
+
+// =========================================================================
+// FILE HANDLING
+// =========================================================================
+
+function handleFile(inputId, previewId) {
+  const input = document.getElementById(inputId);
+  const preview = document.getElementById(previewId);
+  const img = preview.querySelector('img');
+  const filename = preview.querySelector('.filename');
+
+  input.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      fileSlots[inputId] = null;
+      preview.classList.remove('has-file');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      fileSlots[inputId] = {
+        file: file,
+        dataURL: ev.target.result,
+        filename: file.name,
+      };
+      img.src = ev.target.result;
+      filename.textContent = file.name;
+      preview.classList.add('has-file');
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function bindFileInputs() {
+  Object.keys(fileSlots).forEach(id => {
+    const previewId = id.replace('-image', '-preview');
+    handleFile(id, previewId);
+  });
+}
+
+// =========================================================================
+// WEEK DATE HANDLING
+// =========================================================================
+
+function updateFolderName() {
+  const date = document.getElementById('week-date').value;
+  document.getElementById('folder-name').value = date || '';
+}
+
+function formatLongDate(isoDate) {
+  if (!isoDate) return '';
+  const d = new Date(isoDate + 'T12:00:00');
+  const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                  'July', 'August', 'September', 'October', 'November', 'December'];
+  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function formatDayLongDate(isoDate) {
+  if (!isoDate) return '';
+  const d = new Date(isoDate + 'T12:00:00');
+  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  return `${days[d.getDay()]} ${formatLongDate(isoDate)}`;
+}
+
+// =========================================================================
+// DRAFT SAVE / LOAD (LOCALSTORAGE)
+// =========================================================================
+
+function collectFormData() {
+  const data = { fields: {} };
+  SCALAR_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) data.fields[id] = el.value;
+  });
+  // Files: store filenames + dataURLs (yes, base64 is bulky but works for drafts)
+  data.files = {};
+  Object.keys(fileSlots).forEach(id => {
+    if (fileSlots[id]) {
+      data.files[id] = {
+        filename: fileSlots[id].filename,
+        dataURL: fileSlots[id].dataURL,
+      };
+    }
+  });
+  return data;
+}
+
+function saveDraft(silent = false) {
+  try {
+    const data = collectFormData();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    if (!silent) toast('Draft saved', 'Stored locally in your browser. Won\'t sync across devices.', 'success');
+  } catch (err) {
+    toast('Save failed', err.message + ' — try fewer/smaller images.', 'error');
+  }
+}
+
+function loadDraft() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) {
+    toast('No draft', 'Nothing saved yet for this browser.', 'error');
+    return;
+  }
+  try {
+    const data = JSON.parse(raw);
+    Object.keys(data.fields || {}).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = data.fields[id];
+    });
+    Object.keys(data.files || {}).forEach(id => {
+      const f = data.files[id];
+      // Recreate fake "fileSlot" entry (we have the dataURL but not the original File object)
+      // We'll convert dataURL back to a Blob for zip generation
+      fileSlots[id] = {
+        file: dataURLtoBlob(f.dataURL, f.filename),
+        dataURL: f.dataURL,
+        filename: f.filename,
+      };
+      const previewId = id.replace('-image', '-preview');
+      const preview = document.getElementById(previewId);
+      if (preview) {
+        preview.querySelector('img').src = f.dataURL;
+        preview.querySelector('.filename').textContent = f.filename;
+        preview.classList.add('has-file');
+      }
+    });
+    updateFolderName();
+    toast('Draft loaded', 'Form filled in from your last saved draft.', 'success');
+  } catch (err) {
+    toast('Load failed', err.message, 'error');
+  }
+}
+
+function dataURLtoBlob(dataURL, filename) {
+  const arr = dataURL.split(',');
+  const mime = arr[0].match(/:(.*?);/)[1];
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) u8arr[n] = bstr.charCodeAt(n);
+  const blob = new Blob([u8arr], { type: mime });
+  blob.name = filename;
+  return blob;
+}
+
+// Auto-save every 5 seconds if anything has changed
+let dirty = false;
+function markDirty() { dirty = true; }
+setInterval(() => {
+  if (dirty) {
+    saveDraft(true);
+    dirty = false;
+  }
+}, 5000);
+
+// =========================================================================
+// HTML GENERATION
+// =========================================================================
+
+const APPROVAL_EMAIL = 'hello@theserviceedit.com';
+
+function escapeHtml(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function tcOr(value) {
+  if (!value || !String(value).trim()) {
+    return '<span class="tc-pill">To confirm</span>';
+  }
+  return escapeHtml(value);
+}
+
+function mailtoLink(weekFull, section, action) {
+  const subject = `Week of ${weekFull} | ${section} | ${action}`;
+  const body = `Hi Mel,\n\nRe: ${section} for week of ${weekFull}\n\n`;
+  return `mailto:${APPROVAL_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+function imgOrPlaceholder(filename, alt, helperText) {
+  // We always include the <img> tag with the right filename.
+  // The site CSS uses :has(img) and onerror="this.remove()" to handle missing images.
+  return `<img src="${filename}" alt="${escapeHtml(alt)}" onerror="this.remove();">
+              <div class="placeholder-text">
+                <strong>+ ${filename}</strong>
+                ${helperText}
+              </div>`;
+}
+
+function buildSidebar(activeIso) {
+  // Build the full 14-week sidebar (current + 13 future, starting 2026-05-04)
+  const startDate = new Date('2026-05-04T12:00:00');
+  const weeks = [];
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + i * 7);
+    const iso = d.toISOString().slice(0, 10);
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const short = `${d.getDate()} ${months[d.getMonth()]}`;
+    weeks.push({ iso, short });
+  }
+
+  const visible = weeks.slice(0, 5);
+  const hidden = weeks.slice(5);
+
+  function renderItem(w) {
+    const isActive = w.iso === activeIso;
+    const isCurrent = w.iso === '2026-05-04'; // first week is current
+    const cls = isActive ? 'is-current' : (isCurrent ? 'is-current' : 'is-upcoming');
+    const meta = isCurrent ? 'Current' : 'Upcoming';
+    return `        <li class="nav-item ${cls}">
+          <a href="../${w.iso}/index.html">
+            <span class="nav-date">${w.short}</span>
+            <span class="nav-meta">${meta}</span>
+          </a>
+        </li>`;
+  }
+
+  const visibleHtml = visible.map(renderItem).join('\n');
+  const hiddenHtml = hidden.map(renderItem).join('\n');
+  const expandHtml = hidden.length > 0 ? `
+      <ul class="nav-list nav-hidden" id="nav-extra">
+${hiddenHtml}
+      </ul>
+      <button class="nav-expand-btn" onclick="this.previousElementSibling.classList.toggle('is-shown'); this.textContent = this.textContent.includes('+') ? 'Show fewer' : '+ ${hidden.length} more weeks';">+ ${hidden.length} more weeks</button>` : '';
+
+  return `  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">The Service Edit</div>
+      <div class="brand-name">Jordy's Casuarina</div>
+      <div class="brand-sub">Weekly marketing plan</div>
+    </div>
+
+    <div class="nav-section-title">Overview</div>
+    <ul class="nav-list">
+      <li class="nav-item ">
+        <a href="../../index.html">
+          <span class="nav-date">Home</span>
+          <span class="nav-meta">All weeks</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-section-title">Plan weeks</div>
+    <ul class="nav-list">
+${visibleHtml}
+    </ul>${expandHtml}
+  </aside>`;
+}
+
+function generateIndexHtml() {
+  const v = (id) => document.getElementById(id) ? document.getElementById(id).value : '';
+  const weekIso = v('week-date');
+  const weekFull = formatLongDate(weekIso);
+  const weekDisplay = formatDayLongDate(weekIso);
+
+  // Format email send date
+  const emailDateISO = v('email-date');
+  const emailDateLong = emailDateISO ? formatLongDate(emailDateISO) : '';
+  const emailTime = v('email-time');
+
+  const sidebar = buildSidebar(weekIso);
+
+  // Section 01: Overview
+  const overviewHtml = `      <section class="section">
+        <div class="section-header">
+          <div class="section-num">01</div>
+          <h2 class="section-title">Weekly Overview</h2>
+        </div>
+        <div class="card">
+          <div class="overview-grid">
+            <div class="overview-row">
+              <div class="overview-label">Week commencing</div>
+              <div class="overview-value">${escapeHtml(weekFull) || '<span class="tc-pill">To confirm</span>'}</div>
+            </div>
+            <div class="overview-row">
+              <div class="overview-label">Main campaign focus</div>
+              <div class="overview-value">${tcOr(v('overview-focus'))}</div>
+            </div>
+            <div class="overview-row">
+              <div class="overview-label">Key offer / special</div>
+              <div class="overview-value">${tcOr(v('overview-offer'))}</div>
+            </div>
+            <div class="overview-row">
+              <div class="overview-label">Main customer message</div>
+              <div class="overview-value">${tcOr(v('overview-message'))}</div>
+            </div>
+            <div class="overview-row">
+              <div class="overview-label">Primary CTA</div>
+              <div class="overview-value">${tcOr(v('overview-cta'))}</div>
+            </div>
+          </div>
+        </div>
+      </section>`;
+
+  // Section 02: Email Campaign
+  const subj = v('email-subject');
+  const cardTitle = subj ? escapeHtml(subj) : '<span class="tc-pill">To confirm</span>';
+  const sendDateDisplay = emailDateLong + (emailTime ? ` at ${emailTime}` : '');
+  const sendDateValue = sendDateDisplay ? escapeHtml(sendDateDisplay) : '<span class="tc-pill">To confirm</span>';
+
+  const emailHtml = `      <section class="section">
+        <div class="section-header">
+          <div class="section-num">02</div>
+          <h2 class="section-title">Email Campaign</h2>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-main">
+              <div class="card-title">${cardTitle}</div>
+              <div class="card-sub">Send date: ${sendDateValue}</div>
+            </div>
+            <span class="card-tag is-campaign">Email</span>
+          </div>
+          <div class="meta-grid">
+            <div class="meta-cell">
+              <div class="meta-label">Send time</div>
+              <div class="meta-value">${tcOr(emailTime)}</div>
+            </div>
+            <div class="meta-cell">
+              <div class="meta-label">Segments</div>
+              <div class="meta-value">${tcOr(v('email-segments'))}</div>
+            </div>
+            <div class="meta-cell">
+              <div class="meta-label">Subject line</div>
+              <div class="meta-value">${tcOr(v('email-subject'))}</div>
+            </div>
+            <div class="meta-cell">
+              <div class="meta-label">Preview text</div>
+              <div class="meta-value">${tcOr(v('email-preview'))}</div>
+            </div>
+          </div>
+          <div class="preview-wrap">
+            <iframe class="preview-frame" src="campaign.html" title="Email campaign preview" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 40) + 'px';"></iframe>
+          </div>
+          <div class="approval-row">
+            <div class="approval-label">Campaign sign-off</div>
+            <div class="approval-actions">
+              <a class="btn btn-changes" href="${mailtoLink(weekFull, 'Email campaign', 'Request changes')}">Request changes</a>
+              <a class="btn btn-approve" href="${mailtoLink(weekFull, 'Email campaign', 'Approve')}">Approve campaign</a>
+            </div>
+          </div>
+        </div>
+      </section>`;
+
+  // Section 03: Instagram Posts
+  function postCard(num) {
+    const date = v(`post${num}-date`);
+    const dateLong = date ? formatLongDate(date) : '';
+    const fileSlot = fileSlots[`post${num}-image`];
+    const filename = fileSlot ? `ig-post-${num}.${getExt(fileSlot.filename)}` : `ig-post-${num}.jpg`;
+    return `        <div class="card">
+          <div class="card-header">
+            <div class="card-header-main">
+              <div class="card-title">Post ${num}</div>
+              <div class="card-sub">Scheduled: ${tcOr(dateLong)}</div>
+            </div>
+            <span class="card-tag is-social">Instagram post</span>
+          </div>
+          <div class="card-body">
+            <div class="image-slot">
+              ${imgOrPlaceholder(filename, '', 'Drop the post image into this folder')}
+            </div>
+            <div class="caption-block">
+              <div class="caption-label">Caption</div>
+              <div class="caption-value">${tcOr(v(`post${num}-caption`))}</div>
+            </div>
+          </div>
+        </div>`;
+  }
+
+  const postsHtml = `      <section class="section">
+        <div class="section-header">
+          <div class="section-num">03</div>
+          <h2 class="section-title">Instagram Posts</h2>
+          <div class="section-meta">2 this week</div>
+        </div>
+${postCard(1)}
+${postCard(2)}
+      </section>`;
+
+  // Section 04: Stories
+  function storyCard(num) {
+    const fileSlot = fileSlots[`story${num}-image`];
+    const filename = fileSlot ? `ig-story-${num}.${getExt(fileSlot.filename)}` : `ig-story-${num}.jpg`;
+    return `          <div class="story-card">
+            <div class="story-image image-slot">
+              <img src="${filename}" alt="" onerror="this.remove();">
+              <div class="placeholder-text">
+                <strong>+ ${filename}</strong>
+                <code>1080 × 1920</code>
+              </div>
+            </div>
+            <div class="story-meta">
+              <div class="story-num">Story ${num}</div>
+              <div class="story-caption">${tcOr(v(`story${num}-caption`))}</div>
+            </div>
+          </div>`;
+  }
+
+  const storiesGridHtml = [1,2,3,4,5].map(storyCard).join('\n');
+  const storiesHtml = `      <section class="section">
+        <div class="section-header">
+          <div class="section-num">04</div>
+          <h2 class="section-title">Instagram Stories</h2>
+          <div class="section-meta">5 this week</div>
+        </div>
+        <div class="story-grid">
+${storiesGridHtml}
+        </div>
+      </section>`;
+
+  // Section 05: Website
+  const webDateISO = v('web-date');
+  const webDateLong = webDateISO ? formatLongDate(webDateISO) : '';
+  const webFile = fileSlots['web-image'];
+  const webFilename = webFile ? `website-mockup.${getExt(webFile.filename)}` : 'website-mockup.png';
+  const webTitle = v('web-title');
+  const webCardTitle = webTitle ? escapeHtml(webTitle) : '<span class="tc-pill">To confirm</span>';
+
+  const websiteHtml = `      <section class="section">
+        <div class="section-header">
+          <div class="section-num">05</div>
+          <h2 class="section-title">Website Updates</h2>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-main">
+              <div class="card-title">${webCardTitle}</div>
+              <div class="card-sub">Page or section: ${tcOr(v('web-page'))}</div>
+            </div>
+            <span class="card-tag is-website">Website</span>
+          </div>
+          <div class="card-body">
+            <div class="meta-grid" style="margin: 0 -24px;">
+              <div class="meta-cell">
+                <div class="meta-label">What's changing</div>
+                <div class="meta-value">${tcOr(v('web-what'))}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Why</div>
+                <div class="meta-value">${tcOr(v('web-why'))}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Live date</div>
+                <div class="meta-value">${tcOr(webDateLong)}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">URL</div>
+                <div class="meta-value">${tcOr(v('web-url'))}</div>
+              </div>
+            </div>
+            <div class="image-slot">
+              ${imgOrPlaceholder(webFilename, '', 'Add a screenshot or mockup to this folder to show the change visually')}
+            </div>
+          </div>
+          <div class="approval-row">
+            <div class="approval-label">Website update sign-off</div>
+            <div class="approval-actions">
+              <a class="btn btn-changes" href="${mailtoLink(weekFull, 'Website updates', 'Request changes')}">Request changes</a>
+              <a class="btn btn-approve" href="${mailtoLink(weekFull, 'Website updates', 'Approve')}">Approve update</a>
+            </div>
+          </div>
+        </div>
+      </section>`;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(weekDisplay)} | Jordy's Casuarina Marketing Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+
+<div class="layout">
+
+${sidebar}
+
+  <main class="main">
+
+    <header class="page-header">
+      <div class="header-label">Weekly marketing plan</div>
+      <h1 class="header-title">Week of ${escapeHtml(weekFull) || '&nbsp;'}</h1>
+      <div class="header-sub">Email campaign, Instagram content, and website updates for review</div>
+      <div class="header-meta">
+        <div class="header-meta-item">
+          <div class="meta-label">Prepared by</div>
+          <div class="meta-value">The Service Edit</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="meta-label">Status</div>
+          <div class="meta-value">Awaiting approval</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="meta-label">Approval contact</div>
+          <div class="meta-value">${APPROVAL_EMAIL}</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+${overviewHtml}
+
+${emailHtml}
+
+${postsHtml}
+
+${storiesHtml}
+
+${websiteHtml}
+
+    </div>
+  </main>
+</div>
+
+</body>
+</html>`;
+}
+
+function generateCampaignHtml() {
+  const inner = document.getElementById('email-html').value;
+  if (!inner.trim()) {
+    // Return the placeholder
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Campaign placeholder</title>
+<style>
+  body { font-family: 'Lato', -apple-system, sans-serif; background: #faf8f6; color: #888; margin: 0; padding: 40px 24px; text-align: center; }
+  .ph-mark { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #c2724c; margin-bottom: 12px; }
+  .ph-title { font-size: 18px; font-weight: 900; color: #1a1a1a; margin-bottom: 8px; }
+  .ph-sub { font-size: 13px; line-height: 1.6; max-width: 460px; margin: 0 auto; }
+  code { background: #fff; padding: 2px 8px; border: 1px solid #e8e0db; border-radius: 3px; font-size: 12px; color: #444; }
+</style>
+</head>
+<body>
+  <div class="ph-mark">Awaiting campaign</div>
+  <div class="ph-title">Email campaign preview</div>
+  <div class="ph-sub">Replace <code>campaign.html</code> in this folder with the TalkBox campaign HTML.</div>
+</body>
+</html>`;
+  }
+  // Wrap the user's inner content in a basic HTML shell so it renders standalone in the iframe
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Campaign preview</title>
+</head>
+<body>
+${inner}
+</body>
+</html>`;
+}
+
+function getExt(filename) {
+  const m = filename.match(/\.([^.]+)$/);
+  return m ? m[1].toLowerCase() : 'jpg';
+}
+
+// =========================================================================
+// PREVIEW
+// =========================================================================
+
+function previewWeek() {
+  const html = generateIndexHtml();
+  // We have to rewrite the stylesheet path because the preview will open at a temporary URL
+  const previewHtml = html.replace(
+    'href="../../assets/site.css"',
+    'href="https://mellyanncox-ctrl.github.io/jordys-hub/assets/site.css"'
+  );
+  // For images, replace relative paths with dataURLs we have in memory
+  let processedHtml = previewHtml;
+  Object.keys(fileSlots).forEach(slotId => {
+    if (!fileSlots[slotId]) return;
+    const slot = fileSlots[slotId];
+    let filename;
+    if (slotId.startsWith('post')) {
+      const num = slotId.match(/post(\d+)/)[1];
+      filename = `ig-post-${num}.${getExt(slot.filename)}`;
+    } else if (slotId.startsWith('story')) {
+      const num = slotId.match(/story(\d+)/)[1];
+      filename = `ig-story-${num}.${getExt(slot.filename)}`;
+    } else if (slotId === 'web-image') {
+      filename = `website-mockup.${getExt(slot.filename)}`;
+    }
+    if (filename) {
+      // Replace src="filename" with the dataURL
+      const escFilename = filename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      processedHtml = processedHtml.replace(
+        new RegExp(`src="${escFilename}"`, 'g'),
+        `src="${slot.dataURL}"`
+      );
+    }
+  });
+
+  // For the campaign iframe — inline the campaign content instead of a separate file
+  const campaignInner = document.getElementById('email-html').value;
+  if (campaignInner.trim()) {
+    const campaignDataURL = 'data:text/html;charset=utf-8,' + encodeURIComponent(generateCampaignHtml());
+    processedHtml = processedHtml.replace(
+      'src="campaign.html"',
+      `src="${campaignDataURL}"`
+    );
+  }
+
+  const blob = new Blob([processedHtml], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  window.open(url, '_blank');
+}
+
+// =========================================================================
+// ZIP GENERATION
+// =========================================================================
+
+async function generateZip() {
+  const folderName = document.getElementById('folder-name').value;
+  if (!folderName) {
+    toast('Set a week date first', 'Pick a Monday in section 00.', 'error');
+    return;
+  }
+
+  const zip = new JSZip();
+  const indexHtml = generateIndexHtml();
+  const campaignHtml = generateCampaignHtml();
+
+  zip.file('index.html', indexHtml);
+  zip.file('campaign.html', campaignHtml);
+
+  // Image files
+  for (const slotId of Object.keys(fileSlots)) {
+    const slot = fileSlots[slotId];
+    if (!slot) continue;
+    const ext = getExt(slot.filename);
+    let filename;
+    if (slotId.startsWith('post')) {
+      const num = slotId.match(/post(\d+)/)[1];
+      filename = `ig-post-${num}.${ext}`;
+    } else if (slotId.startsWith('story')) {
+      const num = slotId.match(/story(\d+)/)[1];
+      filename = `ig-story-${num}.${ext}`;
+    } else if (slotId === 'web-image') {
+      filename = `website-mockup.${ext}`;
+    }
+    if (filename) {
+      zip.file(filename, slot.file);
+    }
+  }
+
+  // README inside the zip with deploy instructions
+  const readme = `# Week of ${formatLongDate(folderName)}
+
+Drop these files into your local repo at:
+
+  jordys-hub/weeks/${folderName}/
+
+That folder already exists with placeholder files. Overwrite them with the contents of this zip, then:
+
+  cd jordys-hub
+  git add .
+  git commit -m "Week of ${formatLongDate(folderName)}"
+  git push
+
+The live site updates within ~30 seconds.
+
+Files in this zip:
+- index.html         (the rendered week page)
+- campaign.html      (TalkBox campaign HTML, or a placeholder)
+${Object.keys(fileSlots).filter(k => fileSlots[k]).map(k => {
+  const ext = getExt(fileSlots[k].filename);
+  if (k.startsWith('post')) return `- ig-post-${k.match(/post(\\d+)/)[1]}.${ext}  (Instagram post image)`;
+  if (k.startsWith('story')) return `- ig-story-${k.match(/story(\\d+)/)[1]}.${ext}  (Instagram story image)`;
+  if (k === 'web-image') return `- website-mockup.${ext}  (website screenshot)`;
+  return '';
+}).filter(Boolean).join('\n')}
+`;
+  zip.file('README.txt', readme);
+
+  try {
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `week-${folderName}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast('Zip generated', `Downloaded as week-${folderName}.zip — extract into weeks/${folderName}/`, 'success');
+  } catch (err) {
+    toast('Zip failed', err.message, 'error');
+  }
+}
+
+// =========================================================================
+// TOAST
+// =========================================================================
+
+let toastTimeout;
+function toast(title, body, type = 'success') {
+  const el = document.getElementById('toast');
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-body').textContent = body;
+  el.classList.remove('is-error', 'is-success');
+  el.classList.add(type === 'error' ? 'is-error' : 'is-success');
+  el.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+// =========================================================================
+// INIT
+// =========================================================================
+
+buildStoriesGrid();
+bindFileInputs();
+
+document.getElementById('week-date').addEventListener('change', updateFolderName);
+updateFolderName();
+
+// Track changes for auto-save
+document.addEventListener('input', markDirty);
+document.addEventListener('change', markDirty);
+
+// Try to load draft on first load (silently — no toast unless user requested)
+const existing = localStorage.getItem(STORAGE_KEY);
+if (existing) {
+  const sideStatus = document.getElementById('side-status');
+  sideStatus.innerHTML = `<strong>Draft available</strong> — click "Load draft" to restore.<br><br>Auto-saving as you type.`;
+}
+</script>
+
+</body>
+</html>
