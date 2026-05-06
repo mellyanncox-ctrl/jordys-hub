@@ -360,6 +360,39 @@
     font-size: 11px;
     color: var(--light);
   }
+  .video-thumb {
+    position: relative;
+    width: 130px;
+    aspect-ratio: 9 / 16;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 6px;
+    background: var(--dark);
+    display: none;
+  }
+  .image-preview.has-file .video-thumb {
+    display: block;
+  }
+  .image-preview.has-file img { display: none; }
+  .video-thumb video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .video-thumb .play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 28px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.15);
+    pointer-events: none;
+  }
 
   .stories-grid {
     display: grid;
@@ -651,6 +684,9 @@
           <h2 class="section-title">Instagram stories</h2>
           <div class="section-meta">5 per week</div>
         </div>
+        <div class="helper-text" style="margin-bottom: 14px; padding: 10px 12px; background: var(--terracotta-pale); border-radius: 4px; color: var(--mid);">
+          <strong style="color: var(--terracotta);">MP4 plays everywhere</strong> | MOV works on Mac/iOS but can fail on some Android browsers. If Jordan reviews on his phone and a video won't play, re-export as MP4 (H.264) and replace the file in the folder.
+        </div>
         <div class="stories-grid" id="stories-grid">
           <!-- 5 story blocks injected by JS -->
         </div>
@@ -754,10 +790,13 @@ function buildStoriesGrid() {
     block.innerHTML = `
       <div class="story-block-num">Story ${i}</div>
       <div class="field">
-        <label class="label">Image <span class="label-helper">(1080×1920)</span></label>
-        <input type="file" id="story${i}-image" accept="image/*">
+        <label class="label">Video <span class="label-helper">(MP4 best, MOV ok | 1080×1920)</span></label>
+        <input type="file" id="story${i}-image" accept="video/*">
         <div class="image-preview" id="story${i}-preview">
-          <img src="" alt="">
+          <div class="video-thumb">
+            <video src="" muted playsinline preload="metadata"></video>
+            <div class="play-overlay">▶</div>
+          </div>
           <div class="filename"></div>
         </div>
       </div>
@@ -778,6 +817,7 @@ function handleFile(inputId, previewId) {
   const input = document.getElementById(inputId);
   const preview = document.getElementById(previewId);
   const img = preview.querySelector('img');
+  const video = preview.querySelector('video');
   const filename = preview.querySelector('.filename');
 
   input.addEventListener('change', (e) => {
@@ -793,8 +833,13 @@ function handleFile(inputId, previewId) {
         file: file,
         dataURL: ev.target.result,
         filename: file.name,
+        isVideo: file.type.startsWith('video/'),
       };
-      img.src = ev.target.result;
+      if (video && file.type.startsWith('video/')) {
+        video.src = ev.target.result;
+      } else if (img) {
+        img.src = ev.target.result;
+      }
       filename.textContent = file.name;
       preview.classList.add('has-file');
     };
@@ -1158,15 +1203,16 @@ ${postCard(2)}
   // Section 04: Stories
   function storyCard(num) {
     const fileSlot = fileSlots[`story${num}-image`];
-    const filename = fileSlot ? `ig-story-${num}.${getExt(fileSlot.filename)}` : `ig-story-${num}.jpg`;
+    const filename = fileSlot ? `ig-story-${num}.${getExt(fileSlot.filename)}` : `ig-story-${num}.mov`;
     return `          <div class="story-card">
-            <div class="story-image image-slot">
-              <img src="${filename}" alt="" onerror="this.remove();">
+            <a class="story-image story-video-link" href="${filename}" target="_blank" rel="noopener" title="Tap to play">
+              <video src="${filename}" muted playsinline preload="metadata" onerror="this.parentElement.classList.add('no-video');"></video>
+              <div class="story-play-overlay">▶</div>
               <div class="placeholder-text">
                 <strong>+ ${filename}</strong>
                 <code>1080 × 1920</code>
               </div>
-            </div>
+            </a>
             <div class="story-meta">
               <div class="story-num">Story ${num}</div>
               <div class="story-caption">${tcOr(v(`story${num}-caption`))}</div>
@@ -1366,11 +1412,11 @@ function previewWeek() {
       filename = `website-mockup.${getExt(slot.filename)}`;
     }
     if (filename) {
-      // Replace src="filename" with the dataURL
+      // Replace src="filename" and href="filename" with the dataURL
       const escFilename = filename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       processedHtml = processedHtml.replace(
-        new RegExp(`src="${escFilename}"`, 'g'),
-        `src="${slot.dataURL}"`
+        new RegExp(`(src|href)="${escFilename}"`, 'g'),
+        `$1="${slot.dataURL}"`
       );
     }
   });
@@ -1450,7 +1496,7 @@ Files in this zip:
 ${Object.keys(fileSlots).filter(k => fileSlots[k]).map(k => {
   const ext = getExt(fileSlots[k].filename);
   if (k.startsWith('post')) return `- ig-post-${k.match(/post(\\d+)/)[1]}.${ext}  (Instagram post image)`;
-  if (k.startsWith('story')) return `- ig-story-${k.match(/story(\\d+)/)[1]}.${ext}  (Instagram story image)`;
+  if (k.startsWith('story')) return `- ig-story-${k.match(/story(\\d+)/)[1]}.${ext}  (Instagram story video)`;
   if (k === 'web-image') return `- website-mockup.${ext}  (website screenshot)`;
   return '';
 }).filter(Boolean).join('\n')}

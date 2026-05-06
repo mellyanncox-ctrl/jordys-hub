@@ -293,17 +293,18 @@ def section_ig_posts() -> str:
 
 
 def section_ig_stories() -> str:
-    """5 Instagram stories | image slot + caption. Compact grid layout. No approval row."""
+    """5 Instagram stories | video slot + caption. Compact grid layout. No approval row."""
     stories = ""
     for i in range(1, 6):
         stories += f'''          <div class="story-card">
-            <div class="story-image image-slot">
-              <img src="ig-story-{i}.jpg" alt="" onerror="this.remove();">
+            <a class="story-image story-video-link" href="ig-story-{i}.mov" target="_blank" rel="noopener" title="Tap to play">
+              <video src="ig-story-{i}.mov" muted playsinline preload="metadata" onerror="this.parentElement.classList.add('no-video');"></video>
+              <div class="story-play-overlay">▶</div>
               <div class="placeholder-text">
-                <strong>+ ig-story-{i}.jpg</strong>
+                <strong>+ ig-story-{i}.mov</strong>
                 <code>1080 × 1920</code>
               </div>
-            </div>
+            </a>
             <div class="story-meta">
               <div class="story-num">Story {i}</div>
               <div class="story-caption">{tc()}</div>
