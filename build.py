@@ -84,12 +84,27 @@ def flows_section_homepage() -> str:
 {cards}      </section>'''
 
 
-def sidebar_html(active_iso: str | None, show_admin: bool = False) -> str:
+def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page: bool = False) -> str:
     """Build sidebar nav. active_iso is None for homepage, or week iso for week pages.
-    show_admin renders an admin shortcut at the bottom (homepage only)."""
-    on_home = active_iso is None
+    show_admin renders an admin shortcut at the bottom (homepage only).
+    is_flows_page highlights the Flows link instead of Home."""
+    on_home = active_iso is None and not is_flows_page
     home_class = "is-current" if on_home else ""
-    home_href = "../../index.html" if not on_home else "index.html"
+    flows_class = "is-current" if is_flows_page else ""
+
+    # Path depth: homepage = 0, /flows/ = 1, /weeks/YYYY-MM-DD/ = 2
+    if active_iso:
+        # week page, 2 levels deep
+        home_href = "../../index.html"
+        flows_href = "../../flows/"
+    elif is_flows_page:
+        # flows page, 1 level deep
+        home_href = "../index.html"
+        flows_href = "index.html"
+    else:
+        # homepage
+        home_href = "index.html"
+        flows_href = "flows/"
 
     # Build nav items grouped by past / current / upcoming relative to today's "current week"
     items = []
@@ -176,6 +191,12 @@ def sidebar_html(active_iso: str | None, show_admin: bool = False) -> str:
         <a href="{home_href}">
           <span class="nav-date">Home</span>
           <span class="nav-meta">All weeks</span>
+        </a>
+      </li>
+      <li class="nav-item {flows_class}">
+        <a href="{flows_href}">
+          <span class="nav-date">Flows</span>
+          <span class="nav-meta">TalkBox</span>
         </a>
       </li>
     </ul>
@@ -678,7 +699,7 @@ def home_page() -> str:
 </head>
 <body>
 
-<div class="layout layout-with-flows">
+<div class="layout">
 
 {sidebar}
 
@@ -688,7 +709,7 @@ def home_page() -> str:
       <div class="home-intro">
         <div class="intro-label">Marketing plan hub</div>
         <h1 class="intro-title">Hi Jordan | here's the plan for the week.</h1>
-        <p class="intro-sub">Each week you'll find one email campaign, two Instagram posts, five Instagram stories, and any website changes. Open the current week below to review and approve. TalkBox flows live in the panel on the right | always there, no scrolling needed.</p>
+        <p class="intro-sub">Each week you'll find one email campaign, two Instagram posts, five Instagram stories, and any website changes. Open the current week below to review and approve. TalkBox flows live on their own page | click "Flows" in the sidebar.</p>
       </div>
 
       <a href="weeks/{current["iso"]}/index.html" class="hero">
@@ -713,17 +734,6 @@ def home_page() -> str:
 
     </div>
   </main>
-
-  <aside class="flows-panel">
-    <div class="flows-panel-inner">
-      <div class="flows-panel-head">
-        <div class="flows-panel-label">Always-on</div>
-        <h2 class="flows-panel-title">TalkBox flows</h2>
-        <div class="flows-panel-sub">{len(FLOWS)} in progress</div>
-      </div>
-{flows_panel_cards()}
-    </div>
-  </aside>
 </div>
 
 </body>
@@ -756,6 +766,94 @@ def flows_panel_cards() -> str:
       </div>
 '''
     return cards
+
+
+def flows_page() -> str:
+    """Dedicated /flows/ page with full preview cards for each flow."""
+    sidebar = sidebar_html(active_iso=None, show_admin=False, is_flows_page=True)
+
+    cards = ""
+    for flow in FLOWS:
+        approve_link = flow_mailto(flow["name"], "Approve")
+        changes_link = flow_mailto(flow["name"], "Request changes")
+        cards += f'''      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">{flow["name"]}</h2>
+          <div class="section-meta">{flow["where"]}</div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-main">
+              <div class="card-title">{flow["name"]}</div>
+              <div class="card-sub">Where it lives: {flow["where"]}</div>
+            </div>
+            <span class="card-tag is-flow">TalkBox flow</span>
+          </div>
+          <div class="preview-wrap">
+            <div class="preview-toolbar">
+              <span class="preview-toolbar-label">Flow preview</span>
+              <a class="preview-toolbar-link" href="{flow["slug"]}.html" target="_blank" rel="noopener">Open in new tab</a>
+            </div>
+            <iframe class="preview-frame" src="{flow["slug"]}.html" title="{flow["name"]} preview"></iframe>
+          </div>
+          <div class="approval-row">
+            <div class="approval-label">{flow["name"]} sign-off</div>
+            <div class="approval-actions">
+              <a class="btn btn-changes" href="{changes_link}">Request changes</a>
+              <a class="btn btn-approve" href="{approve_link}">Approve flow</a>
+            </div>
+          </div>
+        </div>
+      </section>
+'''
+
+    return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TalkBox Flows | Jordy's Casuarina Marketing Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+<div class="layout">
+
+{sidebar}
+
+  <main class="main">
+
+    <header class="page-header">
+      <div class="header-label">Always-on</div>
+      <h1 class="header-title">TalkBox Flows</h1>
+      <div class="header-sub">Ongoing flow builds for review and approval</div>
+      <div class="header-meta">
+        <div class="header-meta-item">
+          <div class="meta-label">Prepared by</div>
+          <div class="meta-value">The Service Edit</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="meta-label">In progress</div>
+          <div class="meta-value">{len(FLOWS)} flows</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="meta-label">Approval contact</div>
+          <div class="meta-value">{APPROVAL_EMAIL}</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+{cards}
+
+    </div>
+  </main>
+</div>
+
+</body>
+</html>'''
 
 
 def template_page() -> str:
@@ -861,10 +959,11 @@ def main():
             (wdir / "website.html").write_text(website_placeholder())
         print(f"✓ weeks/{w['iso']}/")
 
-    # Flows | top-level project area, not tied to any week.
-    # Only write placeholders if the flow file doesn't exist yet.
+    # Flows | dedicated /flows/ page + individual flow files.
+    # The page (index.html) is always rewritten; the flow files are placeholders only if missing.
     flows_dir = ROOT / "flows"
     flows_dir.mkdir(exist_ok=True)
+    (flows_dir / "index.html").write_text(flows_page())
     for slug in ("flow-1", "flow-2", "flow-3"):
         f = flows_dir / f"{slug}.html"
         if not f.exists():
