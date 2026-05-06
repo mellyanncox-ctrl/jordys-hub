@@ -38,11 +38,19 @@ def flow_mailto(flow_name: str, action: str) -> str:
     return f"mailto:{APPROVAL_EMAIL}?subject={quote(subject)}&body={quote(body)}"
 
 
-# Flows being built | edit this list to match what's in progress
+# Flows being built | edit this list as flows progress
+# status options: "building", "review", "live", "paused"
 FLOWS = [
-    {"slug": "flow-1", "name": "Flow 1", "where": "To confirm"},
-    {"slug": "flow-2", "name": "Flow 2", "where": "To confirm"},
-    {"slug": "flow-3", "name": "Flow 3", "where": "To confirm"},
+    {"slug": "welcome",         "name": "Welcome Flow",         "where": "TalkBox > Automations", "week": 1, "status": "building"},
+    {"slug": "update-details",  "name": "Update Details",       "where": "TalkBox > Automations", "week": 1, "status": "building"},
+    {"slug": "revisit-30",      "name": "Revisit 30",           "where": "TalkBox > Automations", "week": 2, "status": "queued"},
+    {"slug": "revisit-60",      "name": "Revisit 60",           "where": "TalkBox > Automations", "week": 2, "status": "queued"},
+    {"slug": "reactivate-60",   "name": "Reactivate 60",        "where": "TalkBox > Automations", "week": 3, "status": "queued"},
+    {"slug": "reactivate-120",  "name": "Reactivate 120",       "where": "TalkBox > Automations", "week": 3, "status": "queued"},
+    {"slug": "milestone-5",     "name": "Milestone 5",          "where": "TalkBox > Automations", "week": 4, "status": "queued"},
+    {"slug": "milestone-10",    "name": "Milestone 10",         "where": "TalkBox > Automations", "week": 4, "status": "queued"},
+    {"slug": "milestone-15",    "name": "Milestone 15",         "where": "TalkBox > Automations", "week": 5, "status": "queued"},
+    {"slug": "birthday",        "name": "Birthday Flow",        "where": "TalkBox > Automations", "week": 5, "status": "queued"},
 ]
 
 
@@ -768,43 +776,72 @@ def flows_panel_cards() -> str:
     return cards
 
 
+def status_badge(status: str) -> str:
+    """Render a status badge."""
+    labels = {
+        "building": "Building",
+        "review": "In review",
+        "live": "Live",
+        "paused": "Paused",
+        "queued": "Queued",
+    }
+    label = labels.get(status, status.title())
+    return f'<span class="status-pill is-{status}">{label}</span>'
+
+
 def flows_page() -> str:
-    """Dedicated /flows/ page with full preview cards for each flow."""
+    """Dedicated /flows/ page with full preview cards for each flow, grouped by rollout week."""
     sidebar = sidebar_html(active_iso=None, show_admin=False, is_flows_page=True)
 
-    cards = ""
-    for flow in FLOWS:
-        approve_link = flow_mailto(flow["name"], "Approve")
-        changes_link = flow_mailto(flow["name"], "Request changes")
-        cards += f'''      <section class="section">
-        <div class="section-header">
-          <h2 class="section-title">{flow["name"]}</h2>
-          <div class="section-meta">{flow["where"]}</div>
+    # Group flows by week
+    weeks_seen = sorted(set(f["week"] for f in FLOWS))
+
+    sections = ""
+    for week_num in weeks_seen:
+        week_flows = [f for f in FLOWS if f["week"] == week_num]
+        sections += f'''      <div class="flow-week-group">
+        <div class="flow-week-head">
+          <span class="flow-week-num">Rollout week {week_num}</span>
+          <span class="flow-week-count">{len(week_flows)} flow{'s' if len(week_flows) != 1 else ''}</span>
         </div>
-        <div class="card">
-          <div class="card-header">
-            <div class="card-header-main">
-              <div class="card-title">{flow["name"]}</div>
-              <div class="card-sub">Where it lives: {flow["where"]}</div>
-            </div>
-            <span class="card-tag is-flow">TalkBox flow</span>
-          </div>
-          <div class="preview-wrap">
-            <div class="preview-toolbar">
-              <span class="preview-toolbar-label">Flow preview</span>
-              <a class="preview-toolbar-link" href="{flow["slug"]}.html" target="_blank" rel="noopener">Open in new tab</a>
-            </div>
-            <iframe class="preview-frame" src="{flow["slug"]}.html" title="{flow["name"]} preview"></iframe>
-          </div>
-          <div class="approval-row">
-            <div class="approval-label">{flow["name"]} sign-off</div>
-            <div class="approval-actions">
-              <a class="btn btn-changes" href="{changes_link}">Request changes</a>
-              <a class="btn btn-approve" href="{approve_link}">Approve flow</a>
+'''
+        for flow in week_flows:
+            approve_link = flow_mailto(flow["name"], "Approve")
+            changes_link = flow_mailto(flow["name"], "Request changes")
+            sections += f'''        <section class="section flow-section">
+          <div class="section-header">
+            <h2 class="section-title">{flow["name"]}</h2>
+            <div class="section-header-meta">
+              {status_badge(flow["status"])}
+              <span class="section-meta">{flow["where"]}</span>
             </div>
           </div>
-        </div>
-      </section>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-main">
+                <div class="card-title">{flow["name"]}</div>
+                <div class="card-sub">Where it lives: {flow["where"]}</div>
+              </div>
+              <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="preview-wrap">
+              <div class="preview-toolbar">
+                <span class="preview-toolbar-label">Flow preview</span>
+                <a class="preview-toolbar-link" href="{flow["slug"]}.html" target="_blank" rel="noopener">Open in new tab</a>
+              </div>
+              <iframe class="preview-frame" src="{flow["slug"]}.html" title="{flow["name"]} preview"></iframe>
+            </div>
+            <div class="approval-row">
+              <div class="approval-label">{flow["name"]} sign-off</div>
+              <div class="approval-actions">
+                <a class="btn btn-changes" href="{changes_link}">Request changes</a>
+                <a class="btn btn-approve" href="{approve_link}">Approve flow</a>
+              </div>
+            </div>
+          </div>
+        </section>
+'''
+        sections += '''      </div>
 '''
 
     return f'''<!DOCTYPE html>
@@ -827,7 +864,7 @@ def flows_page() -> str:
     <header class="page-header">
       <div class="header-label">Always-on</div>
       <h1 class="header-title">TalkBox Flows</h1>
-      <div class="header-sub">Ongoing flow builds for review and approval</div>
+      <div class="header-sub">10-flow rollout, two flows built per week</div>
       <div class="header-meta">
         <div class="header-meta-item">
           <div class="meta-label">Prepared by</div>
@@ -846,8 +883,7 @@ def flows_page() -> str:
 
     <div class="content">
 
-{cards}
-
+{sections}
     </div>
   </main>
 </div>
@@ -964,8 +1000,8 @@ def main():
     flows_dir = ROOT / "flows"
     flows_dir.mkdir(exist_ok=True)
     (flows_dir / "index.html").write_text(flows_page())
-    for slug in ("flow-1", "flow-2", "flow-3"):
-        f = flows_dir / f"{slug}.html"
+    for flow in FLOWS:
+        f = flows_dir / f"{flow['slug']}.html"
         if not f.exists():
             f.write_text(flow_placeholder())
     print("✓ flows/")
