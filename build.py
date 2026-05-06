@@ -665,7 +665,7 @@ def home_page() -> str:
 </head>
 <body>
 
-<div class="layout">
+<div class="layout layout-with-flows">
 
 {sidebar}
 
@@ -675,7 +675,7 @@ def home_page() -> str:
       <div class="home-intro">
         <div class="intro-label">Marketing plan hub</div>
         <h1 class="intro-title">Hi Jordan | here's the plan for the week.</h1>
-        <p class="intro-sub">Each week you'll find one email campaign, two Instagram posts, five Instagram stories, and any website changes. Open the current week below to review and approve. Scroll down for ongoing TalkBox flow builds.</p>
+        <p class="intro-sub">Each week you'll find one email campaign, two Instagram posts, five Instagram stories, and any website changes. Open the current week below to review and approve. TalkBox flows live in the panel on the right | always there, no scrolling needed.</p>
       </div>
 
       <a href="weeks/{current["iso"]}/index.html" class="hero">
@@ -687,11 +687,9 @@ def home_page() -> str:
 
 {past_section}
 
-{flows_section_homepage()}
-
       <section class="section-block">
         <div class="section-block-header">
-          <div class="section-block-num">04</div>
+          <div class="section-block-num">03</div>
           <div class="section-block-title">Upcoming weeks</div>
           <div class="section-block-meta">{len(upcoming_weeks)} scheduled</div>
         </div>
@@ -702,10 +700,49 @@ def home_page() -> str:
 
     </div>
   </main>
+
+  <aside class="flows-panel">
+    <div class="flows-panel-inner">
+      <div class="flows-panel-head">
+        <div class="flows-panel-label">Always-on</div>
+        <h2 class="flows-panel-title">TalkBox flows</h2>
+        <div class="flows-panel-sub">{len(FLOWS)} in progress</div>
+      </div>
+{flows_panel_cards()}
+    </div>
+  </aside>
 </div>
 
 </body>
 </html>'''
+
+
+def flows_panel_cards() -> str:
+    """Render flow cards for the right-hand sticky panel on the homepage."""
+    cards = ""
+    for flow in FLOWS:
+        approve_link = flow_mailto(flow["name"], "Approve")
+        changes_link = flow_mailto(flow["name"], "Request changes")
+        cards += f'''      <div class="flow-side-card">
+        <div class="flow-side-card-head">
+          <div class="flow-side-card-title">{flow["name"]}</div>
+          <span class="card-tag is-flow">Flow</span>
+        </div>
+        <div class="flow-side-card-where">Where: {flow["where"]}</div>
+        <div class="preview-wrap">
+          <div class="preview-toolbar">
+            <span class="preview-toolbar-label">Preview</span>
+            <a class="preview-toolbar-link" href="flows/{flow["slug"]}.html" target="_blank" rel="noopener">Open in new tab</a>
+          </div>
+          <iframe class="preview-frame flow-side-frame" src="flows/{flow["slug"]}.html" title="{flow["name"]} preview"></iframe>
+        </div>
+        <div class="flow-side-actions">
+          <a class="btn btn-changes btn-sm" href="{changes_link}">Request changes</a>
+          <a class="btn btn-approve btn-sm" href="{approve_link}">Approve</a>
+        </div>
+      </div>
+'''
+    return cards
 
 
 def template_page() -> str:
