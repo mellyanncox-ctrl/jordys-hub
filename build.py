@@ -84,8 +84,9 @@ def flows_section_homepage() -> str:
 {cards}      </section>'''
 
 
-def sidebar_html(active_iso: str | None) -> str:
-    """Build sidebar nav. active_iso is None for homepage, or week iso for week pages."""
+def sidebar_html(active_iso: str | None, show_admin: bool = False) -> str:
+    """Build sidebar nav. active_iso is None for homepage, or week iso for week pages.
+    show_admin renders an admin shortcut at the bottom (homepage only)."""
     on_home = active_iso is None
     home_class = "is-current" if on_home else ""
     home_href = "../../index.html" if not on_home else "index.html"
@@ -150,6 +151,18 @@ def sidebar_html(active_iso: str | None) -> str:
       </ul>
       <button class="nav-expand-btn" onclick="this.previousElementSibling.classList.toggle('is-shown'); this.textContent = this.textContent.includes('+') ? 'Show fewer' : '+ {len(hidden_items)} more weeks';">+ {len(hidden_items)} more weeks</button>'''
 
+    admin_block = ""
+    if show_admin:
+        # Admin path is "admin/" from the homepage. (Not rendered on week pages so we don't need ../../.)
+        admin_block = '''
+
+    <div class="nav-admin">
+      <a href="admin/" class="nav-admin-link">
+        <span class="nav-admin-mark">Admin</span>
+        <span class="nav-admin-arrow">→</span>
+      </a>
+    </div>'''
+
     return f'''  <aside class="sidebar">
     <div class="brand">
       <div class="brand-mark">The Service Edit</div>
@@ -170,7 +183,7 @@ def sidebar_html(active_iso: str | None) -> str:
     <div class="nav-section-title">Plan weeks</div>
     <ul class="nav-list">
 {visible_html}
-    </ul>{expand_html}
+    </ul>{expand_html}{admin_block}
   </aside>'''
 
 
@@ -611,7 +624,7 @@ def flow_placeholder() -> str:
 
 
 def home_page() -> str:
-    sidebar = sidebar_html(None)
+    sidebar = sidebar_html(None, show_admin=True)
     current = WEEKS[CURRENT_INDEX]
 
     # No past weeks at launch, but section exists for when there are some
