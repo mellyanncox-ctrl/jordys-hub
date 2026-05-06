@@ -60,7 +60,11 @@ def flows_section_homepage() -> str:
             <span class="card-tag is-flow">TalkBox flow</span>
           </div>
           <div class="preview-wrap">
-            <iframe class="preview-frame" src="flows/{flow["slug"]}.html" title="{flow["name"]} preview" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 40) + 'px';"></iframe>
+            <div class="preview-toolbar">
+              <span class="preview-toolbar-label">Flow preview</span>
+              <a class="preview-toolbar-link" href="flows/{flow["slug"]}.html" target="_blank" rel="noopener">Open in new tab</a>
+            </div>
+            <iframe class="preview-frame" src="flows/{flow["slug"]}.html" title="{flow["name"]} preview"></iframe>
           </div>
           <div class="approval-row">
             <div class="approval-label">{flow["name"]} sign-off</div>
@@ -243,7 +247,11 @@ def section_email_campaign(week_full: str) -> str:
             </div>
           </div>
           <div class="preview-wrap">
-            <iframe class="preview-frame" src="campaign.html" title="Email campaign preview" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 40) + 'px';"></iframe>
+            <div class="preview-toolbar">
+              <span class="preview-toolbar-label">Email preview</span>
+              <a class="preview-toolbar-link" href="campaign.html" target="_blank" rel="noopener">Open in new tab</a>
+            </div>
+            <iframe class="preview-frame" src="campaign.html" title="Email campaign preview"></iframe>
           </div>
           <div class="approval-row">
             <div class="approval-label">Campaign sign-off</div>
@@ -338,32 +346,30 @@ def section_website(week_full: str) -> str:
             </div>
             <span class="card-tag is-website">Website</span>
           </div>
-          <div class="card-body">
-            <div class="meta-grid" style="margin: 0 -24px;">
-              <div class="meta-cell">
-                <div class="meta-label">What's changing</div>
-                <div class="meta-value">{tc()}</div>
-              </div>
-              <div class="meta-cell">
-                <div class="meta-label">Why</div>
-                <div class="meta-value">{tc()}</div>
-              </div>
-              <div class="meta-cell">
-                <div class="meta-label">Live date</div>
-                <div class="meta-value">{tc()}</div>
-              </div>
-              <div class="meta-cell">
-                <div class="meta-label">URL</div>
-                <div class="meta-value">{tc()}</div>
-              </div>
+          <div class="meta-grid">
+            <div class="meta-cell">
+              <div class="meta-label">What's changing</div>
+              <div class="meta-value">{tc()}</div>
             </div>
-            <div class="image-slot">
-              <img src="website-mockup.png" alt="" onerror="this.remove();">
-              <div class="placeholder-text">
-                <strong>+ website-mockup.png</strong>
-                Add a screenshot or mockup to this folder to show the change visually
-              </div>
+            <div class="meta-cell">
+              <div class="meta-label">Why</div>
+              <div class="meta-value">{tc()}</div>
             </div>
+            <div class="meta-cell">
+              <div class="meta-label">Live date</div>
+              <div class="meta-value">{tc()}</div>
+            </div>
+            <div class="meta-cell">
+              <div class="meta-label">URL</div>
+              <div class="meta-value">{tc()}</div>
+            </div>
+          </div>
+          <div class="preview-wrap">
+            <div class="preview-toolbar">
+              <span class="preview-toolbar-label">Website preview</span>
+              <a class="preview-toolbar-link" href="website.html" target="_blank" rel="noopener">Open in new tab</a>
+            </div>
+            <iframe class="preview-frame" src="website.html" title="Website update preview"></iframe>
           </div>
           <div class="approval-row">
             <div class="approval-label">Website update sign-off</div>
@@ -487,6 +493,62 @@ def campaign_placeholder() -> str:
   <div class="ph-sub">
     Replace <code>campaign.html</code> in this folder with the TalkBox campaign HTML.
     The preview will render here automatically.
+  </div>
+</body>
+</html>'''
+
+
+def website_placeholder() -> str:
+    """Empty website update HTML | shown in iframe until Squarespace HTML replaces it."""
+    return '''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Website update placeholder</title>
+<style>
+  body {
+    font-family: 'Lato', -apple-system, sans-serif;
+    background: #faf8f6;
+    color: #888;
+    margin: 0;
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .ph-mark {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #b5821a;
+    margin-bottom: 12px;
+  }
+  .ph-title {
+    font-size: 18px;
+    font-weight: 900;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+  }
+  .ph-sub {
+    font-size: 13px;
+    line-height: 1.6;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+  code {
+    background: #fff;
+    padding: 2px 8px;
+    border: 1px solid #e8e0db;
+    border-radius: 3px;
+    font-size: 12px;
+    color: #444;
+  }
+</style>
+</head>
+<body>
+  <div class="ph-mark">Awaiting website update</div>
+  <div class="ph-title">Website preview</div>
+  <div class="ph-sub">
+    Replace <code>website.html</code> in this folder with the Squarespace HTML/Liquid block to preview the change here.
   </div>
 </body>
 </html>'''
@@ -733,22 +795,30 @@ def main():
     template_dir.mkdir(exist_ok=True)
     (template_dir / "index.html").write_text(template_page())
     (template_dir / "campaign.html").write_text(campaign_placeholder())
+    (template_dir / "website.html").write_text(website_placeholder())
     print("✓ _template/")
 
-    # Week folders | each gets index.html + campaign.html (placeholder)
+    # Week folders. We always rewrite index.html (sidebar reflects current week list),
+    # but only write campaign.html / website.html if they don't already exist | so we
+    # don't clobber filled-in content.
     for w in WEEKS:
         wdir = ROOT / "weeks" / w["iso"]
         wdir.mkdir(parents=True, exist_ok=True)
         (wdir / "index.html").write_text(week_page(w))
-        (wdir / "campaign.html").write_text(campaign_placeholder())
+        if not (wdir / "campaign.html").exists():
+            (wdir / "campaign.html").write_text(campaign_placeholder())
+        if not (wdir / "website.html").exists():
+            (wdir / "website.html").write_text(website_placeholder())
         print(f"✓ weeks/{w['iso']}/")
 
-    # Flows | top-level project area, not tied to any week
+    # Flows | top-level project area, not tied to any week.
+    # Only write placeholders if the flow file doesn't exist yet.
     flows_dir = ROOT / "flows"
     flows_dir.mkdir(exist_ok=True)
-    (flows_dir / "flow-1.html").write_text(flow_placeholder())
-    (flows_dir / "flow-2.html").write_text(flow_placeholder())
-    (flows_dir / "flow-3.html").write_text(flow_placeholder())
+    for slug in ("flow-1", "flow-2", "flow-3"):
+        f = flows_dir / f"{slug}.html"
+        if not f.exists():
+            f.write_text(flow_placeholder())
     print("✓ flows/")
 
     print(f"\nBuilt {len(WEEKS)} week folders + flows area")

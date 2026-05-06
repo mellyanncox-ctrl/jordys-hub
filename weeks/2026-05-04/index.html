@@ -30,7 +30,7 @@
 
     <div class="nav-section-title">Plan weeks</div>
     <ul class="nav-list">
-        <li class="nav-item is-current">
+        <li class="nav-item is-current is-current">
           <a href="../2026-05-04/index.html">
             <span class="nav-date">4 May</span>
             <span class="nav-meta">Current</span>
@@ -157,19 +157,19 @@
             </div>
             <div class="overview-row">
               <div class="overview-label">Main campaign focus</div>
-              <div class="overview-value">Mothers Day Bookings</div>
+              <div class="overview-value"><span class="tc-pill">To confirm</span></div>
             </div>
             <div class="overview-row">
               <div class="overview-label">Key offer / special</div>
-              <div class="overview-value">Free Bubbly On Arrival</div>
+              <div class="overview-value"><span class="tc-pill">To confirm</span></div>
             </div>
             <div class="overview-row">
               <div class="overview-label">Main customer message</div>
-              <div class="overview-value">Book through our email and you mum gets a free glass of bubbly</div>
+              <div class="overview-value"><span class="tc-pill">To confirm</span></div>
             </div>
             <div class="overview-row">
               <div class="overview-label">Primary CTA</div>
-              <div class="overview-value">Book A Table for Mothers Day</div>
+              <div class="overview-value"><span class="tc-pill">To confirm</span></div>
             </div>
           </div>
         </div>
@@ -183,31 +183,35 @@
         <div class="card">
           <div class="card-header">
             <div class="card-header-main">
-              <div class="card-title">{{ first_name|default:&#39;Hey&#39;|title }}, Mother&#39;s day is this Sunday. You should probably book.</div>
-              <div class="card-sub">Send date: 4 May 2026 at 07:00</div>
+              <div class="card-title"><span class="tc-pill">To confirm</span></div>
+              <div class="card-sub">Send date: <span class="tc-pill">To confirm</span></div>
             </div>
             <span class="card-tag is-campaign">Email</span>
           </div>
           <div class="meta-grid">
             <div class="meta-cell">
               <div class="meta-label">Send time</div>
-              <div class="meta-value">07:00</div>
+              <div class="meta-value"><span class="tc-pill">To confirm</span></div>
             </div>
             <div class="meta-cell">
               <div class="meta-label">Segments</div>
-              <div class="meta-value">Clicked, Opened, Didn&#39;t Open, Previous Bookings</div>
+              <div class="meta-value"><span class="tc-pill">To confirm</span></div>
             </div>
             <div class="meta-cell">
               <div class="meta-label">Subject line</div>
-              <div class="meta-value">{{ first_name|default:&#39;Hey&#39;|title }}, Mother&#39;s day is this Sunday. You should probably book.</div>
+              <div class="meta-value"><span class="tc-pill">To confirm</span></div>
             </div>
             <div class="meta-cell">
               <div class="meta-label">Preview text</div>
-              <div class="meta-value">Tables are filling up. We&#39;ve got the first drink waiting.</div>
+              <div class="meta-value"><span class="tc-pill">To confirm</span></div>
             </div>
           </div>
           <div class="preview-wrap">
-            <iframe class="preview-frame" src="campaign.html" title="Email campaign preview" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 40) + 'px';"></iframe>
+            <div class="preview-toolbar">
+              <span class="preview-toolbar-label">Email preview</span>
+              <a class="preview-toolbar-link" href="campaign.html" target="_blank" rel="noopener">Open in new tab</a>
+            </div>
+            <iframe class="preview-frame" src="campaign.html" title="Email campaign preview"></iframe>
           </div>
           <div class="approval-row">
             <div class="approval-label">Campaign sign-off</div>
@@ -279,65 +283,70 @@
         </div>
         <div class="story-grid">
           <div class="story-card">
-            <div class="story-image image-slot">
-              <img src="ig-story-1.jpg" alt="" onerror="this.remove();">
+            <a class="story-image story-video-link" href="ig-story-1.mov" target="_blank" rel="noopener" title="Tap to play">
+              <video src="ig-story-1.mov" muted playsinline preload="metadata" onerror="this.parentElement.classList.add('no-video');"></video>
+              <div class="story-play-overlay">▶</div>
               <div class="placeholder-text">
-                <strong>+ ig-story-1.jpg</strong>
+                <strong>+ ig-story-1.mov</strong>
                 <code>1080 × 1920</code>
               </div>
-            </div>
+            </a>
             <div class="story-meta">
               <div class="story-num">Story 1</div>
               <div class="story-caption"><span class="tc-pill">To confirm</span></div>
             </div>
           </div>
           <div class="story-card">
-            <div class="story-image image-slot">
-              <img src="ig-story-2.jpg" alt="" onerror="this.remove();">
+            <a class="story-image story-video-link" href="ig-story-2.mov" target="_blank" rel="noopener" title="Tap to play">
+              <video src="ig-story-2.mov" muted playsinline preload="metadata" onerror="this.parentElement.classList.add('no-video');"></video>
+              <div class="story-play-overlay">▶</div>
               <div class="placeholder-text">
-                <strong>+ ig-story-2.jpg</strong>
+                <strong>+ ig-story-2.mov</strong>
                 <code>1080 × 1920</code>
               </div>
-            </div>
+            </a>
             <div class="story-meta">
               <div class="story-num">Story 2</div>
               <div class="story-caption"><span class="tc-pill">To confirm</span></div>
             </div>
           </div>
           <div class="story-card">
-            <div class="story-image image-slot">
-              <img src="ig-story-3.jpg" alt="" onerror="this.remove();">
+            <a class="story-image story-video-link" href="ig-story-3.mov" target="_blank" rel="noopener" title="Tap to play">
+              <video src="ig-story-3.mov" muted playsinline preload="metadata" onerror="this.parentElement.classList.add('no-video');"></video>
+              <div class="story-play-overlay">▶</div>
               <div class="placeholder-text">
-                <strong>+ ig-story-3.jpg</strong>
+                <strong>+ ig-story-3.mov</strong>
                 <code>1080 × 1920</code>
               </div>
-            </div>
+            </a>
             <div class="story-meta">
               <div class="story-num">Story 3</div>
               <div class="story-caption"><span class="tc-pill">To confirm</span></div>
             </div>
           </div>
           <div class="story-card">
-            <div class="story-image image-slot">
-              <img src="ig-story-4.jpg" alt="" onerror="this.remove();">
+            <a class="story-image story-video-link" href="ig-story-4.mov" target="_blank" rel="noopener" title="Tap to play">
+              <video src="ig-story-4.mov" muted playsinline preload="metadata" onerror="this.parentElement.classList.add('no-video');"></video>
+              <div class="story-play-overlay">▶</div>
               <div class="placeholder-text">
-                <strong>+ ig-story-4.jpg</strong>
+                <strong>+ ig-story-4.mov</strong>
                 <code>1080 × 1920</code>
               </div>
-            </div>
+            </a>
             <div class="story-meta">
               <div class="story-num">Story 4</div>
               <div class="story-caption"><span class="tc-pill">To confirm</span></div>
             </div>
           </div>
           <div class="story-card">
-            <div class="story-image image-slot">
-              <img src="ig-story-5.jpg" alt="" onerror="this.remove();">
+            <a class="story-image story-video-link" href="ig-story-5.mov" target="_blank" rel="noopener" title="Tap to play">
+              <video src="ig-story-5.mov" muted playsinline preload="metadata" onerror="this.parentElement.classList.add('no-video');"></video>
+              <div class="story-play-overlay">▶</div>
               <div class="placeholder-text">
-                <strong>+ ig-story-5.jpg</strong>
+                <strong>+ ig-story-5.mov</strong>
                 <code>1080 × 1920</code>
               </div>
-            </div>
+            </a>
             <div class="story-meta">
               <div class="story-num">Story 5</div>
               <div class="story-caption"><span class="tc-pill">To confirm</span></div>
@@ -359,32 +368,30 @@
             </div>
             <span class="card-tag is-website">Website</span>
           </div>
-          <div class="card-body">
-            <div class="meta-grid" style="margin: 0 -24px;">
-              <div class="meta-cell">
-                <div class="meta-label">What's changing</div>
-                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
-              </div>
-              <div class="meta-cell">
-                <div class="meta-label">Why</div>
-                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
-              </div>
-              <div class="meta-cell">
-                <div class="meta-label">Live date</div>
-                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
-              </div>
-              <div class="meta-cell">
-                <div class="meta-label">URL</div>
-                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
-              </div>
+          <div class="meta-grid">
+            <div class="meta-cell">
+              <div class="meta-label">What's changing</div>
+              <div class="meta-value"><span class="tc-pill">To confirm</span></div>
             </div>
-            <div class="image-slot">
-              <img src="website-mockup.png" alt="" onerror="this.remove();">
-              <div class="placeholder-text">
-                <strong>+ website-mockup.png</strong>
-                Add a screenshot or mockup to this folder to show the change visually
-              </div>
+            <div class="meta-cell">
+              <div class="meta-label">Why</div>
+              <div class="meta-value"><span class="tc-pill">To confirm</span></div>
             </div>
+            <div class="meta-cell">
+              <div class="meta-label">Live date</div>
+              <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+            </div>
+            <div class="meta-cell">
+              <div class="meta-label">URL</div>
+              <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+            </div>
+          </div>
+          <div class="preview-wrap">
+            <div class="preview-toolbar">
+              <span class="preview-toolbar-label">Website preview</span>
+              <a class="preview-toolbar-link" href="website.html" target="_blank" rel="noopener">Open in new tab</a>
+            </div>
+            <iframe class="preview-frame" src="website.html" title="Website update preview"></iframe>
           </div>
           <div class="approval-row">
             <div class="approval-label">Website update sign-off</div>

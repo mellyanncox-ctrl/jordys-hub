@@ -613,7 +613,7 @@
           <div class="field">
             <label class="label">Campaign HTML <span class="label-helper">(paste from Klaviyo or TalkBox)</span></label>
             <textarea id="email-html" class="code" placeholder="<style>...</style>&#10;<div>...campaign body...</div>"></textarea>
-            <div class="helper-text">Paste only the inner content (style block + body content), not the outer HTML shell — same as your Klaviyo workflow.</div>
+            <div class="helper-text">Paste only the inner content (style block + body content), not the outer HTML shell. Same as your Klaviyo workflow.</div>
           </div>
         </div>
       </section>
@@ -732,12 +732,9 @@
             <input type="text" id="web-url" placeholder="https://jordyscasuarina.com.au/functions">
           </div>
           <div class="field">
-            <label class="label">Mockup screenshot <span class="label-helper">(optional)</span></label>
-            <input type="file" id="web-image" accept="image/*">
-            <div class="image-preview" id="web-preview">
-              <img src="" alt="">
-              <div class="filename"></div>
-            </div>
+            <label class="label">Squarespace HTML / Liquid <span class="label-helper">(paste the block)</span></label>
+            <textarea id="web-html" class="code" placeholder="<style>...</style>&#10;<div>...website block...</div>"></textarea>
+            <div class="helper-text">Paste the HTML/Liquid block from Squarespace to render it in the preview iframe.</div>
           </div>
         </div>
       </section>
@@ -763,7 +760,7 @@ const SCALAR_FIELDS = [
   'week-date', 'overview-focus', 'overview-offer', 'overview-message', 'overview-cta',
   'email-date', 'email-time', 'email-segments', 'email-subject', 'email-preview', 'email-html',
   'post1-date', 'post1-caption', 'post2-date', 'post2-caption',
-  'web-title', 'web-page', 'web-date', 'web-what', 'web-why', 'web-url',
+  'web-title', 'web-page', 'web-date', 'web-what', 'web-why', 'web-url', 'web-html',
 ];
 
 // Story fields are injected dynamically
@@ -773,7 +770,6 @@ for (let i = 1; i <= 5; i++) SCALAR_FIELDS.push(`story${i}-caption`);
 const fileSlots = {
   'post1-image': null,
   'post2-image': null,
-  'web-image': null,
   'story1-image': null, 'story2-image': null, 'story3-image': null, 'story4-image': null, 'story5-image': null,
 };
 
@@ -907,7 +903,7 @@ function saveDraft(silent = false) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     if (!silent) toast('Draft saved', 'Stored locally in your browser. Won\'t sync across devices.', 'success');
   } catch (err) {
-    toast('Save failed', err.message + ' — try fewer/smaller images.', 'error');
+    toast('Save failed', err.message + '. Try fewer or smaller images.', 'error');
   }
 }
 
@@ -1152,7 +1148,11 @@ function generateIndexHtml() {
             </div>
           </div>
           <div class="preview-wrap">
-            <iframe class="preview-frame" src="campaign.html" title="Email campaign preview" onload="this.style.height = (this.contentWindow.document.body.scrollHeight + 40) + 'px';"></iframe>
+            <div class="preview-toolbar">
+              <span class="preview-toolbar-label">Email preview</span>
+              <a class="preview-toolbar-link" href="campaign.html" target="_blank" rel="noopener">Open in new tab</a>
+            </div>
+            <iframe class="preview-frame" src="campaign.html" title="Email campaign preview"></iframe>
           </div>
           <div class="approval-row">
             <div class="approval-label">Campaign sign-off</div>
@@ -1235,8 +1235,6 @@ ${storiesGridHtml}
   // Section 05: Website
   const webDateISO = v('web-date');
   const webDateLong = webDateISO ? formatLongDate(webDateISO) : '';
-  const webFile = fileSlots['web-image'];
-  const webFilename = webFile ? `website-mockup.${getExt(webFile.filename)}` : 'website-mockup.png';
   const webTitle = v('web-title');
   const webCardTitle = webTitle ? escapeHtml(webTitle) : '<span class="tc-pill">To confirm</span>';
 
@@ -1253,28 +1251,30 @@ ${storiesGridHtml}
             </div>
             <span class="card-tag is-website">Website</span>
           </div>
-          <div class="card-body">
-            <div class="meta-grid" style="margin: 0 -24px;">
-              <div class="meta-cell">
-                <div class="meta-label">What's changing</div>
-                <div class="meta-value">${tcOr(v('web-what'))}</div>
-              </div>
-              <div class="meta-cell">
-                <div class="meta-label">Why</div>
-                <div class="meta-value">${tcOr(v('web-why'))}</div>
-              </div>
-              <div class="meta-cell">
-                <div class="meta-label">Live date</div>
-                <div class="meta-value">${tcOr(webDateLong)}</div>
-              </div>
-              <div class="meta-cell">
-                <div class="meta-label">URL</div>
-                <div class="meta-value">${tcOr(v('web-url'))}</div>
-              </div>
+          <div class="meta-grid">
+            <div class="meta-cell">
+              <div class="meta-label">What's changing</div>
+              <div class="meta-value">${tcOr(v('web-what'))}</div>
             </div>
-            <div class="image-slot">
-              ${imgOrPlaceholder(webFilename, '', 'Add a screenshot or mockup to this folder to show the change visually')}
+            <div class="meta-cell">
+              <div class="meta-label">Why</div>
+              <div class="meta-value">${tcOr(v('web-why'))}</div>
             </div>
+            <div class="meta-cell">
+              <div class="meta-label">Live date</div>
+              <div class="meta-value">${tcOr(webDateLong)}</div>
+            </div>
+            <div class="meta-cell">
+              <div class="meta-label">URL</div>
+              <div class="meta-value">${tcOr(v('web-url'))}</div>
+            </div>
+          </div>
+          <div class="preview-wrap">
+            <div class="preview-toolbar">
+              <span class="preview-toolbar-label">Website preview</span>
+              <a class="preview-toolbar-link" href="website.html" target="_blank" rel="noopener">Open in new tab</a>
+            </div>
+            <iframe class="preview-frame" src="website.html" title="Website update preview"></iframe>
           </div>
           <div class="approval-row">
             <div class="approval-label">Website update sign-off</div>
@@ -1380,6 +1380,41 @@ ${inner}
 </html>`;
 }
 
+function generateWebsiteHtml() {
+  const inner = document.getElementById('web-html').value;
+  if (!inner.trim()) {
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Website update placeholder</title>
+<style>
+  body { font-family: 'Lato', -apple-system, sans-serif; background: #faf8f6; color: #888; margin: 0; padding: 40px 24px; text-align: center; }
+  .ph-mark { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #b5821a; margin-bottom: 12px; }
+  .ph-title { font-size: 18px; font-weight: 900; color: #1a1a1a; margin-bottom: 8px; }
+  .ph-sub { font-size: 13px; line-height: 1.6; max-width: 460px; margin: 0 auto; }
+  code { background: #fff; padding: 2px 8px; border: 1px solid #e8e0db; border-radius: 3px; font-size: 12px; color: #444; }
+</style>
+</head>
+<body>
+  <div class="ph-mark">Awaiting website update</div>
+  <div class="ph-title">Website preview</div>
+  <div class="ph-sub">Replace <code>website.html</code> with the Squarespace HTML/Liquid block.</div>
+</body>
+</html>`;
+  }
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Website preview</title>
+</head>
+<body>
+${inner}
+</body>
+</html>`;
+}
+
 function getExt(filename) {
   const m = filename.match(/\.([^.]+)$/);
   return m ? m[1].toLowerCase() : 'jpg';
@@ -1408,8 +1443,6 @@ function previewWeek() {
     } else if (slotId.startsWith('story')) {
       const num = slotId.match(/story(\d+)/)[1];
       filename = `ig-story-${num}.${getExt(slot.filename)}`;
-    } else if (slotId === 'web-image') {
-      filename = `website-mockup.${getExt(slot.filename)}`;
     }
     if (filename) {
       // Replace src="filename" and href="filename" with the dataURL
@@ -1421,13 +1454,31 @@ function previewWeek() {
     }
   });
 
-  // For the campaign iframe — inline the campaign content instead of a separate file
+  // For the campaign iframe, inline the campaign content instead of a separate file
   const campaignInner = document.getElementById('email-html').value;
   if (campaignInner.trim()) {
     const campaignDataURL = 'data:text/html;charset=utf-8,' + encodeURIComponent(generateCampaignHtml());
     processedHtml = processedHtml.replace(
       'src="campaign.html"',
       `src="${campaignDataURL}"`
+    );
+    processedHtml = processedHtml.replace(
+      'href="campaign.html"',
+      `href="${campaignDataURL}"`
+    );
+  }
+
+  // Same for the website iframe
+  const websiteInner = document.getElementById('web-html').value;
+  if (websiteInner.trim()) {
+    const websiteDataURL = 'data:text/html;charset=utf-8,' + encodeURIComponent(generateWebsiteHtml());
+    processedHtml = processedHtml.replace(
+      'src="website.html"',
+      `src="${websiteDataURL}"`
+    );
+    processedHtml = processedHtml.replace(
+      'href="website.html"',
+      `href="${websiteDataURL}"`
     );
   }
 
@@ -1450,11 +1501,13 @@ async function generateZip() {
   const zip = new JSZip();
   const indexHtml = generateIndexHtml();
   const campaignHtml = generateCampaignHtml();
+  const websiteHtmlFile = generateWebsiteHtml();
 
   zip.file('index.html', indexHtml);
   zip.file('campaign.html', campaignHtml);
+  zip.file('website.html', websiteHtmlFile);
 
-  // Image files
+  // Image and video files
   for (const slotId of Object.keys(fileSlots)) {
     const slot = fileSlots[slotId];
     if (!slot) continue;
@@ -1466,8 +1519,6 @@ async function generateZip() {
     } else if (slotId.startsWith('story')) {
       const num = slotId.match(/story(\d+)/)[1];
       filename = `ig-story-${num}.${ext}`;
-    } else if (slotId === 'web-image') {
-      filename = `website-mockup.${ext}`;
     }
     if (filename) {
       zip.file(filename, slot.file);
@@ -1493,11 +1544,11 @@ The live site updates within ~30 seconds.
 Files in this zip:
 - index.html         (the rendered week page)
 - campaign.html      (TalkBox campaign HTML, or a placeholder)
+- website.html       (Squarespace HTML/Liquid block, or a placeholder)
 ${Object.keys(fileSlots).filter(k => fileSlots[k]).map(k => {
   const ext = getExt(fileSlots[k].filename);
   if (k.startsWith('post')) return `- ig-post-${k.match(/post(\\d+)/)[1]}.${ext}  (Instagram post image)`;
   if (k.startsWith('story')) return `- ig-story-${k.match(/story(\\d+)/)[1]}.${ext}  (Instagram story video)`;
-  if (k === 'web-image') return `- website-mockup.${ext}  (website screenshot)`;
   return '';
 }).filter(Boolean).join('\n')}
 `;
@@ -1513,7 +1564,7 @@ ${Object.keys(fileSlots).filter(k => fileSlots[k]).map(k => {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    toast('Zip generated', `Downloaded as week-${folderName}.zip — extract into weeks/${folderName}/`, 'success');
+    toast('Zip generated', `Downloaded as week-${folderName}.zip. Extract into weeks/${folderName}/`, 'success');
   } catch (err) {
     toast('Zip failed', err.message, 'error');
   }
