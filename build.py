@@ -267,6 +267,139 @@ REPORTS = [
 ]
 
 
+# Recurring flows | seasonal/calendar-triggered automations.
+# Order within each theme is determined by 'send_order' (chronological within theme).
+# 'theme' groups them on the page: Christmas, EOFY, Other.
+# 'send_label' is the human-readable trigger description.
+# 'recipients' shows the audience filter from TalkBox.
+# 'status' uses the same system as FLOWS: queued, building, review, live, paused.
+RECURRING = [
+    # ===== CHRISTMAS =====
+    {
+        "slug": "christmas-booking-early",
+        "name": "Christmas | Booking Early",
+        "theme": "Christmas",
+        "send_label": "Every year on October 15th at 11:45 AM",
+        "send_order": 1,
+        "recipients": "Contacts in the filter \"No Booking in 30 Days\"",
+        "where": "TalkBox > Recurring",
+        "status": "queued",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "christmas-booking-main-push",
+        "name": "Christmas | Booking Main Push",
+        "theme": "Christmas",
+        "send_label": "Every year on November 1st at 11:50 AM",
+        "send_order": 2,
+        "recipients": "Contacts in the filter \"No Booking in 30 Days\"",
+        "where": "TalkBox > Recurring",
+        "status": "queued",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "christmas-gift-card-early",
+        "name": "Christmas | Gift Card Early",
+        "theme": "Christmas",
+        "send_label": "Every year on December 1st at 11:25 AM",
+        "send_order": 3,
+        "recipients": "All contacts",
+        "where": "TalkBox > Recurring",
+        "status": "queued",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "christmas-gift-card-late",
+        "name": "Christmas | Gift Card Late",
+        "theme": "Christmas",
+        "send_label": "Every year on December 15th at 11:30 AM",
+        "send_order": 4,
+        "recipients": "All contacts",
+        "where": "TalkBox > Recurring",
+        "status": "queued",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    # ===== EOFY =====
+    {
+        "slug": "eofy-plan-ahead",
+        "name": "EOFY | Plan Ahead",
+        "theme": "EOFY",
+        "send_label": "Every year on May 15th at 11:35 AM",
+        "send_order": 1,
+        "recipients": "Contacts in the filter \"No Booking in 30 Days\"",
+        "where": "TalkBox > Recurring",
+        "status": "queued",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "eofy-urgency",
+        "name": "EOFY | Urgency",
+        "theme": "EOFY",
+        "send_label": "Every year on June 1st at 11:40 AM",
+        "send_order": 2,
+        "recipients": "Contacts in the filter \"No Booking in 30 Days\"",
+        "where": "TalkBox > Recurring",
+        "status": "queued",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "eofy",
+        "name": "EOFY",
+        "theme": "EOFY",
+        "send_label": "Every year on June 10th at 11:20 AM",
+        "send_order": 3,
+        "recipients": "Contacts in the filter \"No Booking in 30 Days\"",
+        "where": "TalkBox > Recurring",
+        "status": "queued",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    # ===== OTHER =====
+    {
+        "slug": "fathers-day",
+        "name": "Father's Day",
+        "theme": "Other",
+        "send_label": "Every year on August 20th at 11:15 AM",
+        "send_order": 1,
+        "recipients": "Contacts in the filter \"No Booking in 30 Days\"",
+        "where": "TalkBox > Recurring",
+        "status": "queued",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "functions",
+        "name": "Functions",
+        "theme": "Other",
+        "send_label": "Every 3rd month on the 1st at 11:05 AM",
+        "send_order": 2,
+        "recipients": "All contacts",
+        "where": "TalkBox > Recurring",
+        "status": "queued",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "gift-card",
+        "name": "Gift Card",
+        "theme": "Other",
+        "send_label": "Every 3rd month on the 21st at 12:15 PM",
+        "send_order": 3,
+        "recipients": "All contacts",
+        "where": "TalkBox > Recurring",
+        "status": "queued",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+]
+
+
 def flows_section_homepage() -> str:
     cards = ""
     for flow in FLOWS:
@@ -305,37 +438,46 @@ def flows_section_homepage() -> str:
 {cards}      </section>'''
 
 
-def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page: bool = False, is_reports_page: bool = False) -> str:
+def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page: bool = False, is_reports_page: bool = False, is_recurring_page: bool = False) -> str:
     """Build sidebar nav. active_iso is None for homepage, or week iso for week pages.
     show_admin renders an admin shortcut at the bottom (homepage only).
     is_flows_page highlights the Flows link instead of Home.
-    is_reports_page highlights the Reports link."""
-    on_home = active_iso is None and not is_flows_page and not is_reports_page
+    is_reports_page highlights the Reports link.
+    is_recurring_page highlights the Recurring link."""
+    on_home = active_iso is None and not is_flows_page and not is_reports_page and not is_recurring_page
     home_class = "is-current" if on_home else ""
     flows_class = "is-current" if is_flows_page else ""
     reports_class = "is-current" if is_reports_page else ""
+    recurring_class = "is-current" if is_recurring_page else ""
 
-    # Path depth: homepage = 0, /flows/ or /reports/ = 1, /weeks/YYYY-MM-DD/ = 2
+    # Path depth: homepage = 0, /flows/ /reports/ /recurring/ = 1, /weeks/YYYY-MM-DD/ = 2
     if active_iso:
         # week page, 2 levels deep
         home_href = "../../index.html"
         flows_href = "../../flows/"
         reports_href = "../../reports/"
+        recurring_href = "../../recurring/"
     elif is_flows_page:
-        # flows page, 1 level deep
         home_href = "../index.html"
         flows_href = "index.html"
         reports_href = "../reports/"
+        recurring_href = "../recurring/"
     elif is_reports_page:
-        # reports page, 1 level deep
         home_href = "../index.html"
         flows_href = "../flows/"
         reports_href = "index.html"
+        recurring_href = "../recurring/"
+    elif is_recurring_page:
+        home_href = "../index.html"
+        flows_href = "../flows/"
+        reports_href = "../reports/"
+        recurring_href = "index.html"
     else:
         # homepage
         home_href = "index.html"
         flows_href = "flows/"
         reports_href = "reports/"
+        recurring_href = "recurring/"
 
     # Build nav items grouped by past / current / upcoming relative to today's "current week"
     items = []
@@ -434,6 +576,12 @@ def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page
         <a href="{flows_href}">
           <span class="nav-date">Flows</span>
           <span class="nav-meta">TalkBox</span>
+        </a>
+      </li>
+      <li class="nav-item {recurring_class}">
+        <a href="{recurring_href}">
+          <span class="nav-date">Recurring</span>
+          <span class="nav-meta">Always-on</span>
         </a>
       </li>
     </ul>
@@ -1229,6 +1377,127 @@ def reports_page() -> str:
 </html>'''
 
 
+def recurring_page() -> str:
+    """Dedicated /recurring/ page with seasonal flows grouped by theme."""
+    sidebar = sidebar_html(active_iso=None, show_admin=False, is_recurring_page=True)
+
+    THEMES = ["Christmas", "EOFY", "Other"]
+
+    sections = ""
+    for theme in THEMES:
+        theme_flows = sorted(
+            [f for f in RECURRING if f["theme"] == theme],
+            key=lambda f: f["send_order"]
+        )
+        if not theme_flows:
+            continue
+
+        sections += f'''      <div class="flow-week-group">
+        <div class="flow-week-head">
+          <span class="flow-week-num">{theme}</span>
+          <span class="flow-week-count">{len(theme_flows)} flow{"s" if len(theme_flows) != 1 else ""}</span>
+        </div>
+'''
+        for flow in theme_flows:
+            form_id = f"recurring-{flow['slug']}"
+            sections += f'''        <section class="section flow-section">
+          <div class="section-header">
+            <h2 class="section-title">{flow["name"]}</h2>
+            <div class="section-header-meta">
+              {status_badge(flow["status"])}
+              <span class="section-meta">{flow["where"]}</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-main">
+                <div class="card-title">{tc_or(flow.get("subject"))}</div>
+                <div class="card-sub">{flow["send_label"]}</div>
+              </div>
+              <span class="card-tag is-flow">Recurring</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value">{tc_or(flow.get("subject"))}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value">{tc_or(flow.get("preview"))}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">{flow["send_label"]}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Recipients</div>
+                <div class="meta-value">{flow["recipients"]}</div>
+              </div>
+            </div>
+            <div class="preview-wrap">
+              <div class="preview-toolbar">
+                <span class="preview-toolbar-label">Flow preview</span>
+                <a class="preview-toolbar-link" href="{flow["slug"]}.html" target="_blank" rel="noopener">Open in new tab</a>
+              </div>
+              <iframe class="preview-frame" src="{flow["slug"]}.html" title="{flow["name"]} preview"></iframe>
+            </div>
+            {approval_form(form_id, f"Recurring flow | {flow['name']}", f"{flow['name']} sign-off")}
+          </div>
+        </section>
+'''
+        sections += '''      </div>
+'''
+
+    return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recurring Flows | Jordy's Casuarina Marketing Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+<div class="layout">
+
+{sidebar}
+
+  <main class="main">
+
+    <header class="page-header">
+      <div class="header-label">Always-on</div>
+      <h1 class="header-title">Recurring Flows</h1>
+      <div class="header-sub">Seasonal and calendar-triggered automations</div>
+      <div class="header-meta">
+        <div class="header-meta-item">
+          <div class="meta-label">Prepared by</div>
+          <div class="meta-value">The Service Edit</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="meta-label">In progress</div>
+          <div class="meta-value">{len(RECURRING)} flows</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="meta-label">Approval contact</div>
+          <div class="meta-value">{APPROVAL_EMAIL}</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+{sections}
+
+    </div>
+  </main>
+</div>
+
+<script src="../assets/approval.js"></script>
+</body>
+</html>'''
+
+
 def template_page() -> str:
     """Template at _template/index.html | same shape as a week page but with explicit TEMPLATE wording."""
     sidebar_template = '''  <aside class="sidebar">
@@ -1351,7 +1620,18 @@ def main():
     (reports_dir / "index.html").write_text(reports_page())
     print("✓ reports/")
 
-    print(f"\nBuilt {len(WEEKS)} week folders + flows + reports")
+    # Recurring | /recurring/index.html is always rewritten.
+    # The flow files are placeholders only if missing.
+    recurring_dir = ROOT / "recurring"
+    recurring_dir.mkdir(exist_ok=True)
+    (recurring_dir / "index.html").write_text(recurring_page())
+    for flow in RECURRING:
+        f = recurring_dir / f"{flow['slug']}.html"
+        if not f.exists():
+            f.write_text(flow_placeholder())
+    print("✓ recurring/")
+
+    print(f"\nBuilt {len(WEEKS)} week folders + flows + reports + recurring")
 
 
 if __name__ == "__main__":
