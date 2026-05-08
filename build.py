@@ -1009,7 +1009,7 @@ def flows_page() -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TalkBox Flows | Jordy's Casuarina Marketing Plan</title>
+<title>Date Triggered Flows | Jordy's Casuarina Marketing Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../assets/site.css">
 </head>
@@ -1023,7 +1023,7 @@ def flows_page() -> str:
 
     <header class="page-header">
       <div class="header-label">Always-on</div>
-      <h1 class="header-title">TalkBox Flows</h1>
+      <h1 class="header-title">Date Triggered Flows</h1>
       <div class="header-sub">10-flow rollout, two flows built per week</div>
       <div class="header-meta">
         <div class="header-meta-item">
