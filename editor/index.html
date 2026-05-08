@@ -571,24 +571,9 @@
     transition: background 0.15s;
   }
   .gate-btn:hover { background: var(--terracotta-light); }
-  body.is-locked { overflow: hidden; }
-  body:not(.is-unlocked) .editor-shell,
-  body:not(.is-unlocked) .toast { display: none; }
 </style>
 </head>
-<body class="is-locked">
-
-<!-- GATE -->
-<div class="gate" id="gate">
-  <div class="gate-card">
-    <div class="gate-label">Editor access</div>
-    <h1 class="gate-title">Jordy's Casuarina</h1>
-    <div class="gate-sub">Enter passcode to continue.</div>
-    <input type="password" id="gate-input" class="gate-input" placeholder="passcode" autocomplete="off" autofocus>
-    <div class="gate-error" id="gate-error">&nbsp;</div>
-    <button class="gate-btn" id="gate-btn" type="button">Unlock</button>
-  </div>
-</div>
+<body>
 
 <div class="editor-shell">
 
@@ -751,56 +736,6 @@
 </div>
 
 <script>
-// =========================================================================
-// PASSCODE GATE
-// =========================================================================
-// SHA-256 of "!Jordys480!"
-const GATE_HASH = '5faa7a8dfcc8bb8dae98d93f24355c4b7493995a5216ee4503e12223b6e54a85';
-const GATE_SESSION_KEY = 'jordys-admin-unlocked';
-
-async function gateSha256(text) {
-  const buf = new TextEncoder().encode(text);
-  const hash = await crypto.subtle.digest('SHA-256', buf);
-  return Array.from(new Uint8Array(hash))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-function gateUnlock() {
-  document.body.classList.remove('is-locked');
-  document.body.classList.add('is-unlocked');
-  const g = document.getElementById('gate');
-  if (g) g.style.display = 'none';
-  sessionStorage.setItem(GATE_SESSION_KEY, '1');
-}
-
-async function gateCheck() {
-  const input = document.getElementById('gate-input');
-  const error = document.getElementById('gate-error');
-  const value = input.value;
-  if (!value) {
-    error.textContent = 'Enter a passcode.';
-    return;
-  }
-  const hash = await gateSha256(value);
-  if (hash === GATE_HASH) {
-    error.textContent = '';
-    gateUnlock();
-  } else {
-    error.textContent = 'Wrong passcode.';
-    input.select();
-  }
-}
-
-if (sessionStorage.getItem(GATE_SESSION_KEY) === '1') {
-  gateUnlock();
-}
-
-document.getElementById('gate-btn').addEventListener('click', gateCheck);
-document.getElementById('gate-input').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') gateCheck();
-});
-
 // =========================================================================
 // STATE & STORAGE
 // =========================================================================
@@ -1417,8 +1352,8 @@ ${websiteHtml}
   </main>
 </div>
 
-<script src="../../assets/approval.js"></script>
-<script src="../../assets/nav.js"></script>
+<script src="../../assets/approval.js"><\/script>
+<script src="../../assets/nav.js"><\/script>
 </body>
 </html>`;
 }
