@@ -2019,13 +2019,16 @@ def main():
     (template_dir / "website.html").write_text(website_placeholder())
     print("✓ _template/")
 
-    # Week folders. We always rewrite index.html (sidebar reflects current week list),
-    # but only write campaign.html / website.html if they don't already exist | so we
-    # don't clobber filled-in content.
+    # Week folders.
+    # We only write index.html if it doesn't already exist | so editor uploads
+    # (with filled-in subject/preview/send time/etc) survive future rebuilds.
+    # If you ever want to regenerate a week page from scratch, delete its index.html first.
+    # campaign.html and website.html follow the same rule.
     for w in WEEKS:
         wdir = ROOT / "weeks" / w["iso"]
         wdir.mkdir(parents=True, exist_ok=True)
-        (wdir / "index.html").write_text(week_page(w))
+        if not (wdir / "index.html").exists():
+            (wdir / "index.html").write_text(week_page(w))
         if not (wdir / "campaign.html").exists():
             (wdir / "campaign.html").write_text(campaign_placeholder())
         if not (wdir / "website.html").exists():
