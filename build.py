@@ -195,12 +195,12 @@ FLOWS = [
     {
         "slug": "birthday",
         "name": "Birthday Flow",
-        "where": "TalkBox > Automations",
+        "where": "TalkBox > Automations > Birthday Flow",
         "week": 5,
-        "status": "queued",
-        "timing": "Sends 7 days before customer birthday",
-        "subject": "To confirm",
-        "preview": "To confirm",
+        "status": "review",
+        "timing": "Sends 10 days before customer birthday",
+        "subject": "Another year hotter",
+        "preview": "Might as well celebrate properly",
     },
 ]
 
