@@ -205,6 +205,68 @@ FLOWS = [
 ]
 
 
+# Performance reports | edit this list as new reports are added.
+# 'date' is the human-readable label shown on the card.
+# 'sort_date' is YYYY-MM-DD used for ordering (newest first).
+# 'kind' is "monthly" or "weekly".
+REPORTS = [
+    {
+        "slug": "march-april-2026",
+        "title": "March–April 2026",
+        "subtitle": "Monthly campaign report",
+        "date": "March – April 2026",
+        "sort_date": "2026-04-30",
+        "kind": "monthly",
+        "summary": "Two-month performance snapshot covering all campaigns, dine-in attribution, online ordering, and reactivation outcomes.",
+    },
+    {
+        "slug": "email-6",
+        "title": "Email 6",
+        "subtitle": "Campaign report",
+        "date": "Most recent",
+        "sort_date": "2026-04-28",
+        "kind": "weekly",
+        "summary": "Per-campaign attribution: Klaviyo opens and clicks, dine-in matches, me&u orders, and reactivation effects.",
+    },
+    {
+        "slug": "week-4",
+        "title": "Campaign 4",
+        "subtitle": "Weekly campaign report",
+        "date": "Week 4",
+        "sort_date": "2026-04-21",
+        "kind": "weekly",
+        "summary": "Per-campaign attribution: Klaviyo opens and clicks, dine-in matches, me&u orders, and reactivation effects.",
+    },
+    {
+        "slug": "week-3",
+        "title": "Campaign 3",
+        "subtitle": "Weekly campaign report",
+        "date": "Week 3",
+        "sort_date": "2026-04-14",
+        "kind": "weekly",
+        "summary": "Per-campaign attribution: Klaviyo opens and clicks, dine-in matches, me&u orders, and reactivation effects.",
+    },
+    {
+        "slug": "week-2-easter",
+        "title": "Easter campaign",
+        "subtitle": "Weekly campaign report",
+        "date": "Week 2 | Easter",
+        "sort_date": "2026-04-07",
+        "kind": "weekly",
+        "summary": "Easter campaign performance: opens, clicks, bookings, and dine-in attribution.",
+    },
+    {
+        "slug": "week-1-email-1",
+        "title": "Email 1",
+        "subtitle": "Weekly campaign report",
+        "date": "Week 1",
+        "sort_date": "2026-03-31",
+        "kind": "weekly",
+        "summary": "First campaign attribution baseline: Klaviyo opens and clicks, dine-in matches, online order recovery.",
+    },
+]
+
+
 def flows_section_homepage() -> str:
     cards = ""
     for flow in FLOWS:
@@ -243,27 +305,37 @@ def flows_section_homepage() -> str:
 {cards}      </section>'''
 
 
-def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page: bool = False) -> str:
+def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page: bool = False, is_reports_page: bool = False) -> str:
     """Build sidebar nav. active_iso is None for homepage, or week iso for week pages.
     show_admin renders an admin shortcut at the bottom (homepage only).
-    is_flows_page highlights the Flows link instead of Home."""
-    on_home = active_iso is None and not is_flows_page
+    is_flows_page highlights the Flows link instead of Home.
+    is_reports_page highlights the Reports link."""
+    on_home = active_iso is None and not is_flows_page and not is_reports_page
     home_class = "is-current" if on_home else ""
     flows_class = "is-current" if is_flows_page else ""
+    reports_class = "is-current" if is_reports_page else ""
 
-    # Path depth: homepage = 0, /flows/ = 1, /weeks/YYYY-MM-DD/ = 2
+    # Path depth: homepage = 0, /flows/ or /reports/ = 1, /weeks/YYYY-MM-DD/ = 2
     if active_iso:
         # week page, 2 levels deep
         home_href = "../../index.html"
         flows_href = "../../flows/"
+        reports_href = "../../reports/"
     elif is_flows_page:
         # flows page, 1 level deep
         home_href = "../index.html"
         flows_href = "index.html"
+        reports_href = "../reports/"
+    elif is_reports_page:
+        # reports page, 1 level deep
+        home_href = "../index.html"
+        flows_href = "../flows/"
+        reports_href = "index.html"
     else:
         # homepage
         home_href = "index.html"
         flows_href = "flows/"
+        reports_href = "reports/"
 
     # Build nav items grouped by past / current / upcoming relative to today's "current week"
     items = []
@@ -350,6 +422,12 @@ def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page
         <a href="{home_href}">
           <span class="nav-date">Home</span>
           <span class="nav-meta">All weeks</span>
+        </a>
+      </li>
+      <li class="nav-item {reports_class}">
+        <a href="{reports_href}">
+          <span class="nav-date">Reports</span>
+          <span class="nav-meta">Performance</span>
         </a>
       </li>
       <li class="nav-item {flows_class}">
@@ -1053,6 +1131,104 @@ def flows_page() -> str:
 </html>'''
 
 
+def reports_page() -> str:
+    """Dedicated /reports/ page with cards linking to each report."""
+    sidebar = sidebar_html(active_iso=None, show_admin=False, is_reports_page=True)
+
+    # Sort by date descending
+    sorted_reports = sorted(REPORTS, key=lambda r: r["sort_date"], reverse=True)
+    monthly = [r for r in sorted_reports if r["kind"] == "monthly"]
+    weekly = [r for r in sorted_reports if r["kind"] == "weekly"]
+
+    def report_card(r: dict) -> str:
+        return f'''        <a class="report-card" href="{r["slug"]}.html" target="_blank" rel="noopener">
+          <div class="report-card-head">
+            <div class="report-card-meta">
+              <span class="report-card-date">{r["date"]}</span>
+              <span class="report-card-kind is-{r["kind"]}">{r["kind"].title()}</span>
+            </div>
+            <h3 class="report-card-title">{r["title"]}</h3>
+            <p class="report-card-sub">{r["subtitle"]}</p>
+          </div>
+          <p class="report-card-summary">{r["summary"]}</p>
+          <span class="report-card-cta">Open report →</span>
+        </a>'''
+
+    monthly_section = ""
+    if monthly:
+        monthly_section = f'''      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Monthly reports</h2>
+          <div class="section-meta">{len(monthly)} report{"s" if len(monthly) != 1 else ""}</div>
+        </div>
+        <div class="report-grid">
+{chr(10).join(report_card(r) for r in monthly)}
+        </div>
+      </section>
+'''
+
+    weekly_section = ""
+    if weekly:
+        weekly_section = f'''      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Weekly campaign reports</h2>
+          <div class="section-meta">{len(weekly)} report{"s" if len(weekly) != 1 else ""}</div>
+        </div>
+        <div class="report-grid">
+{chr(10).join(report_card(r) for r in weekly)}
+        </div>
+      </section>
+'''
+
+    return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports | Jordy's Casuarina Marketing Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+<div class="layout">
+
+{sidebar}
+
+  <main class="main">
+
+    <header class="page-header">
+      <div class="header-label">Performance</div>
+      <h1 class="header-title">Reports</h1>
+      <div class="header-sub">Campaign attribution and performance summaries</div>
+      <div class="header-meta">
+        <div class="header-meta-item">
+          <div class="meta-label">Prepared by</div>
+          <div class="meta-value">The Service Edit</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="meta-label">Available</div>
+          <div class="meta-value">{len(REPORTS)} reports</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="meta-label">Most recent</div>
+          <div class="meta-value">{sorted_reports[0]["date"] if sorted_reports else "None"}</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+{monthly_section}{weekly_section}
+
+    </div>
+  </main>
+</div>
+
+</body>
+</html>'''
+
+
 def template_page() -> str:
     """Template at _template/index.html | same shape as a week page but with explicit TEMPLATE wording."""
     sidebar_template = '''  <aside class="sidebar">
@@ -1168,7 +1344,14 @@ def main():
             f.write_text(flow_placeholder())
     print("✓ flows/")
 
-    print(f"\nBuilt {len(WEEKS)} week folders + flows area")
+    # Reports | /reports/index.html is always rewritten.
+    # Individual report files are uploaded manually (no placeholders).
+    reports_dir = ROOT / "reports"
+    reports_dir.mkdir(exist_ok=True)
+    (reports_dir / "index.html").write_text(reports_page())
+    print("✓ reports/")
+
+    print(f"\nBuilt {len(WEEKS)} week folders + flows + reports")
 
 
 if __name__ == "__main__":

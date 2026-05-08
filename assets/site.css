@@ -1358,3 +1358,111 @@ a:hover { text-decoration: underline; }
   font-size: 13px;
   font-style: italic;
 }
+
+/* ==========================================================================
+   REPORTS
+   ========================================================================== */
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .report-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.report-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.15s;
+  gap: 16px;
+}
+
+.report-card:hover {
+  border-color: var(--terracotta);
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(26,26,26,0.04);
+}
+
+.report-card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.report-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.report-card-date {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+.report-card-kind {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.report-card-kind.is-monthly {
+  background: var(--terracotta-pale);
+  color: var(--terracotta);
+}
+
+.report-card-kind.is-weekly {
+  background: var(--green-pale);
+  color: var(--green);
+}
+
+.report-card-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.report-card-sub {
+  font-size: 13px;
+  color: var(--mid);
+  margin: 0;
+}
+
+.report-card-summary {
+  font-size: 14px;
+  color: var(--dark);
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.report-card-cta {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-top: auto;
+}

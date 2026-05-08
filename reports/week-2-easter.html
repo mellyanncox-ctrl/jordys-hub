@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jordy's Casuarina | Easter Campaign Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terracotta: #c2724c;
+    --terracotta-light: #d4896a;
+    --terracotta-pale: #f5ede8;
+    --dark: #1a1a1a;
+    --mid: #444;
+    --light: #888;
+    --border: #e8e0db;
+    --bg: #faf8f6;
+    --white: #ffffff;
+    --green: #4a7c59;
+    --green-pale: #edf3ef;
+    --amber: #b5821a;
+    --amber-pale: #fdf6e7;
+    --red-pale: #fdf0ee;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .report-header {
+    background: var(--dark);
+    padding: 48px 56px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .report-header::before {
+    display: none;
+  }
+  .header-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 12px;
+  }
+  .header-title {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .header-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+  }
+  .header-meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .header-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .header-meta-item .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    font-weight: 700;
+  }
+  .header-meta-item .meta-value {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 400;
+  }
+  .tc-badge {
+    display: inline-block;
+    background: var(--terracotta);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    margin-bottom: 16px;
+  }
+
+  /* LAYOUT */
+  .report-body {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 48px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--terracotta);
+  }
+  .section-num {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    color: var(--terracotta);
+    text-transform: uppercase;
+  }
+  .section-title {
+    font-size: 19px;
+    font-weight: 900;
+    color: var(--dark);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* STAT GRID */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 20px 18px;
+  }
+  .stat-card.highlight {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+  }
+  .stat-card.highlight .stat-label,
+  .stat-card.highlight .stat-note { color: rgba(255,255,255,0.7); }
+  .stat-card.highlight .stat-value { color: white; }
+  .stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--light);
+    margin-bottom: 8px;
+  }
+  .stat-value {
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--dark);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-note {
+    font-size: 11px;
+    color: var(--light);
+    font-weight: 400;
+  }
+  .stat-note strong { color: var(--mid); }
+
+  /* DELIVERY BREAKDOWN */
+  .delivery-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .delivery-cell {
+    background: var(--white);
+    padding: 16px 20px;
+    text-align: center;
+  }
+  .delivery-cell .d-val {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--dark);
+  }
+  .delivery-cell .d-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--light);
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  /* BAR CHART */
+  .bar-chart-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .bar-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--mid);
+    width: 90px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .bar-track {
+    flex: 1;
+    height: 28px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    transition: width 0.6s ease;
+  }
+  .bar-fill.opens { background: var(--terracotta); }
+  .bar-fill.clicks { background: var(--terracotta-light); }
+  .bar-fill.unsubs { background: #d4b8b0; }
+  .bar-val {
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    white-space: nowrap;
+  }
+  .bar-pct {
+    font-size: 12px;
+    color: var(--light);
+    width: 48px;
+    flex-shrink: 0;
+  }
+
+  /* COVER TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .data-table th {
+    background: var(--dark);
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    text-align: left;
+  }
+  .data-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--dark);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--terracotta-pale); }
+  .data-table .total-row td {
+    background: var(--terracotta-pale);
+    font-weight: 700;
+    border-top: 2px solid var(--terracotta);
+  }
+  .data-table .num { text-align: right; font-weight: 700; }
+  .data-table .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-left: 6px;
+  }
+  .tag.match { background: var(--green-pale); color: var(--green); }
+  .tag.walkin { background: var(--border); color: var(--light); }
+  .tag.phone { background: var(--amber-pale); color: var(--amber); }
+  .tag.first { background: var(--terracotta-pale); color: var(--terracotta); }
+
+  /* ATTRIBUTION TABLE */
+  .attrib-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .attrib-table th {
+    background: var(--dark);
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    text-align: left;
+  }
+  .attrib-table td {
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .attrib-table tr:last-child td { border-bottom: none; }
+  .visits-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 22px;
+    border-radius: 11px;
+    font-size: 11px;
+    font-weight: 900;
+    background: var(--terracotta);
+    color: white;
+  }
+  .visits-pill.high { background: var(--dark); }
+
+  /* REVENUE CALLOUT */
+  .revenue-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .rev-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .rev-card.primary {
+    background: var(--dark);
+    border-color: var(--dark);
+  }
+  .rev-card.primary .rev-label { color: rgba(255,255,255,0.5); }
+  .rev-card.primary .rev-value { color: white; }
+  .rev-card.primary .rev-note { color: rgba(255,255,255,0.4); }
+  .rev-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--light);
+    margin-bottom: 8px;
+  }
+  .rev-value {
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--dark);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .rev-note {
+    font-size: 12px;
+    color: var(--light);
+  }
+
+  /* CAVEAT BOX */
+  .caveat {
+    background: var(--amber-pale);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--mid);
+    margin-top: 14px;
+  }
+  .caveat strong { color: var(--amber); }
+
+  .insight-box {
+    background: var(--green-pale);
+    border-left: 3px solid var(--green);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--mid);
+    margin-top: 14px;
+  }
+  .insight-box strong { color: var(--green); }
+
+  /* ROI BLOCK */
+  .roi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .roi-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+  .roi-card .roi-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--light);
+    margin-bottom: 8px;
+  }
+  .roi-card .roi-value {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--dark);
+  }
+  .roi-card .roi-note {
+    font-size: 11px;
+    color: var(--light);
+    margin-top: 4px;
+  }
+  .roi-card.placeholder .roi-value {
+    color: var(--border);
+    font-size: 22px;
+  }
+
+  /* REACTIVATION */
+  .reactivation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .person-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .person-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+  }
+  .person-avatar.super { background: var(--dark); }
+  .person-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 3px;
+  }
+  .person-meta {
+    font-size: 12px;
+    color: var(--light);
+    line-height: 1.5;
+  }
+  .person-meta strong { color: var(--mid); }
+  .person-visits {
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+  }
+
+  /* MEANDU TABLE */
+  .orders-row {
+    display: grid;
+    grid-template-columns: 120px 1fr 120px;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 11px 18px;
+    align-items: center;
+    background: var(--white);
+    font-size: 14px;
+  }
+  .orders-row:first-child {
+    border-radius: 8px 8px 0 0;
+    background: var(--dark);
+    color: rgba(255,255,255,0.6);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .orders-row:last-child {
+    border-bottom: none;
+    border-radius: 0 0 8px 8px;
+    background: var(--terracotta-pale);
+    font-weight: 700;
+    border-top: 2px solid var(--terracotta);
+  }
+  .orders-container {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .orders-amount { text-align: right; font-weight: 700; }
+
+  /* WINDOW NOTE */
+  .window-bar {
+    background: var(--terracotta);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  /* FOOTER */
+  .report-footer {
+    background: var(--dark);
+    padding: 28px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-left {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+  }
+  .footer-right {
+    font-size: 12px;
+    color: var(--terracotta);
+    font-weight: 700;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 0;
+  }
+
+  .note-inline {
+    font-size: 12px;
+    color: var(--light);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  @media (max-width: 680px) {
+    .report-header { padding: 32px 24px; }
+    .revenue-block { grid-template-columns: 1fr; }
+    .roi-grid { grid-template-columns: 1fr 1fr; }
+    .delivery-row { grid-template-columns: repeat(2, 1fr); }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="report-header">
+  <div class="tc-badge">Jordy's Casuarina</div>
+  <div class="header-label">Easter Campaign | Email 2</div>
+  <div class="header-title">Easter Campaign<br>Report</div>
+  <div class="header-sub">Full conversion window results — Wednesday 1 April to Saturday 4 April 2026</div>
+  <div class="header-meta">
+    <div class="header-meta-item">
+      <span class="meta-label">Campaign</span>
+      <span class="meta-value">Email 2 | Easter Campaign</span>
+    </div>
+    <div class="header-meta-item">
+      <span class="meta-label">Sent</span>
+      <span class="meta-value">Wednesday 1 April 2026</span>
+    </div>
+    <div class="header-meta-item">
+      <span class="meta-label">Window Open</span>
+      <span class="meta-value">10:00 AM Wed 1 Apr</span>
+    </div>
+    <div class="header-meta-item">
+      <span class="meta-label">Window Close</span>
+      <span class="meta-value">10:00 AM Sun 5 Apr</span>
+    </div>
+    <div class="header-meta-item">
+      <span class="meta-label">Prepared by</span>
+      <span class="meta-value">The Service Edit</span>
+    </div>
+  </div>
+</div>
+
+<div class="report-body">
+
+  <div class="window-bar">
+    72-HOUR CONVERSION WINDOW &nbsp;|&nbsp; Wednesday 1 April 7:00 AM to Saturday 4 April 7:00 AM AEST
+  </div>
+
+  <!-- SECTION 1: KLAVIYO -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Klaviyo Campaign Performance</span>
+    </div>
+
+    <div class="delivery-row">
+      <div class="delivery-cell">
+        <div class="d-val">4,497</div>
+        <div class="d-label">Total Sent</div>
+      </div>
+      <div class="delivery-cell">
+        <div class="d-val">4,421</div>
+        <div class="d-label">Delivered</div>
+      </div>
+      <div class="delivery-cell">
+        <div class="d-val">47</div>
+        <div class="d-label">Bounced</div>
+      </div>
+      <div class="delivery-cell">
+        <div class="d-val">32</div>
+        <div class="d-label">Skipped</div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card highlight">
+        <div class="stat-label">Unique Opens</div>
+        <div class="stat-value">1,407</div>
+        <div class="stat-note">31.8% open rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Unique Clicks</div>
+        <div class="stat-value">21</div>
+        <div class="stat-note">0.5% click rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Unsubscribed</div>
+        <div class="stat-value">60</div>
+        <div class="stat-note">1.4% unsub rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Spam Reports</div>
+        <div class="stat-value">0</div>
+        <div class="stat-note">Clean delivery</div>
+      </div>
+    </div>
+
+    <div class="stat-grid" style="margin-top: 0;">
+      <div class="stat-card">
+        <div class="stat-label">Segment 1</div>
+        <div class="stat-value" style="font-size:22px;">2,943</div>
+        <div class="stat-note">321 opens (11.2%) &bull; 10 clicks</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-label">Segment 2</div>
+        <div class="stat-value" style="font-size:22px;">1,429</div>
+        <div class="stat-note">969 opens (67.9%) &bull; 7 clicks</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Segment 3</div>
+        <div class="stat-value" style="font-size:22px;">125</div>
+        <div class="stat-note">117 opens (93.6%) &bull; 4 clicks</div>
+      </div>
+    </div>
+
+    <div class="caveat" style="margin-top: 4px;">
+      <strong>Context:</strong> A 31.8% blended open rate across all three segments is strong, sitting well above the 20-25% hospitality benchmark. Segment 2 and 3 achieved exceptional open rates of 67.9% and 93.6% respectively, indicating these were highly engaged audiences. Zero spam reports across all three sends.
+    </div>
+  </div>
+
+  <!-- SECTION 2: DINE-IN BOOKINGS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Confirmed Email-Attributed Dine-In Bookings</span>
+    </div>
+    <p style="color: var(--mid); font-size: 14px; margin-bottom: 20px;">Confirmed by cross-referencing Klaviyo open and click records against NowBookIt customer emails and names. Only bookings created after 7:00am Wednesday 1 April are eligible. Revenue estimated at $50 per person.</p>
+
+    <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 12px;">Wednesday 1 April, Email Send Night, 46 total covers</p>
+    <p style="color: var(--mid); font-size: 13px; margin-bottom: 24px; font-style: italic;">No confirmed email-attributed dine-in bookings on the send night. Most Wednesday bookings had been made before the 7:00am send time.</p>
+
+    <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 12px;">Thursday 2 April, 20 covers across 5 bookings</p>
+    <table class="attrib-table" style="margin-bottom: 24px;">
+      <thead><tr><th>Customer</th><th>Pax</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Leah Campbell</strong></td><td>4</td><td>Clicked</td></tr>
+        <tr><td><strong>Ben Gonzalez</strong></td><td>4</td><td>Clicked</td></tr>
+        <tr><td><strong>Keiara McMaster</strong></td><td>2</td><td>Clicked</td></tr>
+        <tr><td><strong>Sarah Signer</strong></td><td>6</td><td>Opened</td></tr>
+        <tr><td><strong>Jacqueline Nixon</strong></td><td>4</td><td>Opened</td></tr>
+        <tr class="total-row"><td><strong>Thursday total</strong></td><td><strong>20 covers</strong></td><td><strong>~$1,000 est.</strong></td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 12px;">Friday 3 April, Good Friday, 18 covers across 5 bookings</p>
+    <table class="attrib-table" style="margin-bottom: 24px;">
+      <thead><tr><th>Customer</th><th>Pax</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Greer McIlroy</strong></td><td>6</td><td>Clicked</td></tr>
+        <tr><td><strong>Julene Boyd</strong></td><td>4</td><td>Clicked</td></tr>
+        <tr><td><strong>Peter Winmill</strong></td><td>4</td><td>Opened</td></tr>
+        <tr><td><strong>Kylie Bassingthwaighte</strong></td><td>2</td><td>Opened</td></tr>
+        <tr><td><strong>Amy Taylor</strong></td><td>2</td><td>Opened</td></tr>
+        <tr class="total-row"><td><strong>Friday total</strong></td><td><strong>18 covers</strong></td><td><strong>~$900 est.</strong></td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 12px;">Saturday 4 April, Easter Saturday, 28 covers across 7 bookings</p>
+    <table class="attrib-table" style="margin-bottom: 16px;">
+      <thead><tr><th>Customer</th><th>Pax</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Michelle Cahill</strong></td><td>2</td><td>Clicked</td></tr>
+        <tr><td><strong>Bill Flemming</strong></td><td>2</td><td>Clicked</td></tr>
+        <tr><td><strong>Rebecca Gardner</strong></td><td>9</td><td>Opened</td></tr>
+        <tr><td><strong>Alli Forde</strong></td><td>5</td><td>Opened</td></tr>
+        <tr><td><strong>Jen Doherty</strong></td><td>4</td><td>Opened</td></tr>
+        <tr><td><strong>Lisa Warlters</strong></td><td>4</td><td>Opened</td></tr>
+        <tr><td><strong>Rowan George</strong></td><td>2</td><td>Opened</td></tr>
+        <tr class="total-row"><td><strong>Saturday total</strong></td><td><strong>28 covers</strong></td><td><strong>~$1,400 est.</strong></td></tr>
+      </tbody>
+    </table>
+
+    <div class="note-inline">Revenue estimated at $50 per person. Only bookings created after 7:00am Wednesday 1 April are included. Three bookings were excluded as they were made before the send time: Danielle Smith (booked 26 March), Kaye Kukla (booked 26 March), Scott Bell (booked 28 March).</div>
+  </div>
+
+    <!-- SECTION 3: ONLINE ORDERS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Confirmed Email-Attributed Online Orders (me&amp;u)</span>
+    </div>
+    <p style="color: var(--mid); font-size: 14px; margin-bottom: 20px;">Attribution by cross-referencing order names against confirmed Klaviyo openers and clickers. Full name matches only.</p>
+
+    <table class="attrib-table" style="margin-bottom: 16px;">
+      <thead><tr><th>Customer</th><th>Date</th><th>Order Value</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Grace Lethborg</strong></td><td>Wed 1 Apr</td><td>$64.01</td><td>Clicked</td></tr>
+        <tr><td><strong>Mark Engelmann</strong></td><td>Wed 1 Apr</td><td>$182.04</td><td>Opened</td></tr>
+        <tr><td><strong>Sam Clark</strong></td><td>Thu 2 Apr</td><td>$83.39</td><td>Opened</td></tr>
+        <tr><td><strong>Cora Brownjohn</strong></td><td>Thu 2 Apr</td><td>$134.24</td><td>Opened</td></tr>
+        <tr><td><strong>Don Kakuda</strong></td><td>Fri 3 Apr</td><td>$67.83</td><td>Clicked</td></tr>
+        <tr><td><strong>Shane Godfrey</strong></td><td>Fri 3 Apr</td><td>$42.10</td><td>Opened</td></tr>
+        <tr><td><strong>Ashleigh Godfrey</strong></td><td>Fri 3 Apr</td><td>$40.93</td><td>Opened</td></tr>
+        <tr><td><strong>Michael Oslar</strong></td><td>Fri 3 Apr</td><td>$63.16</td><td>Opened</td></tr>
+        <tr><td><strong>Kelley Weise</strong><br><span style="font-size:12px; color:var(--light);">Regular customer, lapsed, brought back by the email</span></td><td>Fri 3 Apr</td><td>$88.89</td><td>Opened</td></tr>
+        <tr class="total-row"><td><strong>Online orders total</strong></td><td>9 orders</td><td><strong>$766.59</strong></td><td></td></tr>
+      </tbody>
+    </table>
+
+    <div class="insight-box">
+      <strong>Kelley Weise reactivated again.</strong> Kelley was also attributed in Email 1 back in March. She is now back ordering online for the second time in two campaigns. This is exactly the repeat behaviour email marketing is designed to drive.
+    </div>
+  </div>
+
+    <!-- SECTION 4: ROI -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">Return on Investment</span>
+    </div>
+
+    <div class="stat-grid" style="margin-bottom: 20px;">
+      <div class="stat-card highlight">
+        <div class="stat-label">Total Attributed Revenue</div>
+        <div class="stat-value" style="font-size:36px;">$4,067</div>
+        <div class="stat-note">Dine-in $3,300 + online orders $767</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Weekly Retainer</div>
+        <div class="stat-value" style="font-size:36px;">$550</div>
+        <div class="stat-note">Inc. GST</div>
+      </div>
+      <div class="stat-card" style="background: var(--dark); border-color: var(--dark);">
+        <div class="stat-label" style="color: rgba(255,255,255,0.5);">Return on Investment</div>
+        <div class="stat-value" style="font-size:36px; color: var(--terracotta);">7.4x</div>
+        <div class="stat-note" style="color: rgba(255,255,255,0.4);">$4,067 vs $550 retainer</div>
+      </div>
+    </div>
+
+    <div class="caveat">
+      <strong>Important context:</strong> The $4,067 is the confirmed floor. It does not include customers who opened the email and booked or ordered without a traceable name or email match, walk-in trade influenced by the email, or future repeat visits from reactivated customers. Saturday me&amp;u orders were not available at time of reporting and will add to this total.
+    </div>
+  </div>
+
+    <!-- SECTION 5: REACTIVATION -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">The Reactivation Story</span>
+    </div>
+
+    <p style="color: var(--mid); font-size: 14px; margin-bottom: 20px;">16 confirmed dine-in conversions across three nights. Customers range from first-timers to a 22-visit regular. Every single one was sitting on the list, waiting to be reached.</p>
+
+    <div class="stat-grid" style="margin-bottom: 24px;">
+      <div class="stat-card highlight">
+        <div class="stat-label">Total attributed covers</div>
+        <div class="stat-value">61</div>
+        <div class="stat-note">Across 16 confirmed bookings</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Lapsed 6+ months</div>
+        <div class="stat-value">6</div>
+        <div class="stat-note">Some quiet for nearly 2 years</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">First ever visits</div>
+        <div class="stat-value">2</div>
+        <div class="stat-note">Alli Forde &amp; Rowan George</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Highest visit count</div>
+        <div class="stat-value">22</div>
+        <div class="stat-note">Lisa Warlters</div>
+      </div>
+    </div>
+
+    <!-- THURSDAY -->
+    <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 14px;">Thursday 2 April &mdash; 4 bookings, 15 covers</p>
+    <div class="reactivation-grid" style="margin-bottom: 28px;">
+      <div class="person-card">
+        <div class="person-avatar super">LC</div>
+        <div>
+          <div class="person-name">Leah Campbell</div>
+          <div class="person-meta">4 pax &bull; <strong>Clicked</strong> &bull; 6 total visits</div>
+          <div class="person-visits">Last visit Sep 2024 &bull; lapsed 6 months &bull; clicked and booked same day</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar super">BG</div>
+        <div>
+          <div class="person-name">Ben Gonzalez</div>
+          <div class="person-meta">4 pax &bull; <strong>Clicked</strong> &bull; 3 total visits</div>
+          <div class="person-visits">Last visit Jun 2025 &bull; lapsed 8 months &bull; clicked and returned</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar super">KM</div>
+        <div>
+          <div class="person-name">Keiara McMaster</div>
+          <div class="person-meta">2 pax &bull; <strong>Clicked</strong> &bull; 4 total visits</div>
+          <div class="person-visits">Last visit Jul 2025 &bull; lapsed 8 months &bull; back for Easter</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar">JN</div>
+        <div>
+          <div class="person-name">Jacqueline Nixon</div>
+          <div class="person-meta">5 pax &bull; Opened &bull; 2 total visits</div>
+          <div class="person-visits">Last visit Dec 2024 &bull; lapsed 15 months &bull; email brought her back</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FRIDAY -->
+    <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 14px;">Friday 3 April, Good Friday &mdash; 5 bookings, 18 covers</p>
+    <div class="reactivation-grid" style="margin-bottom: 28px;">
+      <div class="person-card">
+        <div class="person-avatar super">GM</div>
+        <div>
+          <div class="person-name">Greer McIlroy</div>
+          <div class="person-meta">6 pax &bull; <strong>Clicked</strong> &bull; 4 total visits</div>
+          <div class="person-visits">Last visit Feb 2026 &bull; lapsed 7 weeks &bull; clicked and booked a table of 6</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar super">JB</div>
+        <div>
+          <div class="person-name">Julene Boyd</div>
+          <div class="person-meta">4 pax &bull; <strong>Clicked</strong> &bull; 3 total visits</div>
+          <div class="person-visits">Last visit Aug 2025 &bull; lapsed 8 months &bull; clicked and returned</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar">PW</div>
+        <div>
+          <div class="person-name">Peter Winmill</div>
+          <div class="person-meta">4 pax &bull; Opened &bull; 2 total visits</div>
+          <div class="person-visits">Last visit Sep 2025 &bull; lapsed 7 months &bull; back for Good Friday</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar">KB</div>
+        <div>
+          <div class="person-name">Kylie Bassingthwaighte</div>
+          <div class="person-meta">2 pax &bull; Opened &bull; 3 total visits</div>
+          <div class="person-visits">Last visit Jun 2024 &bull; <strong>lapsed nearly 2 years</strong> &bull; one email brought her back</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar super">AT</div>
+        <div>
+          <div class="person-name">Amy Taylor</div>
+          <div class="person-meta">2 pax &bull; Opened &bull; <strong>10 total visits</strong></div>
+          <div class="person-visits">Last visit Dec 2025 &bull; lapsed 3.5 months &bull; super regular back for Good Friday</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SATURDAY -->
+    <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 14px;">Saturday 4 April, Easter Saturday &mdash; 7 bookings, 28 covers</p>
+    <div class="reactivation-grid" style="margin-bottom: 16px;">
+      <div class="person-card">
+        <div class="person-avatar super">LW</div>
+        <div>
+          <div class="person-name">Lisa Warlters</div>
+          <div class="person-meta">4 pax &bull; Opened &bull; <strong>22 total visits</strong></div>
+          <div class="person-visits">Last visit 15 Mar 2026 &bull; Jordy&apos;s most loyal regular &bull; email keeps her coming back</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar super">MC</div>
+        <div>
+          <div class="person-name">Michelle Cahill</div>
+          <div class="person-meta">2 pax &bull; <strong>Clicked</strong> &bull; 6 total visits</div>
+          <div class="person-visits">Also dined 26 Mar (Email 1) &bull; responding to both campaigns &bull; email building the habit</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar super">BF</div>
+        <div>
+          <div class="person-name">Bill Flemming</div>
+          <div class="person-meta">2 pax &bull; <strong>Clicked</strong> &bull; 4 total visits</div>
+          <div class="person-visits">Last visit Feb 2026 &bull; lapsed 7 weeks &bull; clicked and returned for Easter</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar">RG</div>
+        <div>
+          <div class="person-name">Rebecca Gardner</div>
+          <div class="person-meta">9 pax &bull; Opened &bull; 6 total visits</div>
+          <div class="person-visits">Last visit Dec 2025 &bull; lapsed 3.5 months &bull; consistently books large groups</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar">JD</div>
+        <div>
+          <div class="person-name">Jen Doherty</div>
+          <div class="person-meta">4 pax &bull; Opened &bull; 3 total visits</div>
+          <div class="person-visits">Last visit Dec 2025 &bull; lapsed 3.5 months &bull; back for Easter Saturday</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar">AF</div>
+        <div>
+          <div class="person-name">Alli Forde</div>
+          <div class="person-meta">5 pax &bull; Opened &bull; <strong>First ever visit</strong></div>
+          <div class="person-visits">Brand new customer &bull; email brought her through the door for the first time</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar">RG2</div>
+        <div>
+          <div class="person-name">Rowan George</div>
+          <div class="person-meta">2 pax &bull; Opened &bull; <strong>First ever visit</strong></div>
+          <div class="person-visits">Brand new customer &bull; first visit to Jordy&apos;s</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="caveat">
+      <strong>The range tells the story.</strong> From Kylie Bassingthwaighte (last visited June 2024, nearly 2 years ago) through to Lisa Warlters (22 visits, in every few weeks) — this email reached all of them in one send. That is what a healthy, well-maintained subscriber list does.
+    </div>
+  </div>
+
+    <!-- SECTION 6: DELAYED CONVERSIONS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">Delayed Conversions from Email 1</span>
+    </div>
+
+    <p style="color: var(--mid); font-size: 14px; margin-bottom: 20px;">While reviewing Thursday's bookings against this campaign, two customers were found to have booked after the Easter email was sent but were confirmed — via their NowBookIt booking history — to have opened Email 1 in March and never returned until now. Their booking was triggered by the March send, not Easter. This is the long tail of email marketing working exactly as it should.</p>
+
+    <table class="attrib-table" style="margin-bottom: 16px;">
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Pax</th>
+          <th>Last Visit Before Email 1</th>
+          <th>What happened</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <strong>Julian Rodda</strong><br>
+            <span style="font-size:12px; color:var(--light);">julianrodda@gmail.com</span>
+          </td>
+          <td>4</td>
+          <td style="font-size:13px;">November 2025</td>
+          <td style="font-size:13px; color:var(--mid);">Opened Email 1 (26 Mar), dined that same night, then booked and returned again on 2 April. Email 1 restarted the habit.</td>
+        </tr>
+        <tr>
+          <td>
+            <strong>Darcy Chadwick</strong><br>
+            <span style="font-size:12px; color:var(--light);">darcychadwick123@gmail.com</span>
+          </td>
+          <td>4</td>
+          <td style="font-size:13px;">January 2026</td>
+          <td style="font-size:13px; color:var(--mid);">Had gone quiet for 2.5 months. Opened Email 1 in March — no immediate booking. The intent built over time and she returned on 2 April, one week after the send.</td>
+        </tr>
+        <tr class="total-row">
+          <td><strong>Delayed conversion total</strong></td>
+          <td><strong>8 covers</strong></td>
+          <td colspan="2"><strong>~$400 est. — attributed to Email 1</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="caveat">
+      <strong>Why this matters:</strong> The standard 72-hour attribution window does not capture customers who need more time to decide. Darcy Chadwick opened Email 1 on 26 March and came back on 2 April — 7 days later. That conversion belongs to Email 1 and has been added to its report. But it surfaced here, during Email 2, because she was on tonight's run sheet. This is the compounding value of a consistent email programme — each send extends the reach of every previous one.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div style="background: var(--dark); border-radius: 10px; padding: 32px 36px; margin-bottom: 0;">
+    <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 14px;">Campaign Summary — Easter 2026</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 24px;">
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Delivered</div>
+        <div style="font-size: 26px; font-weight: 900; color: white;">4,421</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Opened</div>
+        <div style="font-size: 26px; font-weight: 900; color: white;">1,407</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Open Rate</div>
+        <div style="font-size: 26px; font-weight: 900; color: white;">31.8%</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Attributed Covers</div>
+        <div style="font-size: 26px; font-weight: 900; color: var(--terracotta);">66</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Online Orders</div>
+        <div style="font-size: 26px; font-weight: 900; color: var(--terracotta);">9</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Attributed Revenue</div>
+        <div style="font-size: 26px; font-weight: 900; color: white;">$4,067</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">ROI</div>
+        <div style="font-size: 26px; font-weight: 900; color: var(--terracotta);">7.4x</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="report-footer">
+  <div class="footer-left">Jordy's Casuarina &bull; Easter Campaign &bull; Email 2 &bull; Final Report &bull; Generated 4 April 2026</div>
+  <div class="footer-right">The Service Edit &bull; theserviceedit.com</div>
+</div>
+
+</body>
+</html>

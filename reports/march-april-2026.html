@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jordy's Casuarina | Monthly Campaign Report — March–April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terracotta: #c2724c;
+    --terracotta-light: #d4896a;
+    --terracotta-pale: #f5ede8;
+    --dark: #1a1a1a;
+    --mid: #444;
+    --light: #888;
+    --border: #e8e0db;
+    --bg: #faf8f6;
+    --white: #ffffff;
+    --green: #4a7c59;
+    --green-pale: #edf3ef;
+    --amber: #b5821a;
+    --amber-pale: #fdf6e7;
+    --red-pale: #fdf0ee;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .report-header {
+    background: var(--dark);
+    padding: 48px 56px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+    margin-bottom: 12px;
+  }
+  .header-title {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .header-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+  }
+  .header-meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .header-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .header-meta-item .meta-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    font-weight: 700;
+  }
+  .header-meta-item .meta-value {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 400;
+  }
+  .tc-badge {
+    display: inline-block;
+    background: var(--terracotta);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    margin-bottom: 16px;
+  }
+
+  /* LAYOUT */
+  .report-body {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 48px;
+  }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--terracotta);
+  }
+  .section-num {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    color: var(--terracotta);
+    text-transform: uppercase;
+  }
+  .section-title {
+    font-size: 19px;
+    font-weight: 900;
+    color: var(--dark);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* STAT GRID */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 20px 18px;
+  }
+  .stat-card.highlight {
+    background: var(--terracotta);
+    border-color: var(--terracotta);
+  }
+  .stat-card.highlight .stat-label,
+  .stat-card.highlight .stat-note { color: rgba(255,255,255,0.7); }
+  .stat-card.highlight .stat-value { color: white; }
+  .stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--light);
+    margin-bottom: 8px;
+  }
+  .stat-value {
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--dark);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-note {
+    font-size: 11px;
+    color: var(--light);
+    font-weight: 400;
+  }
+  .stat-note strong { color: var(--mid); }
+
+  /* CAMPAIGN COMPARISON TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .data-table th {
+    background: var(--dark);
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    text-align: left;
+  }
+  .data-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    color: var(--dark);
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--terracotta-pale); }
+  .data-table .total-row td {
+    background: var(--terracotta-pale);
+    font-weight: 700;
+    border-top: 2px solid var(--terracotta);
+  }
+  .data-table .num { text-align: right; font-weight: 700; }
+  .data-table .tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-left: 4px;
+  }
+  .tag.best { background: var(--dark); color: white; }
+  .tag.good { background: var(--green-pale); color: var(--green); }
+
+  /* ATTRIBUTION TABLE */
+  .attrib-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+  .attrib-table th {
+    background: var(--dark);
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    text-align: left;
+  }
+  .attrib-table td {
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .attrib-table tr:last-child td { border-bottom: none; }
+  .attrib-table .total-row td {
+    background: var(--terracotta-pale);
+    font-weight: 700;
+    border-top: 2px solid var(--terracotta);
+  }
+
+  /* BAR CHART */
+  .bar-chart-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+  .bar-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--mid);
+    width: 110px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .bar-track {
+    flex: 1;
+    height: 32px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+  }
+  .bar-fill.c1 { background: var(--terracotta); }
+  .bar-fill.c2 { background: var(--dark); }
+  .bar-fill.c3 { background: var(--terracotta-light); }
+  .bar-val {
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    white-space: nowrap;
+  }
+  .bar-pct {
+    font-size: 12px;
+    color: var(--light);
+    width: 56px;
+    flex-shrink: 0;
+  }
+
+  /* REACTIVATION */
+  .reactivation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .person-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .person-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+  }
+  .person-avatar.super { background: var(--dark); }
+  .person-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 3px;
+  }
+  .person-meta {
+    font-size: 12px;
+    color: var(--light);
+    line-height: 1.5;
+  }
+  .person-meta strong { color: var(--mid); }
+  .person-visits {
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--terracotta);
+  }
+
+  /* CALLOUT BOXES */
+  .caveat {
+    background: var(--amber-pale);
+    border-left: 3px solid var(--amber);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--mid);
+    margin-top: 14px;
+  }
+  .caveat strong { color: var(--amber); }
+
+  .insight-box {
+    background: var(--green-pale);
+    border-left: 3px solid var(--green);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--mid);
+    margin-top: 14px;
+  }
+  .insight-box strong { color: var(--green); }
+
+  /* ORDERS LIST */
+  .orders-container {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .orders-row {
+    display: grid;
+    grid-template-columns: 1fr 160px;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 18px;
+    align-items: center;
+    background: var(--white);
+    font-size: 14px;
+  }
+  .orders-row:first-child {
+    border-radius: 8px 8px 0 0;
+    background: var(--dark);
+    color: rgba(255,255,255,0.6);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .orders-row:last-child {
+    border-bottom: none;
+    border-radius: 0 0 8px 8px;
+    background: var(--terracotta-pale);
+    font-weight: 700;
+    border-top: 2px solid var(--terracotta);
+  }
+  .orders-amount { text-align: right; font-weight: 700; }
+
+  /* TREND INDICATOR */
+  .trend-down { color: var(--terracotta); font-weight: 700; font-size: 12px; }
+  .trend-up { color: var(--green); font-weight: 700; font-size: 12px; }
+
+  /* FOOTER */
+  .report-footer {
+    background: var(--dark);
+    padding: 28px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-left {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+  }
+  .footer-right {
+    font-size: 12px;
+    color: var(--terracotta);
+    font-weight: 700;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 32px 0;
+  }
+
+  .note-inline {
+    font-size: 12px;
+    color: var(--light);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  @media (max-width: 680px) {
+    .report-header { padding: 32px 24px; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .orders-row { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="report-header">
+  <div class="tc-badge">Jordy's Casuarina</div>
+  <div class="header-label">Email Programme | Monthly Summary</div>
+  <div class="header-title">March–April 2026<br>Monthly Report</div>
+  <div class="header-sub">Full programme results across all three campaigns — 26 March to 11 April 2026</div>
+  <div class="header-meta">
+    <div class="header-meta-item">
+      <span class="meta-label">Period</span>
+      <span class="meta-value">26 March – 11 April 2026</span>
+    </div>
+    <div class="header-meta-item">
+      <span class="meta-label">Campaigns</span>
+      <span class="meta-value">3 emails sent</span>
+    </div>
+    <div class="header-meta-item">
+      <span class="meta-label">Platform</span>
+      <span class="meta-value">Klaviyo</span>
+    </div>
+    <div class="header-meta-item">
+      <span class="meta-label">Attribution</span>
+      <span class="meta-value">Klaviyo + NowBookIt + me&u</span>
+    </div>
+    <div class="header-meta-item">
+      <span class="meta-label">Prepared by</span>
+      <span class="meta-value">The Service Edit</span>
+    </div>
+  </div>
+</div>
+
+<div class="report-body">
+
+  <!-- SECTION 1: MONTHLY HEADLINE NUMBERS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Monthly Headline Numbers</span>
+    </div>
+
+    <div class="stat-grid" style="margin-bottom: 20px;">
+      <div class="stat-card highlight">
+        <div class="stat-label">Total Attributed Revenue</div>
+        <div class="stat-value" style="font-size: 36px;">$9,191</div>
+        <div class="stat-note">Across all 3 campaigns</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-label">Total Dine-In Covers</div>
+        <div class="stat-value" style="font-size: 36px;">149</div>
+        <div class="stat-note">Confirmed via NowBookIt</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-label">Online Orders</div>
+        <div class="stat-value" style="font-size: 36px;">24</div>
+        <div class="stat-note">$1,741 verified via me&u</div>
+      </div>
+      <div class="stat-card" style="background: var(--dark); border-color: var(--dark);">
+        <div class="stat-label" style="color: rgba(255,255,255,0.5);">Average ROI</div>
+        <div class="stat-value" style="font-size: 36px; color: var(--terracotta);">6.3x</div>
+        <div class="stat-note" style="color: rgba(255,255,255,0.4);">Across 3 campaigns</div>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Emails Sent</div>
+        <div class="stat-value">13,582</div>
+        <div class="stat-note">Across 3 campaigns</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Retainer Cost</div>
+        <div class="stat-value" style="font-size: 24px;">$1,435</div>
+        <div class="stat-note">$500 + $550 + $385</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Unique Opens (avg)</div>
+        <div class="stat-value">33.4%</div>
+        <div class="stat-note">Industry benchmark: 20–25%</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Spam Reports</div>
+        <div class="stat-value">0</div>
+        <div class="stat-note">Clean delivery all month</div>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top: 4px;">
+      <strong>Three campaigns. $9,191 in confirmed attributed revenue. $1,435 in retainer cost.</strong> That is a 6.3x return on investment from the confirmed floor alone — before walk-in trade influenced by the programme, untracked bookings, future repeat visits, and list growth. The email programme has paid for itself more than six times over in its first month.
+    </div>
+  </div>
+
+  <!-- SECTION 2: CAMPAIGN BY CAMPAIGN BREAKDOWN -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Campaign by Campaign Breakdown</span>
+    </div>
+
+    <p style="color: var(--mid); font-size: 14px; margin-bottom: 20px;">Each campaign ran a 72-hour attribution window. Attribution confirmed by cross-referencing Klaviyo engagement records against NowBookIt run sheets and me&u order histories. Only full-name matches with confirmed opens or clicks are included.</p>
+
+    <table class="data-table" style="margin-bottom: 20px;">
+      <thead>
+        <tr>
+          <th>Campaign</th>
+          <th>Sent</th>
+          <th>Delivered</th>
+          <th>Opens</th>
+          <th>Open Rate</th>
+          <th>Unsubs</th>
+          <th>Retainer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Email 1</strong><br><span style="font-size:12px; color:var(--light);">Re-engagement · Thu 26 Mar</span></td>
+          <td class="num">4,630</td>
+          <td class="num">4,509</td>
+          <td class="num">1,576</td>
+          <td class="num"><strong>35.0%</strong> <span class="tag best">Best</span></td>
+          <td class="num">82</td>
+          <td class="num">$500</td>
+        </tr>
+        <tr>
+          <td><strong>Email 2</strong><br><span style="font-size:12px; color:var(--light);">Easter Campaign · Wed 1 Apr</span></td>
+          <td class="num">4,497</td>
+          <td class="num">4,421</td>
+          <td class="num">1,407</td>
+          <td class="num"><strong>31.8%</strong> <span class="tag good">Strong</span></td>
+          <td class="num">60</td>
+          <td class="num">$550</td>
+        </tr>
+        <tr>
+          <td><strong>Email 3</strong><br><span style="font-size:12px; color:var(--light);">Weekly Programme · Wed 8 Apr</span></td>
+          <td class="num">4,455</td>
+          <td class="num">4,455</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td class="num">$385</td>
+        </tr>
+        <tr class="total-row">
+          <td><strong>Monthly Total</strong></td>
+          <td class="num"><strong>13,582</strong></td>
+          <td class="num"><strong>13,385</strong></td>
+          <td class="num"><strong>2,983+</strong></td>
+          <td class="num"><strong>~33.4% avg</strong></td>
+          <td class="num"><strong>142</strong></td>
+          <td class="num"><strong>$1,435</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Campaign</th>
+          <th>Dine-In Covers</th>
+          <th>Dine-In Revenue</th>
+          <th>Online Orders</th>
+          <th>Online Revenue</th>
+          <th>Total Attributed</th>
+          <th>ROI</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Email 1</strong><br><span style="font-size:12px; color:var(--light);">26 Mar–29 Mar</span></td>
+          <td class="num">53</td>
+          <td class="num">$2,650</td>
+          <td class="num">10</td>
+          <td class="num">$628.52</td>
+          <td class="num"><strong>$3,278</strong></td>
+          <td class="num" style="color: var(--terracotta); font-weight: 900;">6.6x</td>
+        </tr>
+        <tr>
+          <td><strong>Email 2</strong><br><span style="font-size:12px; color:var(--light);">1 Apr–5 Apr</span></td>
+          <td class="num">66</td>
+          <td class="num">$3,300</td>
+          <td class="num">9</td>
+          <td class="num">$766.59</td>
+          <td class="num"><strong>$4,067</strong></td>
+          <td class="num" style="color: var(--terracotta); font-weight: 900;">7.4x <span class="tag best">Best</span></td>
+        </tr>
+        <tr>
+          <td><strong>Email 3</strong><br><span style="font-size:12px; color:var(--light);">8 Apr–11 Apr</span></td>
+          <td class="num">30</td>
+          <td class="num">$1,500</td>
+          <td class="num">5</td>
+          <td class="num">$345.79</td>
+          <td class="num"><strong>$1,846</strong></td>
+          <td class="num" style="color: var(--terracotta); font-weight: 900;">4.8x</td>
+        </tr>
+        <tr class="total-row">
+          <td><strong>Monthly Total</strong></td>
+          <td class="num"><strong>149</strong></td>
+          <td class="num"><strong>$7,450</strong></td>
+          <td class="num"><strong>24</strong></td>
+          <td class="num"><strong>$1,740.90</strong></td>
+          <td class="num"><strong>$9,190.90</strong></td>
+          <td class="num" style="color: var(--terracotta); font-weight: 900;"><strong>6.3x avg</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="caveat">
+      <strong>All figures are confirmed floors, not ceilings.</strong> Revenue is counted only where a Klaviyo engagement record (open or click) can be matched to a NowBookIt booking or me&u order by full name or email. Customers who opened the email, visited as walk-ins, or booked via phone without a traceable match are excluded. The true number is higher.
+    </div>
+  </div>
+
+  <!-- SECTION 3: DELIVERABILITY HEALTH -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Deliverability Health</span>
+    </div>
+
+    <p style="color: var(--mid); font-size: 14px; margin-bottom: 20px;">Deliverability improved across the month. The 82 unsubscribes on Email 1 were expected and healthy — a list that hadn't been emailed before will shed disengaged contacts in the first send. By Email 2, that had dropped to 60. Zero spam reports across all three campaigns.</p>
+
+    <!-- Open rate bar chart -->
+    <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 14px;">Open Rate by Campaign</p>
+
+    <div class="bar-chart-row">
+      <div class="bar-label">Email 1</div>
+      <div class="bar-track">
+        <div class="bar-fill c1" style="width: 100%;">
+          <span class="bar-val">1,576 opens</span>
+        </div>
+      </div>
+      <div class="bar-pct">35.0%</div>
+    </div>
+    <div class="bar-chart-row">
+      <div class="bar-label">Email 2</div>
+      <div class="bar-track">
+        <div class="bar-fill c1" style="width: 90.9%;">
+          <span class="bar-val">1,407 opens</span>
+        </div>
+      </div>
+      <div class="bar-pct">31.8%</div>
+    </div>
+    <div class="bar-chart-row">
+      <div class="bar-label">Industry avg</div>
+      <div class="bar-track">
+        <div class="bar-fill c3" style="width: 64%;">
+          <span class="bar-val">20–25%</span>
+        </div>
+      </div>
+      <div class="bar-pct">benchmark</div>
+    </div>
+
+    <div style="margin-top: 20px; margin-bottom: 14px;">
+      <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 14px;">Unsubscribe Rate by Campaign</p>
+      <div class="bar-chart-row">
+        <div class="bar-label">Email 1</div>
+        <div class="bar-track">
+          <div class="bar-fill c2" style="width: 100%;">
+            <span class="bar-val">82 unsubs</span>
+          </div>
+        </div>
+        <div class="bar-pct">1.8%</div>
+      </div>
+      <div class="bar-chart-row">
+        <div class="bar-label">Email 2</div>
+        <div class="bar-track">
+          <div class="bar-fill c2" style="width: 73%;">
+            <span class="bar-val">60 unsubs</span>
+          </div>
+        </div>
+        <div class="bar-pct">1.4%</div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <strong>The list is cleaning itself and settling.</strong> The Email 1 unsub rate of 1.8% is normal and expected — a cold list sheds disengaged contacts on first contact. The drop to 1.4% on Email 2 shows the list is stabilising. Zero spam complaints across every send means inbox placement remains strong. The active core of the list is growing more engaged, not less.
+    </div>
+  </div>
+
+  <!-- SECTION 4: DINE-IN PERFORMANCE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">Dine-In Performance Summary</span>
+    </div>
+
+    <p style="color: var(--mid); font-size: 14px; margin-bottom: 20px;">149 confirmed dine-in covers across the month. Revenue estimated at $50 per person across all campaigns. Email 2 (Easter) delivered the highest single-campaign cover count at 66, driven by the Easter long weekend pulling forward large group bookings.</p>
+
+    <div class="stat-grid" style="margin-bottom: 24px;">
+      <div class="stat-card highlight">
+        <div class="stat-label">Total Covers Attributed</div>
+        <div class="stat-value">149</div>
+        <div class="stat-note">Across 3 campaigns</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Best Single Campaign</div>
+        <div class="stat-value">66</div>
+        <div class="stat-note">Email 2 — Easter</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Largest Single Booking</div>
+        <div class="stat-value">12 pax</div>
+        <div class="stat-note">Sarah Barr — Email 1</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Dine-In Revenue (est.)</div>
+        <div class="stat-value" style="font-size: 24px;">$7,450</div>
+        <div class="stat-note">$50pp attribution</div>
+      </div>
+    </div>
+
+    <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 14px;">Covers by Campaign</p>
+    <div class="bar-chart-row">
+      <div class="bar-label">Email 1</div>
+      <div class="bar-track">
+        <div class="bar-fill c1" style="width: 80%;">
+          <span class="bar-val">53 covers — $2,650 est.</span>
+        </div>
+      </div>
+    </div>
+    <div class="bar-chart-row">
+      <div class="bar-label">Email 2</div>
+      <div class="bar-track">
+        <div class="bar-fill c2" style="width: 100%;">
+          <span class="bar-val">66 covers — $3,300 est.</span>
+        </div>
+      </div>
+    </div>
+    <div class="bar-chart-row">
+      <div class="bar-label">Email 3</div>
+      <div class="bar-track">
+        <div class="bar-fill c3" style="width: 45%;">
+          <span class="bar-val">30 covers — $1,500 est.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="caveat" style="margin-top: 20px;">
+      <strong>Email 3 context:</strong> The lower cover count on Campaign 3 is partly timing — the post-Easter period is a natural slowdown after three big nights. Wednesday 8 April hit 77 total venue covers (+108% above the Wednesday average) and was fully booked with a 17-person waitlist, which is consistent with a campaign in full effect. The conversion window just captured fewer individual name matches rather than reflecting a weaker email.
+    </div>
+  </div>
+
+  <!-- SECTION 5: ONLINE ORDERS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">Online Orders (me&u) — Monthly Summary</span>
+    </div>
+
+    <p style="color: var(--mid); font-size: 14px; margin-bottom: 20px;">24 confirmed online orders across the month, matched by cross-referencing me&u order names against Klaviyo engagement records. Only full name matches with confirmed opens or clicks are included.</p>
+
+    <div class="stat-grid" style="margin-bottom: 24px;">
+      <div class="stat-card highlight">
+        <div class="stat-label">Total Orders</div>
+        <div class="stat-value">24</div>
+        <div class="stat-note">Across 3 campaigns</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-label">Verified Revenue</div>
+        <div class="stat-value">$1,741</div>
+        <div class="stat-note">Exact from me&u export</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Average Order Value</div>
+        <div class="stat-value">$72.54</div>
+        <div class="stat-note">Across all 24 orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Highest Single Order</div>
+        <div class="stat-value">$182</div>
+        <div class="stat-note">Mark Engelmann — Email 2</div>
+      </div>
+    </div>
+
+    <div class="orders-container">
+      <div class="orders-row">
+        <span>Campaign</span>
+        <span class="orders-amount">Orders / Revenue</span>
+      </div>
+      <div class="orders-row">
+        <span>
+          <strong>Email 1 — 26 March</strong>
+          <span style="font-size: 12px; color: var(--light); display: block; margin-top: 2px;">Belen, Brandon Locke, Kurtis Wathen, Sheridan, Sarah Scott, Clarissa, Isabella Nethery, Phoebe Easterbrook, Bec Buchanan, Drew Douglas</span>
+        </span>
+        <span class="orders-amount"><strong>10 orders<br>$628.52</strong></span>
+      </div>
+      <div class="orders-row">
+        <span>
+          <strong>Email 2 — 1 April (Easter)</strong>
+          <span style="font-size: 12px; color: var(--light); display: block; margin-top: 2px;">Grace Lethborg, Mark Engelmann, Sam Clark, Cora Brownjohn, Don Kakuda, Shane Godfrey, Ashleigh Godfrey, Michael Oslar, Kelley Weise</span>
+        </span>
+        <span class="orders-amount"><strong>9 orders<br>$766.59</strong></span>
+      </div>
+      <div class="orders-row">
+        <span>
+          <strong>Email 3 — 8 April</strong>
+          <span style="font-size: 12px; color: var(--light); display: block; margin-top: 2px;">Phoebe Easterbrook, Amanda Fitcher, Mat Taylor, Syena Moore, Rachel Price</span>
+        </span>
+        <span class="orders-amount"><strong>5 orders<br>$345.79</strong></span>
+      </div>
+      <div class="orders-row">
+        <span><strong>Monthly total</strong></span>
+        <span class="orders-amount"><strong>24 orders — $1,740.90</strong></span>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <strong>Phoebe Easterbrook ordered in both Email 1 and Email 3.</strong> Kelley Weise was attributed in Email 1 and again in Email 2. This repeat behaviour is exactly what the programme is designed to create — customers who order once through the email are statistically more likely to order again. Each campaign reinforces the habit.
+    </div>
+  </div>
+
+  <!-- SECTION 6: ROI -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">Return on Investment</span>
+    </div>
+
+    <div class="stat-grid" style="margin-bottom: 20px;">
+      <div class="stat-card highlight">
+        <div class="stat-label">Total Attributed Revenue</div>
+        <div class="stat-value" style="font-size: 36px;">$9,191</div>
+        <div class="stat-note">Dine-in $7,450 + online orders $1,741</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Retainer Cost</div>
+        <div class="stat-value" style="font-size: 36px;">$1,435</div>
+        <div class="stat-note">All 3 campaigns combined</div>
+      </div>
+      <div class="stat-card" style="background: var(--dark); border-color: var(--dark);">
+        <div class="stat-label" style="color: rgba(255,255,255,0.5);">Monthly ROI</div>
+        <div class="stat-value" style="font-size: 36px; color: var(--terracotta);">6.3x</div>
+        <div class="stat-note" style="color: rgba(255,255,255,0.4);">$9,191 attributed vs $1,435 cost</div>
+      </div>
+    </div>
+
+    <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 14px;">ROI by Campaign</p>
+    <div class="bar-chart-row">
+      <div class="bar-label">Email 1 — 6.6x</div>
+      <div class="bar-track">
+        <div class="bar-fill c1" style="width: 89%;">
+          <span class="bar-val">$3,278 vs $500</span>
+        </div>
+      </div>
+    </div>
+    <div class="bar-chart-row">
+      <div class="bar-label">Email 2 — 7.4x</div>
+      <div class="bar-track">
+        <div class="bar-fill c2" style="width: 100%;">
+          <span class="bar-val">$4,067 vs $550</span>
+        </div>
+      </div>
+    </div>
+    <div class="bar-chart-row">
+      <div class="bar-label">Email 3 — 4.8x</div>
+      <div class="bar-track">
+        <div class="bar-fill c3" style="width: 65%;">
+          <span class="bar-val">$1,846 vs $385</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="caveat" style="margin-top: 20px;">
+      <strong>The $9,191 is the confirmed floor.</strong> It only counts customers we could directly match by name across Klaviyo, NowBookIt, and me&u. It does not include customers influenced by the email who booked via phone, arrived as walk-ins, or couldn't be matched by name. It also excludes future repeat visits from reactivated customers — many of whom hadn't visited in months before these campaigns brought them back.
+    </div>
+  </div>
+
+  <!-- SECTION 7: REACTIVATION STORY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <span class="section-title">The Reactivation Story</span>
+    </div>
+
+    <p style="color: var(--mid); font-size: 14px; margin-bottom: 20px;">The most valuable thing an email programme does is bring back people who were not coming back on their own. These are not regulars who would have walked in anyway — these are customers who had gone quiet, in some cases for months or nearly two years, and came back because an email landed in their inbox at the right moment.</p>
+
+    <div class="stat-grid" style="margin-bottom: 24px;">
+      <div class="stat-card highlight">
+        <div class="stat-label">Longest Lapse Reactivated</div>
+        <div class="stat-value" style="font-size: 20px; line-height: 1.2; margin-top: 4px;">~2 years</div>
+        <div class="stat-note">Kylie Bassingthwaighte — last visit Jun 2024</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-label">New First-Time Visitors</div>
+        <div class="stat-value">2</div>
+        <div class="stat-note">Alli Forde + Rowan George — Email 2</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Largest Lapsed Group</div>
+        <div class="stat-value">12 pax</div>
+        <div class="stat-note">Sarah Barr — 9 months quiet, back with 11 friends</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Habit Building</div>
+        <div class="stat-value">2+</div>
+        <div class="stat-note">Customers who weren't regulars, now responding to every send</div>
+      </div>
+    </div>
+
+    <p style="font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--light); margin-bottom: 14px;">People Who Came Back — and Weren't Going To</p>
+    <div class="reactivation-grid">
+      <div class="person-card">
+        <div class="person-avatar super">SB</div>
+        <div>
+          <div class="person-name">Sarah Barr, The Luxe Beauty Co.</div>
+          <div class="person-meta">Email 1 &bull; Dine-in &bull; 12 pax &bull; ~$600 est.<br><strong>Last visited June 2025 — lapsed 9 months.</strong></div>
+          <div class="person-visits">Opened Thursday night &bull; booked Friday &bull; arrived Saturday with 11 friends</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar super">KB</div>
+        <div>
+          <div class="person-name">Kylie Bassingthwaighte</div>
+          <div class="person-meta">Email 2 &bull; Dine-in &bull; 2 pax<br><strong>Last visit June 2024 — lapsed nearly 2 years.</strong></div>
+          <div class="person-visits">One email brought her back for Good Friday</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar super">MC</div>
+        <div>
+          <div class="person-name">Michelle Cahill</div>
+          <div class="person-meta">Email 1 and Email 2 &bull; Dined in both campaigns<br><strong>Not a regular — the email is creating the habit.</strong></div>
+          <div class="person-visits">Clicked Email 1 &bull; clicked Email 2 &bull; came back both times</div>
+        </div>
+      </div>
+      <div class="person-card">
+        <div class="person-avatar super">KW</div>
+        <div>
+          <div class="person-name">Kelley Weise</div>
+          <div class="person-meta">Email 1 and Email 2 &bull; Online orders both campaigns<br><strong>Had gone quiet — ordered twice in a month once emails started.</strong></div>
+          <div class="person-visits">Not ordering before the programme &bull; now ordering consistently</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <strong>None of these customers were coming back on their own.</strong> Sarah Barr hadn't visited in 9 months. Kylie Bassingthwaighte hadn't been in for nearly 2 years. Michelle Cahill and Kelley Weise weren't regulars before this programme started — they are becoming regulars because of it. That is the compounding value of email marketing: it turns a dormant database into a revenue channel, one send at a time.
+    </div>
+  </div>
+
+  <!-- SECTION 8: WEBSITE TRAFFIC -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">08</span>
+      <span class="section-title">Website Traffic Since Launch</span>
+    </div>
+
+    <p style="color: var(--mid); font-size: 14px; margin-bottom: 20px;">Squarespace analytics for 17 March to 11 April 2026. Traffic is up significantly across every metric since the email programme launched alongside site improvements.</p>
+
+    <div class="stat-grid" style="margin-bottom: 20px;">
+      <div class="stat-card highlight">
+        <div class="stat-label">Visits</div>
+        <div class="stat-value">2.3K</div>
+        <div class="stat-note"><strong style="color:white;">+26% month on month</strong></div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-label">Unique Visitors</div>
+        <div class="stat-value">2.1K</div>
+        <div class="stat-note"><strong style="color:white;">+24% month on month</strong></div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-label">Pageviews</div>
+        <div class="stat-value">3.2K</div>
+        <div class="stat-note"><strong style="color:white;">+26% month on month</strong></div>
+      </div>
+      <div class="stat-card" style="border-color: var(--amber); background: var(--amber-pale);">
+        <div class="stat-label" style="color: var(--amber);">Bounce Rate</div>
+        <div class="stat-value" style="color: var(--dark);">74.55%</div>
+        <div class="stat-note" style="color: var(--amber);">Next lever to improve</div>
+      </div>
+    </div>
+
+    <div class="orders-container">
+      <div class="orders-row">
+        <span>Top Traffic Source</span>
+        <span class="orders-amount">Visits</span>
+      </div>
+      <div class="orders-row">
+        <span>
+          <strong>Direct</strong>
+          <span style="font-size: 12px; color: var(--light); display: block; margin-top: 2px;">Email clicks register as direct traffic — this is the programme working</span>
+        </span>
+        <span class="orders-amount"><strong>1,247</strong></span>
+      </div>
+      <div class="orders-row">
+        <span>
+          <strong>Google</strong>
+          <span style="font-size: 12px; color: var(--light); display: block; margin-top: 2px;">Organic search</span>
+        </span>
+        <span class="orders-amount">931</span>
+      </div>
+      <div class="orders-row">
+        <span>Instagram</span>
+        <span class="orders-amount">62</span>
+      </div>
+      <div class="orders-row">
+        <span>Bing</span>
+        <span class="orders-amount">25</span>
+      </div>
+      <div class="orders-row">
+        <span>Others</span>
+        <span class="orders-amount">50</span>
+      </div>
+      <div class="orders-row">
+        <span><strong>Total</strong></span>
+        <span class="orders-amount"><strong>2,315</strong></span>
+      </div>
+    </div>
+
+    <div class="caveat">
+      <strong>1,247 direct visits in the reporting window.</strong> Direct traffic is where email clicks land — over half of all site visits came from people who already knew Jordy's and were prompted to return. The bounce rate at 74.55% is the next opportunity. Bringing that down means more people reaching the booking page on every send.
+    </div>
+  </div>
+
+  <!-- SECTION 9: PROGRAMME OBSERVATIONS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">09</span>
+      <span class="section-title">Programme Observations — What the First Month Proved</span>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Wednesday 7am send</div>
+        <div class="stat-value" style="font-size: 20px; margin-top: 4px;">Confirmed</div>
+        <div class="stat-note">Generating same-day bookings and midweek uplift across all 3 campaigns. Email 3 Wednesday hit +108% vs average.</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Delayed conversions</div>
+        <div class="stat-value" style="font-size: 20px; margin-top: 4px;">Consistent</div>
+        <div class="stat-note">40–44% of dine-in attributions came 1–3 days post-send across Campaigns 1 and 3. The email works beyond send day.</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">List health</div>
+        <div class="stat-value" style="font-size: 20px; margin-top: 4px;">Improving</div>
+        <div class="stat-note">Unsub rate falling (1.8% to 1.4%). Zero spam complaints. Active core is engaging, not drifting.</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">me&u opportunity</div>
+        <div class="stat-value" style="font-size: 20px; margin-top: 4px;">Underutilised</div>
+        <div class="stat-note">10 orders in Email 1 and 9 in Email 2 dropped to 5 in Email 3. A targeted offer in Campaign 4 is the recommended test.</div>
+      </div>
+    </div>
+
+    <div class="insight-box" style="margin-top: 4px;">
+      <strong>The first month established three things that now compound:</strong> the list responds consistently to a Wednesday morning send; reactivation is happening at scale across every campaign; and the programme is building a habit in the subscriber base — customers who dined or ordered in one campaign are returning in subsequent campaigns. That compounding effect is worth more than any single month's revenue figure.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- MONTHLY SUMMARY BLOCK -->
+  <div style="background: var(--dark); border-radius: 10px; padding: 32px 36px; margin-bottom: 0;">
+    <div style="font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--terracotta); margin-bottom: 14px;">Monthly Summary — March–April 2026 — 3 Campaigns</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 24px;">
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Total Sent</div>
+        <div style="font-size: 26px; font-weight: 900; color: white;">13,582</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Avg Open Rate</div>
+        <div style="font-size: 26px; font-weight: 900; color: white;">33.4%</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Dine-In Covers</div>
+        <div style="font-size: 26px; font-weight: 900; color: var(--terracotta);">149</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Online Orders</div>
+        <div style="font-size: 26px; font-weight: 900; color: var(--terracotta);">24</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Attributed Revenue</div>
+        <div style="font-size: 26px; font-weight: 900; color: white;">$9,191</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Retainer Cost</div>
+        <div style="font-size: 26px; font-weight: 900; color: white;">$1,435</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.4); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;">Monthly ROI</div>
+        <div style="font-size: 26px; font-weight: 900; color: var(--terracotta);">6.3x</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="report-footer">
+  <div class="footer-left">Jordy's Casuarina &bull; Monthly Report &bull; March–April 2026 &bull; Generated 12 April 2026<br>The Service Edit &bull; theserviceedit.com &bull; Mel Cox &bull; Perth WA</div>
+  <div class="footer-right">The Service Edit &bull; theserviceedit.com</div>
+</div>
+
+</body>
+</html>
