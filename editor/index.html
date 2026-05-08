@@ -864,6 +864,8 @@ function buildStoriesGrid() {
 function handleFile(inputId, previewId) {
   const input = document.getElementById(inputId);
   const preview = document.getElementById(previewId);
+  // Skip if either element no longer exists (e.g. removed sections)
+  if (!input || !preview) return;
   const img = preview.querySelector('img');
   const video = preview.querySelector('video');
   const filename = preview.querySelector('.filename');
@@ -983,8 +985,10 @@ function loadDraft() {
       const previewId = id.replace('-image', '-preview');
       const preview = document.getElementById(previewId);
       if (preview) {
-        preview.querySelector('img').src = f.dataURL;
-        preview.querySelector('.filename').textContent = f.filename;
+        const img = preview.querySelector('img');
+        const fname = preview.querySelector('.filename');
+        if (img) img.src = f.dataURL;
+        if (fname) fname.textContent = f.filename;
         preview.classList.add('has-file');
       }
     });
@@ -1636,10 +1640,10 @@ function toast(title, body, type = 'success') {
 // INIT
 // =========================================================================
 
-buildStoriesGrid();
 bindFileInputs();
 
 document.getElementById('week-date').addEventListener('change', updateFolderName);
+document.getElementById('week-date').addEventListener('input', updateFolderName);
 updateFolderName();
 
 // Track changes for auto-save
