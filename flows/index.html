@@ -139,7 +139,7 @@
         </div>
         <div class="header-meta-item">
           <div class="meta-label">In progress</div>
-          <div class="meta-value">10 flows</div>
+          <div class="meta-value">11 flows</div>
         </div>
         <div class="header-meta-item">
           <div class="meta-label">Approval contact</div>
@@ -153,40 +153,135 @@
       <div class="flow-week-group">
         <div class="flow-week-head">
           <span class="flow-week-num">Rollout week 1</span>
-          <span class="flow-week-count">2 flows</span>
+          <span class="flow-week-count">3 flows</span>
         </div>
         <section class="section flow-section">
           <div class="section-header">
-            <h2 class="section-title">Welcome Flow</h2>
+            <h2 class="section-title">Welcome Email 1</h2>
             <div class="section-header-meta">
-              <span class="status-pill is-building">Building</span>
-              <span class="section-meta">TalkBox > Automations</span>
+              <span class="status-pill is-review">In review</span>
+              <span class="section-meta">TalkBox > Automations > Welcome Flow</span>
             </div>
           </div>
           <div class="card">
             <div class="card-header">
               <div class="card-header-main">
-                <div class="card-title">Welcome Flow</div>
-                <div class="card-sub">Where it lives: TalkBox > Automations</div>
+                <div class="card-title">Welcome to Jordys</div>
+                <div class="card-sub">Sends immediately on signup</div>
               </div>
               <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value">Welcome to Jordys</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value">This was a great decision</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">Sends immediately on signup</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">TalkBox > Automations > Welcome Flow</div>
+              </div>
             </div>
             <div class="preview-wrap">
               <div class="preview-toolbar">
                 <span class="preview-toolbar-label">Flow preview</span>
-                <a class="preview-toolbar-link" href="welcome.html" target="_blank" rel="noopener">Open in new tab</a>
+                <a class="preview-toolbar-link" href="welcome-1.html" target="_blank" rel="noopener">Open in new tab</a>
               </div>
-              <iframe class="preview-frame" src="welcome.html" title="Welcome Flow preview"></iframe>
+              <iframe class="preview-frame" src="welcome-1.html" title="Welcome Email 1 preview"></iframe>
             </div>
-            <div class="approval-row" data-form="flow-welcome">
-            <form class="approval-form" data-form-id="flow-welcome" novalidate>
+            <div class="approval-row" data-form="flow-welcome-1">
+            <form class="approval-form" data-form-id="flow-welcome-1" novalidate>
               <input type="hidden" name="access_key" value="07799a89-dc1c-420f-b83d-2684932da1ad">
-              <input type="hidden" name="subject" value="TalkBox flow | Welcome Flow">
+              <input type="hidden" name="subject" value="TalkBox flow | Welcome Email 1">
               <input type="hidden" name="from_name" value="Jordy's Marketing Hub">
               <input type="text" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
 
               <div class="approval-collapsed">
-                <div class="approval-label">Welcome Flow sign-off</div>
+                <div class="approval-label">Welcome Email 1 sign-off</div>
+                <div class="approval-actions">
+                  <button type="button" class="btn btn-changes" data-action="changes">Request changes</button>
+                  <button type="button" class="btn btn-approve" data-action="approve">Approve</button>
+                </div>
+              </div>
+
+              <div class="approval-expanded" hidden>
+                <div class="approval-expanded-head">
+                  <div class="approval-mode" data-mode-text></div>
+                  <button type="button" class="approval-cancel" data-cancel>Cancel</button>
+                </div>
+                <input type="hidden" name="action" value="">
+                <textarea name="message" class="approval-message" rows="3" placeholder="Optional message"></textarea>
+                <div class="approval-send-row">
+                  <span class="approval-status" data-status></span>
+                  <button type="submit" class="btn btn-send">Send</button>
+                </div>
+              </div>
+
+              <div class="approval-thanks" hidden>
+                <span class="approval-thanks-tick">✓</span>
+                <span class="approval-thanks-text" data-thanks-text></span>
+              </div>
+            </form>
+          </div>
+          </div>
+        </section>
+        <section class="section flow-section">
+          <div class="section-header">
+            <h2 class="section-title">Welcome Email 2</h2>
+            <div class="section-header-meta">
+              <span class="status-pill is-review">In review</span>
+              <span class="section-meta">TalkBox > Automations > Welcome Flow</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-main">
+                <div class="card-title">Same Pizza. Better with Margaritas.</div>
+                <div class="card-sub">Sends 3 days after signup</div>
+              </div>
+              <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value">Same Pizza. Better with Margaritas.</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value">You should probably come back</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">Sends 3 days after signup</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">TalkBox > Automations > Welcome Flow</div>
+              </div>
+            </div>
+            <div class="preview-wrap">
+              <div class="preview-toolbar">
+                <span class="preview-toolbar-label">Flow preview</span>
+                <a class="preview-toolbar-link" href="welcome-2.html" target="_blank" rel="noopener">Open in new tab</a>
+              </div>
+              <iframe class="preview-frame" src="welcome-2.html" title="Welcome Email 2 preview"></iframe>
+            </div>
+            <div class="approval-row" data-form="flow-welcome-2">
+            <form class="approval-form" data-form-id="flow-welcome-2" novalidate>
+              <input type="hidden" name="access_key" value="07799a89-dc1c-420f-b83d-2684932da1ad">
+              <input type="hidden" name="subject" value="TalkBox flow | Welcome Email 2">
+              <input type="hidden" name="from_name" value="Jordy's Marketing Hub">
+              <input type="text" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+              <div class="approval-collapsed">
+                <div class="approval-label">Welcome Email 2 sign-off</div>
                 <div class="approval-actions">
                   <button type="button" class="btn btn-changes" data-action="changes">Request changes</button>
                   <button type="button" class="btn btn-approve" data-action="approve">Approve</button>
@@ -218,17 +313,35 @@
           <div class="section-header">
             <h2 class="section-title">Update Details</h2>
             <div class="section-header-meta">
-              <span class="status-pill is-building">Building</span>
+              <span class="status-pill is-review">In review</span>
               <span class="section-meta">TalkBox > Automations</span>
             </div>
           </div>
           <div class="card">
             <div class="card-header">
               <div class="card-header-main">
-                <div class="card-title">Update Details</div>
-                <div class="card-sub">Where it lives: TalkBox > Automations</div>
+                <div class="card-title">We know nothing about you</div>
+                <div class="card-sub">Sends on customer record creation</div>
               </div>
               <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value">We know nothing about you</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value">Honestly kinda weird</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">Sends on customer record creation</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">TalkBox > Automations</div>
+              </div>
             </div>
             <div class="preview-wrap">
               <div class="preview-toolbar">
@@ -290,10 +403,28 @@
           <div class="card">
             <div class="card-header">
               <div class="card-header-main">
-                <div class="card-title">Revisit 30</div>
-                <div class="card-sub">Where it lives: TalkBox > Automations</div>
+                <div class="card-title"><span class="tc-pill">To confirm</span></div>
+                <div class="card-sub">Sends 30 days after last visit</div>
               </div>
               <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">Sends 30 days after last visit</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">TalkBox > Automations</div>
+              </div>
             </div>
             <div class="preview-wrap">
               <div class="preview-toolbar">
@@ -349,10 +480,28 @@
           <div class="card">
             <div class="card-header">
               <div class="card-header-main">
-                <div class="card-title">Revisit 60</div>
-                <div class="card-sub">Where it lives: TalkBox > Automations</div>
+                <div class="card-title"><span class="tc-pill">To confirm</span></div>
+                <div class="card-sub">Sends 60 days after last visit</div>
               </div>
               <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">Sends 60 days after last visit</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">TalkBox > Automations</div>
+              </div>
             </div>
             <div class="preview-wrap">
               <div class="preview-toolbar">
@@ -414,10 +563,28 @@
           <div class="card">
             <div class="card-header">
               <div class="card-header-main">
-                <div class="card-title">Reactivate 60</div>
-                <div class="card-sub">Where it lives: TalkBox > Automations</div>
+                <div class="card-title"><span class="tc-pill">To confirm</span></div>
+                <div class="card-sub">Sends 60 days after last activity</div>
               </div>
               <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">Sends 60 days after last activity</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">TalkBox > Automations</div>
+              </div>
             </div>
             <div class="preview-wrap">
               <div class="preview-toolbar">
@@ -473,10 +640,28 @@
           <div class="card">
             <div class="card-header">
               <div class="card-header-main">
-                <div class="card-title">Reactivate 120</div>
-                <div class="card-sub">Where it lives: TalkBox > Automations</div>
+                <div class="card-title"><span class="tc-pill">To confirm</span></div>
+                <div class="card-sub">Sends 120 days after last activity</div>
               </div>
               <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">Sends 120 days after last activity</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">TalkBox > Automations</div>
+              </div>
             </div>
             <div class="preview-wrap">
               <div class="preview-toolbar">
@@ -538,10 +723,28 @@
           <div class="card">
             <div class="card-header">
               <div class="card-header-main">
-                <div class="card-title">Milestone 5</div>
-                <div class="card-sub">Where it lives: TalkBox > Automations</div>
+                <div class="card-title"><span class="tc-pill">To confirm</span></div>
+                <div class="card-sub">Sends after 5th visit</div>
               </div>
               <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">Sends after 5th visit</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">TalkBox > Automations</div>
+              </div>
             </div>
             <div class="preview-wrap">
               <div class="preview-toolbar">
@@ -597,10 +800,28 @@
           <div class="card">
             <div class="card-header">
               <div class="card-header-main">
-                <div class="card-title">Milestone 10</div>
-                <div class="card-sub">Where it lives: TalkBox > Automations</div>
+                <div class="card-title"><span class="tc-pill">To confirm</span></div>
+                <div class="card-sub">Sends after 10th visit</div>
               </div>
               <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">Sends after 10th visit</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">TalkBox > Automations</div>
+              </div>
             </div>
             <div class="preview-wrap">
               <div class="preview-toolbar">
@@ -662,10 +883,28 @@
           <div class="card">
             <div class="card-header">
               <div class="card-header-main">
-                <div class="card-title">Milestone 15</div>
-                <div class="card-sub">Where it lives: TalkBox > Automations</div>
+                <div class="card-title"><span class="tc-pill">To confirm</span></div>
+                <div class="card-sub">Sends after 15th visit</div>
               </div>
               <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">Sends after 15th visit</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">TalkBox > Automations</div>
+              </div>
             </div>
             <div class="preview-wrap">
               <div class="preview-toolbar">
@@ -721,10 +960,28 @@
           <div class="card">
             <div class="card-header">
               <div class="card-header-main">
-                <div class="card-title">Birthday Flow</div>
-                <div class="card-sub">Where it lives: TalkBox > Automations</div>
+                <div class="card-title"><span class="tc-pill">To confirm</span></div>
+                <div class="card-sub">Sends 7 days before customer birthday</div>
               </div>
               <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value"><span class="tc-pill">To confirm</span></div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">Sends 7 days before customer birthday</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">TalkBox > Automations</div>
+              </div>
             </div>
             <div class="preview-wrap">
               <div class="preview-toolbar">

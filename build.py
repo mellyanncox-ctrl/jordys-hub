@@ -89,18 +89,119 @@ def flow_mailto(flow_name: str, action: str) -> str:
 
 
 # Flows being built | edit this list as flows progress
-# status options: "building", "review", "live", "paused"
+# status options: "building", "review", "live", "paused", "queued"
+# Each entry represents ONE email. A multi-email flow (like Welcome) gets multiple entries.
 FLOWS = [
-    {"slug": "welcome",         "name": "Welcome Flow",         "where": "TalkBox > Automations", "week": 1, "status": "building"},
-    {"slug": "update-details",  "name": "Update Details",       "where": "TalkBox > Automations", "week": 1, "status": "building"},
-    {"slug": "revisit-30",      "name": "Revisit 30",           "where": "TalkBox > Automations", "week": 2, "status": "queued"},
-    {"slug": "revisit-60",      "name": "Revisit 60",           "where": "TalkBox > Automations", "week": 2, "status": "queued"},
-    {"slug": "reactivate-60",   "name": "Reactivate 60",        "where": "TalkBox > Automations", "week": 3, "status": "queued"},
-    {"slug": "reactivate-120",  "name": "Reactivate 120",       "where": "TalkBox > Automations", "week": 3, "status": "queued"},
-    {"slug": "milestone-5",     "name": "Milestone 5",          "where": "TalkBox > Automations", "week": 4, "status": "queued"},
-    {"slug": "milestone-10",    "name": "Milestone 10",         "where": "TalkBox > Automations", "week": 4, "status": "queued"},
-    {"slug": "milestone-15",    "name": "Milestone 15",         "where": "TalkBox > Automations", "week": 5, "status": "queued"},
-    {"slug": "birthday",        "name": "Birthday Flow",        "where": "TalkBox > Automations", "week": 5, "status": "queued"},
+    {
+        "slug": "welcome-1",
+        "name": "Welcome Email 1",
+        "where": "TalkBox > Automations > Welcome Flow",
+        "week": 1,
+        "status": "review",
+        "timing": "Sends immediately on signup",
+        "subject": "Welcome to Jordys",
+        "preview": "This was a great decision",
+    },
+    {
+        "slug": "welcome-2",
+        "name": "Welcome Email 2",
+        "where": "TalkBox > Automations > Welcome Flow",
+        "week": 1,
+        "status": "review",
+        "timing": "Sends 3 days after signup",
+        "subject": "Same Pizza. Better with Margaritas.",
+        "preview": "You should probably come back",
+    },
+    {
+        "slug": "update-details",
+        "name": "Update Details",
+        "where": "TalkBox > Automations",
+        "week": 1,
+        "status": "review",
+        "timing": "Sends on customer record creation",
+        "subject": "We know nothing about you",
+        "preview": "Honestly kinda weird",
+    },
+    {
+        "slug": "revisit-30",
+        "name": "Revisit 30",
+        "where": "TalkBox > Automations",
+        "week": 2,
+        "status": "queued",
+        "timing": "Sends 30 days after last visit",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "revisit-60",
+        "name": "Revisit 60",
+        "where": "TalkBox > Automations",
+        "week": 2,
+        "status": "queued",
+        "timing": "Sends 60 days after last visit",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "reactivate-60",
+        "name": "Reactivate 60",
+        "where": "TalkBox > Automations",
+        "week": 3,
+        "status": "queued",
+        "timing": "Sends 60 days after last activity",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "reactivate-120",
+        "name": "Reactivate 120",
+        "where": "TalkBox > Automations",
+        "week": 3,
+        "status": "queued",
+        "timing": "Sends 120 days after last activity",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "milestone-5",
+        "name": "Milestone 5",
+        "where": "TalkBox > Automations",
+        "week": 4,
+        "status": "queued",
+        "timing": "Sends after 5th visit",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "milestone-10",
+        "name": "Milestone 10",
+        "where": "TalkBox > Automations",
+        "week": 4,
+        "status": "queued",
+        "timing": "Sends after 10th visit",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "milestone-15",
+        "name": "Milestone 15",
+        "where": "TalkBox > Automations",
+        "week": 5,
+        "status": "queued",
+        "timing": "Sends after 15th visit",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
+    {
+        "slug": "birthday",
+        "name": "Birthday Flow",
+        "where": "TalkBox > Automations",
+        "week": 5,
+        "status": "queued",
+        "timing": "Sends 7 days before customer birthday",
+        "subject": "To confirm",
+        "preview": "To confirm",
+    },
 ]
 
 
@@ -269,6 +370,15 @@ def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page
 def tc():
     """Render a To Confirm pill."""
     return '<span class="tc-pill">To confirm</span>'
+
+
+def tc_or(value):
+    """Return value if it's set and not 'To confirm', otherwise a TC pill."""
+    if not value or str(value).strip().lower() == 'to confirm':
+        return tc()
+    # Escape angle brackets for HTML safety. (Subjects shouldn't contain HTML anyway.)
+    safe = str(value).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+    return safe
 
 
 def section_overview(week_full: str) -> str:
@@ -857,10 +967,28 @@ def flows_page() -> str:
           <div class="card">
             <div class="card-header">
               <div class="card-header-main">
-                <div class="card-title">{flow["name"]}</div>
-                <div class="card-sub">Where it lives: {flow["where"]}</div>
+                <div class="card-title">{tc_or(flow.get("subject"))}</div>
+                <div class="card-sub">{flow.get("timing", "")}</div>
               </div>
               <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value">{tc_or(flow.get("subject"))}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value">{tc_or(flow.get("preview"))}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">{tc_or(flow.get("timing"))}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">{flow["where"]}</div>
+              </div>
             </div>
             <div class="preview-wrap">
               <div class="preview-toolbar">
