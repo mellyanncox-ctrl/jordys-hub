@@ -184,6 +184,13 @@ a:hover { text-decoration: underline; }
   padding-bottom: 28px;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
+.brand-logo {
+  display: block;
+  width: 100%;
+  max-width: 160px;
+  height: auto;
+  margin-bottom: 12px;
+}
 .brand-mark {
   font-size: 11px;
   font-weight: 700;
@@ -1465,4 +1472,75 @@ a:hover { text-decoration: underline; }
   text-transform: uppercase;
   color: var(--terracotta);
   margin-top: auto;
+}
+
+/* ==========================================================================
+   HUB TILES (homepage)
+   ========================================================================== */
+
+.hub-tile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 980px) {
+  .hub-tile-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hub-tile {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.15s;
+  gap: 8px;
+  min-height: 180px;
+}
+
+.hub-tile:hover {
+  border-color: var(--terracotta);
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(26,26,26,0.04);
+}
+
+.hub-tile-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-bottom: 4px;
+}
+
+.hub-tile-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--dark);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+
+.hub-tile-sub {
+  font-size: 13px;
+  color: var(--mid);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.hub-tile-cta {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-top: auto;
+  padding-top: 12px;
 }

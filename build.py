@@ -457,27 +457,32 @@ def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page
         flows_href = "../../flows/"
         reports_href = "../../reports/"
         recurring_href = "../../recurring/"
+        logo_path = "../../assets/img/jordys-logo.webp"
     elif is_flows_page:
         home_href = "../index.html"
         flows_href = "index.html"
         reports_href = "../reports/"
         recurring_href = "../recurring/"
+        logo_path = "../assets/img/jordys-logo.webp"
     elif is_reports_page:
         home_href = "../index.html"
         flows_href = "../flows/"
         reports_href = "index.html"
         recurring_href = "../recurring/"
+        logo_path = "../assets/img/jordys-logo.webp"
     elif is_recurring_page:
         home_href = "../index.html"
         flows_href = "../flows/"
         reports_href = "../reports/"
         recurring_href = "index.html"
+        logo_path = "../assets/img/jordys-logo.webp"
     else:
         # homepage
         home_href = "index.html"
         flows_href = "flows/"
         reports_href = "reports/"
         recurring_href = "recurring/"
+        logo_path = "assets/img/jordys-logo.webp"
 
     # Build nav items grouped by past / current / upcoming relative to today's "current week"
     items = []
@@ -553,9 +558,8 @@ def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page
 
     return f'''  <aside class="sidebar">
     <div class="brand">
-      <div class="brand-mark">The Service Edit</div>
-      <div class="brand-name">Jordy's Casuarina</div>
-      <div class="brand-sub">Weekly marketing plan</div>
+      <img src="{logo_path}" alt="Jordy's" class="brand-logo" />
+      <div class="brand-sub">Marketing plan hub</div>
     </div>
 
     <div class="nav-section-title">Overview</div>
@@ -1044,7 +1048,7 @@ def home_page() -> str:
         )
         past_section = f'''      <section class="section-block">
         <div class="section-block-header">
-          <div class="section-block-num">02</div>
+          <div class="section-block-num">03</div>
           <div class="section-block-title">Past weeks</div>
           <div class="section-block-meta">{len(past_weeks)} archived</div>
         </div>
@@ -1055,7 +1059,7 @@ def home_page() -> str:
     else:
         past_section = '''      <section class="section-block">
         <div class="section-block-header">
-          <div class="section-block-num">02</div>
+          <div class="section-block-num">03</div>
           <div class="section-block-title">Past weeks</div>
           <div class="section-block-meta">Archive</div>
         </div>
@@ -1092,7 +1096,7 @@ def home_page() -> str:
       <div class="home-intro">
         <div class="intro-label">Marketing plan hub</div>
         <h1 class="intro-title">Hi Jordan | here's the plan for the week.</h1>
-        <p class="intro-sub">Each week you'll find one email campaign, two Instagram posts, five Instagram stories, and any website changes. Open the current week below to review and approve. TalkBox flows live on their own page | click "Flows" in the sidebar.</p>
+        <p class="intro-sub">Open the current week below to review this week's email, social and website changes. The flows, reports and recurring automations live on their own pages | jump to any of them from the sidebar or the tiles below.</p>
       </div>
 
       <a href="weeks/{current["iso"]}/index.html" class="hero">
@@ -1102,11 +1106,39 @@ def home_page() -> str:
         <span class="hero-cta">Open this week's plan →</span>
       </a>
 
+      <section class="section-block">
+        <div class="section-block-header">
+          <div class="section-block-num">02</div>
+          <div class="section-block-title">Hub sections</div>
+          <div class="section-block-meta">3 areas</div>
+        </div>
+        <div class="hub-tile-grid">
+          <a href="reports/" class="hub-tile">
+            <div class="hub-tile-label">Performance</div>
+            <div class="hub-tile-title">Reports</div>
+            <div class="hub-tile-sub">{len(REPORTS)} report{"s" if len(REPORTS) != 1 else ""} | campaign attribution and monthly summaries</div>
+            <span class="hub-tile-cta">Open reports →</span>
+          </a>
+          <a href="flows/" class="hub-tile">
+            <div class="hub-tile-label">Always-on</div>
+            <div class="hub-tile-title">Date Triggered Flows</div>
+            <div class="hub-tile-sub">{len(FLOWS)} flow{"s" if len(FLOWS) != 1 else ""} | welcome, revisit, milestone, birthday and more</div>
+            <span class="hub-tile-cta">Open flows →</span>
+          </a>
+          <a href="recurring/" class="hub-tile">
+            <div class="hub-tile-label">Always-on</div>
+            <div class="hub-tile-title">Recurring Flows</div>
+            <div class="hub-tile-sub">{len(RECURRING)} flow{"s" if len(RECURRING) != 1 else ""} | seasonal sends across Christmas, EOFY and more</div>
+            <span class="hub-tile-cta">Open recurring →</span>
+          </a>
+        </div>
+      </section>
+
 {past_section}
 
       <section class="section-block">
         <div class="section-block-header">
-          <div class="section-block-num">03</div>
+          <div class="section-block-num">04</div>
           <div class="section-block-title">Upcoming weeks</div>
           <div class="section-block-meta">{len(upcoming_weeks)} scheduled</div>
         </div>
@@ -1502,9 +1534,8 @@ def template_page() -> str:
     """Template at _template/index.html | same shape as a week page but with explicit TEMPLATE wording."""
     sidebar_template = '''  <aside class="sidebar">
     <div class="brand">
-      <div class="brand-mark">The Service Edit</div>
-      <div class="brand-name">Jordy's Casuarina</div>
-      <div class="brand-sub">Weekly marketing plan</div>
+      <img src="../assets/img/jordys-logo.webp" alt="Jordy's" class="brand-logo" />
+      <div class="brand-sub">Marketing plan hub</div>
     </div>
     <div class="nav-section-title">Overview</div>
     <ul class="nav-list">
