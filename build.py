@@ -1530,6 +1530,242 @@ def recurring_page() -> str:
 </html>'''
 
 
+def _status_count(items: list, status: str) -> int:
+    return sum(1 for i in items if i.get("status") == status)
+
+
+def admin_page() -> str:
+    """Generate the admin page by injecting cadence stats + new how-to sections
+    into admin/_source.html. The source file is the static template; this function
+    only fills in the dynamic bits."""
+    source_path = ROOT / "admin" / "_source.html"
+    source = source_path.read_text()
+
+    # === CADENCE SECTION ===========================================
+    # Auto-counts pulled from FLOWS, RECURRING, REPORTS lists.
+    flows_review = _status_count(FLOWS, "review")
+    flows_live = _status_count(FLOWS, "live")
+    flows_building = _status_count(FLOWS, "building")
+    flows_queued = _status_count(FLOWS, "queued")
+
+    recurring_review = _status_count(RECURRING, "review")
+    recurring_live = _status_count(RECURRING, "live")
+    recurring_building = _status_count(RECURRING, "building")
+    recurring_queued = _status_count(RECURRING, "queued")
+
+    # Most recent report
+    latest_report = sorted(REPORTS, key=lambda r: r["sort_date"], reverse=True)[0] if REPORTS else None
+    latest_report_label = latest_report["date"] if latest_report else "None yet"
+
+    cadence_html = f'''  <!-- CADENCE -->
+  <section class="section-block">
+    <div class="section-head">
+      <div class="section-num">00</div>
+      <h2 class="section-title">This week at a glance</h2>
+    </div>
+
+    <div class="cadence-grid">
+      <div class="cadence-card">
+        <div class="cadence-card-label">Flows in review</div>
+        <div class="cadence-card-value">{flows_review}</div>
+        <div class="cadence-card-sub">awaiting Jordan's approval</div>
+      </div>
+      <div class="cadence-card">
+        <div class="cadence-card-label">Flows live</div>
+        <div class="cadence-card-value">{flows_live}</div>
+        <div class="cadence-card-sub">running in TalkBox</div>
+      </div>
+      <div class="cadence-card">
+        <div class="cadence-card-label">Recurring queued</div>
+        <div class="cadence-card-value">{recurring_queued}</div>
+        <div class="cadence-card-sub">seasonal flows to build</div>
+      </div>
+      <div class="cadence-card">
+        <div class="cadence-card-label">Latest report</div>
+        <div class="cadence-card-value" style="font-size: 18px; line-height: 1.3;">{latest_report_label}</div>
+        <div class="cadence-card-sub">{len(REPORTS)} reports total</div>
+      </div>
+    </div>
+
+    <div class="cadence-breakdown">
+      <div class="cadence-breakdown-title">Date Triggered Flows ({len(FLOWS)} total)</div>
+      <div class="cadence-breakdown-row">
+        <span class="cadence-breakdown-status is-live">Live</span>
+        <span class="cadence-breakdown-count">{flows_live}</span>
+      </div>
+      <div class="cadence-breakdown-row">
+        <span class="cadence-breakdown-status is-review">In review</span>
+        <span class="cadence-breakdown-count">{flows_review}</span>
+      </div>
+      <div class="cadence-breakdown-row">
+        <span class="cadence-breakdown-status is-building">Building</span>
+        <span class="cadence-breakdown-count">{flows_building}</span>
+      </div>
+      <div class="cadence-breakdown-row">
+        <span class="cadence-breakdown-status is-queued">Queued</span>
+        <span class="cadence-breakdown-count">{flows_queued}</span>
+      </div>
+    </div>
+
+    <div class="cadence-breakdown" style="margin-top: 12px;">
+      <div class="cadence-breakdown-title">Recurring Flows ({len(RECURRING)} total)</div>
+      <div class="cadence-breakdown-row">
+        <span class="cadence-breakdown-status is-live">Live</span>
+        <span class="cadence-breakdown-count">{recurring_live}</span>
+      </div>
+      <div class="cadence-breakdown-row">
+        <span class="cadence-breakdown-status is-review">In review</span>
+        <span class="cadence-breakdown-count">{recurring_review}</span>
+      </div>
+      <div class="cadence-breakdown-row">
+        <span class="cadence-breakdown-status is-building">Building</span>
+        <span class="cadence-breakdown-count">{recurring_building}</span>
+      </div>
+      <div class="cadence-breakdown-row">
+        <span class="cadence-breakdown-status is-queued">Queued</span>
+        <span class="cadence-breakdown-count">{recurring_queued}</span>
+      </div>
+    </div>
+  </section>'''
+
+    # === NEW WORKFLOW SECTIONS =====================================
+    new_sections_html = '''  <!-- HOW TO ADD A FLOW -->
+  <section class="section-block">
+    <div class="section-head">
+      <div class="section-num">03</div>
+      <h2 class="section-title">How to add a date triggered flow</h2>
+    </div>
+    <ol class="step-list">
+      <li class="step">
+        <div class="step-title">Build the email HTML in your editor</div>
+        <div class="step-body">
+          Use the Welcome template as a base. Subject + preview lines should start with a capital letter, body copy stays lowercase Jordy voice. Strip em dashes (use <code>|</code> instead).
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-title">Drop the file into <code>flows/</code></div>
+        <div class="step-body">
+          Save as <code>flows/&lt;slug&gt;.html</code> (e.g. <code>welcome-1.html</code>, <code>milestone-5.html</code>). The slug becomes the URL.
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-title">Add it to the FLOWS list in build.py</div>
+        <div class="step-body">
+          At the top of <code>build.py</code>, add a new entry to the <code>FLOWS</code> array. Set <code>status</code> to <code>"review"</code> when ready for Jordan, or <code>"building"</code> while still drafting.
+          <code class="cmd">{
+    "slug": "milestone-20",
+    "name": "Milestone 20",
+    "where": "TalkBox &gt; Automations &gt; Milestone Flow",
+    "week": 5,
+    "status": "review",
+    "timing": "Sends within 24 hours of 20th visit",
+    "subject": "You're basically family",
+    "preview": "20 visits is a lot",
+},</code>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-title">Rebuild and push</div>
+        <div class="step-body">
+          <code class="cmd">cd ~/APPS/jordys-hub
+python3 build.py
+git add .
+git commit -m "Add &lt;flow name&gt;"
+git push</code>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-title">Send Jordan the link</div>
+        <div class="step-body">
+          The new card appears at <code>/flows/</code>. Jordan reviews + approves inline; you get the email.
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- HOW TO ADD A RECURRING FLOW -->
+  <section class="section-block">
+    <div class="section-head">
+      <div class="section-num">04</div>
+      <h2 class="section-title">How to add a recurring flow</h2>
+    </div>
+    <ol class="step-list">
+      <li class="step">
+        <div class="step-title">Build the email HTML</div>
+        <div class="step-body">
+          Same template pattern as date triggered flows. Save to <code>recurring/&lt;slug&gt;.html</code>.
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-title">Add to the RECURRING list in build.py</div>
+        <div class="step-body">
+          The RECURRING array sits below FLOWS. Pick a <code>theme</code> (Christmas / EOFY / Other) and set <code>send_order</code> to position it within that theme.
+          <code class="cmd">{
+    "slug": "valentines",
+    "name": "Valentine's Day",
+    "theme": "Other",
+    "send_label": "Every year on February 7th at 11:00 AM",
+    "send_order": 4,
+    "recipients": "All contacts",
+    "where": "TalkBox &gt; Recurring",
+    "status": "review",
+    "subject": "Couples that pizza together",
+    "preview": "Stay together",
+},</code>
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-title">Rebuild and push</div>
+        <div class="step-body">
+          Same as flows: <code>python3 build.py</code> then <code>git add . && git commit && git push</code>.
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- HOW TO ADD A REPORT -->
+  <section class="section-block">
+    <div class="section-head">
+      <div class="section-num">05</div>
+      <h2 class="section-title">How to add a campaign report</h2>
+    </div>
+    <ol class="step-list">
+      <li class="step">
+        <div class="step-title">Save the report HTML</div>
+        <div class="step-body">
+          Drop it into <code>reports/&lt;slug&gt;.html</code> (e.g. <code>week-5.html</code>, <code>may-2026.html</code>). The full report opens in a new tab when Jordan clicks "Open report".
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-title">Add to the REPORTS list in build.py</div>
+        <div class="step-body">
+          <code class="cmd">{
+    "slug": "week-5",
+    "title": "Campaign 5",
+    "subtitle": "Weekly campaign report",
+    "date": "Week 5",
+    "sort_date": "2026-05-12",
+    "kind": "weekly",
+    "summary": "Per-campaign attribution: Klaviyo opens and clicks, dine-in matches, me&u orders.",
+},</code>
+          <code>sort_date</code> orders the cards (newest first). <code>kind</code> is <code>"weekly"</code> or <code>"monthly"</code>.
+        </div>
+      </li>
+      <li class="step">
+        <div class="step-title">Rebuild and push</div>
+        <div class="step-body">
+          The card auto-appears on <code>/reports/</code> in the right section.
+        </div>
+      </li>
+    </ol>
+  </section>'''
+
+    # Inject and write
+    output = source.replace("<!-- INJECT:CADENCE -->", cadence_html)
+    output = output.replace("<!-- INJECT:NEW_SECTIONS -->", new_sections_html)
+    return output
+
+
 def template_page() -> str:
     """Template at _template/index.html | same shape as a week page but with explicit TEMPLATE wording."""
     sidebar_template = '''  <aside class="sidebar">
@@ -1662,7 +1898,14 @@ def main():
             f.write_text(flow_placeholder())
     print("✓ recurring/")
 
-    print(f"\nBuilt {len(WEEKS)} week folders + flows + reports + recurring")
+    # Admin | injects cadence stats + new sections into admin/_source.html
+    # and writes admin/index.html. Source file is the template; index is generated.
+    admin_dir = ROOT / "admin"
+    if (admin_dir / "_source.html").exists():
+        (admin_dir / "index.html").write_text(admin_page())
+        print("✓ admin/")
+
+    print(f"\nBuilt {len(WEEKS)} week folders + flows + reports + recurring + admin")
 
 
 if __name__ == "__main__":
