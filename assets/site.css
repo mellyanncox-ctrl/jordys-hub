@@ -69,9 +69,108 @@ a:hover { text-decoration: underline; }
   .layout-with-flows .flows-panel { display: none; }
 }
 
+/* ==========================================================================
+   MOBILE: HAMBURGER + OFF-CANVAS SIDEBAR
+   ========================================================================== */
+
+/* Mobile-only top bar | hidden on desktop */
+.mobile-bar {
+  display: none;
+}
+
+/* Mobile-only nav backdrop | hidden on desktop */
+.nav-backdrop {
+  display: none;
+}
+
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }
-  .sidebar { position: static; height: auto; }
+
+  /* Top bar appears */
+  .mobile-bar {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--dark);
+    color: var(--white);
+    padding: 14px 18px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .mobile-bar-logo {
+    height: 32px;
+    width: auto;
+  }
+  .mobile-bar-toggle {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--white);
+    padding: 8px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mobile-bar-toggle:hover { background: rgba(255,255,255,0.05); }
+  .mobile-bar-icon {
+    width: 22px;
+    height: 16px;
+    position: relative;
+    display: inline-block;
+  }
+  .mobile-bar-icon span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: var(--white);
+    border-radius: 1px;
+    transition: all 0.2s;
+  }
+  .mobile-bar-icon span:nth-child(1) { top: 0; }
+  .mobile-bar-icon span:nth-child(2) { top: 7px; }
+  .mobile-bar-icon span:nth-child(3) { top: 14px; }
+
+  /* Sidebar becomes an off-canvas drawer */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    max-width: 85%;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease-out;
+    z-index: 100;
+    overflow-y: auto;
+    box-shadow: 0 0 24px rgba(0,0,0,0.3);
+  }
+  body.is-nav-open .sidebar {
+    transform: translateX(0);
+  }
+
+  /* Backdrop behind drawer */
+  .nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 90;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-out;
+  }
+  body.is-nav-open .nav-backdrop {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  /* Lock body scroll while drawer is open */
+  body.is-nav-open {
+    overflow: hidden;
+  }
 }
 
 /* ==========================================================================

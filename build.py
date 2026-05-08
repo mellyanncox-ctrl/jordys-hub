@@ -556,7 +556,16 @@ def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page
       </a>
     </div>'''
 
-    return f'''  <aside class="sidebar">
+    return f'''  <header class="mobile-bar">
+    <a href="{home_href}" class="mobile-bar-logo-link" aria-label="Home">
+      <img src="{logo_path}" alt="Jordy's" class="mobile-bar-logo" />
+    </a>
+    <button type="button" class="mobile-bar-toggle" aria-label="Open menu" aria-expanded="false">
+      <span class="mobile-bar-icon" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+  </header>
+  <div class="nav-backdrop" aria-hidden="true"></div>
+  <aside class="sidebar">
     <div class="brand">
       <img src="{logo_path}" alt="Jordy's" class="brand-logo" />
       <div class="brand-sub">Marketing plan hub</div>
@@ -858,6 +867,7 @@ def week_page(week: dict) -> str:
 </div>
 
 <script src="../../assets/approval.js"></script>
+<script src="../../assets/nav.js"></script>
 </body>
 </html>'''
 
@@ -1151,6 +1161,7 @@ def home_page() -> str:
   </main>
 </div>
 
+<script src="assets/nav.js"></script>
 </body>
 </html>'''
 
@@ -1307,6 +1318,7 @@ def flows_page() -> str:
 </div>
 
 <script src="../assets/approval.js"></script>
+<script src="../assets/nav.js"></script>
 </body>
 </html>'''
 
@@ -1405,6 +1417,7 @@ def reports_page() -> str:
   </main>
 </div>
 
+<script src="../assets/nav.js"></script>
 </body>
 </html>'''
 
@@ -1526,6 +1539,7 @@ def recurring_page() -> str:
 </div>
 
 <script src="../assets/approval.js"></script>
+<script src="../assets/nav.js"></script>
 </body>
 </html>'''
 
@@ -1839,6 +1853,7 @@ def template_page() -> str:
 </div>
 
 <script src="../assets/approval.js"></script>
+<script src="../assets/nav.js"></script>
 </body>
 </html>'''
 
