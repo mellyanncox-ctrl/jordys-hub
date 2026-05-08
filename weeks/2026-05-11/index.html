@@ -182,12 +182,39 @@
             </div>
             <iframe class="preview-frame" src="campaign.html" title="Email campaign preview"></iframe>
           </div>
-          <div class="approval-row">
-            <div class="approval-label">Campaign sign-off</div>
-            <div class="approval-actions">
-              <a class="btn btn-changes" href="mailto:hello@theserviceedit.com?subject=Week%20of%2011%20May%202026%20%7C%20Email%20campaign%20%7C%20Request%20changes&body=Hi%20Mel%2C%0A%0ARe%3A%20Email%20campaign%20for%20week%20of%2011%20May%202026%0A%0A">Request changes</a>
-              <a class="btn btn-approve" href="mailto:hello@theserviceedit.com?subject=Week%20of%2011%20May%202026%20%7C%20Email%20campaign%20%7C%20Approve&body=Hi%20Mel%2C%0A%0ARe%3A%20Email%20campaign%20for%20week%20of%2011%20May%202026%0A%0A">Approve campaign</a>
-            </div>
+          <div class="approval-row" data-form="email-mon-11-may-2026">
+            <form class="approval-form" data-form-id="email-mon-11-may-2026" novalidate>
+              <input type="hidden" name="access_key" value="07799a89-dc1c-420f-b83d-2684932da1ad">
+              <input type="hidden" name="subject" value="Week of Mon 11 May 2026 | Email campaign">
+              <input type="hidden" name="from_name" value="Jordy's Marketing Hub">
+              <input type="text" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+              <div class="approval-collapsed">
+                <div class="approval-label">Campaign sign-off</div>
+                <div class="approval-actions">
+                  <button type="button" class="btn btn-changes" data-action="changes">Request changes</button>
+                  <button type="button" class="btn btn-approve" data-action="approve">Approve</button>
+                </div>
+              </div>
+
+              <div class="approval-expanded" hidden>
+                <div class="approval-expanded-head">
+                  <div class="approval-mode" data-mode-text></div>
+                  <button type="button" class="approval-cancel" data-cancel>Cancel</button>
+                </div>
+                <input type="hidden" name="action" value="">
+                <textarea name="message" class="approval-message" rows="3" placeholder="Optional message"></textarea>
+                <div class="approval-send-row">
+                  <span class="approval-status" data-status></span>
+                  <button type="submit" class="btn btn-send">Send</button>
+                </div>
+              </div>
+
+              <div class="approval-thanks" hidden>
+                <span class="approval-thanks-tick">&#10003;</span>
+                <span class="approval-thanks-text" data-thanks-text></span>
+              </div>
+            </form>
           </div>
         </div>
       </section>
@@ -230,12 +257,39 @@
             </div>
             <iframe class="preview-frame" src="website.html" title="Website update preview"></iframe>
           </div>
-          <div class="approval-row">
-            <div class="approval-label">Website update sign-off</div>
-            <div class="approval-actions">
-              <a class="btn btn-changes" href="mailto:hello@theserviceedit.com?subject=Week%20of%2011%20May%202026%20%7C%20Website%20updates%20%7C%20Request%20changes&body=Hi%20Mel%2C%0A%0ARe%3A%20Website%20updates%20for%20week%20of%2011%20May%202026%0A%0A">Request changes</a>
-              <a class="btn btn-approve" href="mailto:hello@theserviceedit.com?subject=Week%20of%2011%20May%202026%20%7C%20Website%20updates%20%7C%20Approve&body=Hi%20Mel%2C%0A%0ARe%3A%20Website%20updates%20for%20week%20of%2011%20May%202026%0A%0A">Approve update</a>
-            </div>
+          <div class="approval-row" data-form="website-mon-11-may-2026">
+            <form class="approval-form" data-form-id="website-mon-11-may-2026" novalidate>
+              <input type="hidden" name="access_key" value="07799a89-dc1c-420f-b83d-2684932da1ad">
+              <input type="hidden" name="subject" value="Week of Mon 11 May 2026 | Website update">
+              <input type="hidden" name="from_name" value="Jordy's Marketing Hub">
+              <input type="text" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+              <div class="approval-collapsed">
+                <div class="approval-label">Website update sign-off</div>
+                <div class="approval-actions">
+                  <button type="button" class="btn btn-changes" data-action="changes">Request changes</button>
+                  <button type="button" class="btn btn-approve" data-action="approve">Approve</button>
+                </div>
+              </div>
+
+              <div class="approval-expanded" hidden>
+                <div class="approval-expanded-head">
+                  <div class="approval-mode" data-mode-text></div>
+                  <button type="button" class="approval-cancel" data-cancel>Cancel</button>
+                </div>
+                <input type="hidden" name="action" value="">
+                <textarea name="message" class="approval-message" rows="3" placeholder="Optional message"></textarea>
+                <div class="approval-send-row">
+                  <span class="approval-status" data-status></span>
+                  <button type="submit" class="btn btn-send">Send</button>
+                </div>
+              </div>
+
+              <div class="approval-thanks" hidden>
+                <span class="approval-thanks-tick">&#10003;</span>
+                <span class="approval-thanks-text" data-thanks-text></span>
+              </div>
+            </form>
           </div>
         </div>
       </section>
@@ -244,5 +298,7 @@
   </main>
 </div>
 
+<script src="../../assets/approval.js"></script>
+<script src="../../assets/nav.js"></script>
 </body>
 </html>

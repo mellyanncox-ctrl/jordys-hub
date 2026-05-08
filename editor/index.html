@@ -1050,6 +1050,46 @@ function mailtoLink(weekFull, section, action) {
   return `mailto:${APPROVAL_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 
+// Web3Forms inline approval form | mirrors approval_form() in build.py
+const WEB3FORMS_ACCESS_KEY = '07799a89-dc1c-420f-b83d-2684932da1ad';
+function approvalForm(formId, subject, label) {
+  const safeSubject = subject.replace(/"/g, '&quot;');
+  return `<div class="approval-row" data-form="${formId}">
+            <form class="approval-form" data-form-id="${formId}" novalidate>
+              <input type="hidden" name="access_key" value="${WEB3FORMS_ACCESS_KEY}">
+              <input type="hidden" name="subject" value="${safeSubject}">
+              <input type="hidden" name="from_name" value="Jordy's Marketing Hub">
+              <input type="text" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+              <div class="approval-collapsed">
+                <div class="approval-label">${label}</div>
+                <div class="approval-actions">
+                  <button type="button" class="btn btn-changes" data-action="changes">Request changes</button>
+                  <button type="button" class="btn btn-approve" data-action="approve">Approve</button>
+                </div>
+              </div>
+
+              <div class="approval-expanded" hidden>
+                <div class="approval-expanded-head">
+                  <div class="approval-mode" data-mode-text></div>
+                  <button type="button" class="approval-cancel" data-cancel>Cancel</button>
+                </div>
+                <input type="hidden" name="action" value="">
+                <textarea name="message" class="approval-message" rows="3" placeholder="Optional message"></textarea>
+                <div class="approval-send-row">
+                  <span class="approval-status" data-status></span>
+                  <button type="submit" class="btn btn-send">Send</button>
+                </div>
+              </div>
+
+              <div class="approval-thanks" hidden>
+                <span class="approval-thanks-tick">&#10003;</span>
+                <span class="approval-thanks-text" data-thanks-text></span>
+              </div>
+            </form>
+          </div>`;
+}
+
 function imgOrPlaceholder(filename, alt, helperText) {
   // We always include the <img> tag with the right filename.
   // The site CSS uses :has(img) and onerror="this.remove()" to handle missing images.
@@ -1210,13 +1250,7 @@ function generateIndexHtml() {
             </div>
             <iframe class="preview-frame" src="campaign.html" title="Email campaign preview"></iframe>
           </div>
-          <div class="approval-row">
-            <div class="approval-label">Campaign sign-off</div>
-            <div class="approval-actions">
-              <a class="btn btn-changes" href="${mailtoLink(weekFull, 'Email campaign', 'Request changes')}">Request changes</a>
-              <a class="btn btn-approve" href="${mailtoLink(weekFull, 'Email campaign', 'Approve')}">Approve campaign</a>
-            </div>
-          </div>
+          ${approvalForm(`email-${weekFull.replace(/ /g, '-').toLowerCase()}`, `Week of ${weekFull} | Email campaign`, 'Campaign sign-off')}
         </div>
       </section>`;
 
@@ -1332,13 +1366,7 @@ ${storiesGridHtml}
             </div>
             <iframe class="preview-frame" src="website.html" title="Website update preview"></iframe>
           </div>
-          <div class="approval-row">
-            <div class="approval-label">Website update sign-off</div>
-            <div class="approval-actions">
-              <a class="btn btn-changes" href="${mailtoLink(weekFull, 'Website updates', 'Request changes')}">Request changes</a>
-              <a class="btn btn-approve" href="${mailtoLink(weekFull, 'Website updates', 'Approve')}">Approve update</a>
-            </div>
-          </div>
+          ${approvalForm(`website-${weekFull.replace(/ /g, '-').toLowerCase()}`, `Week of ${weekFull} | Website update`, 'Website update sign-off')}
         </div>
       </section>`;
 
@@ -1389,6 +1417,8 @@ ${websiteHtml}
   </main>
 </div>
 
+<script src="../../assets/approval.js"></script>
+<script src="../../assets/nav.js"></script>
 </body>
 </html>`;
 }
