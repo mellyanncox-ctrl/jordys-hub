@@ -400,6 +400,30 @@ RECURRING = [
 ]
 
 
+# Website updates | manually populated as you actually do website work.
+# 'week_iso' links the update to a specific week page (use null/empty if it's not tied to a campaign week).
+# 'live_date' is when it goes live on Squarespace (display string, not for sorting).
+# 'sort_date' is YYYY-MM-DD for ordering on the /websites/ page (newest first).
+# 'page' is which Squarespace page or section was updated.
+# 'description' is what changed.
+# 'url' is the public URL on Jordy's site.
+# 'preview_file' is the filename inside /websites/ that holds the HTML preview, or null if no preview.
+WEBSITE_UPDATES = [
+    # Example entry (delete or replace when you do your first one):
+    # {
+    #     "slug": "menu-refresh",
+    #     "title": "Menu page refresh",
+    #     "week_iso": "2026-05-04",
+    #     "live_date": "Mon 4 May 2026",
+    #     "sort_date": "2026-05-04",
+    #     "page": "Menu",
+    #     "description": "Updated pricing on pizzas, added two new specials.",
+    #     "url": "https://jordyscasuarina.com/menu",
+    #     "preview_file": "menu-refresh.html",
+    # },
+]
+
+
 def flows_section_homepage() -> str:
     cards = ""
     for flow in FLOWS:
@@ -438,43 +462,56 @@ def flows_section_homepage() -> str:
 {cards}      </section>'''
 
 
-def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page: bool = False, is_reports_page: bool = False, is_recurring_page: bool = False) -> str:
+def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page: bool = False, is_reports_page: bool = False, is_recurring_page: bool = False, is_websites_page: bool = False) -> str:
     """Build sidebar nav. active_iso is None for homepage, or week iso for week pages.
     show_admin renders an admin shortcut at the bottom (homepage only).
     is_flows_page highlights the Flows link instead of Home.
     is_reports_page highlights the Reports link.
-    is_recurring_page highlights the Recurring link."""
-    on_home = active_iso is None and not is_flows_page and not is_reports_page and not is_recurring_page
+    is_recurring_page highlights the Recurring link.
+    is_websites_page highlights the Websites link."""
+    on_home = active_iso is None and not is_flows_page and not is_reports_page and not is_recurring_page and not is_websites_page
     home_class = "is-current" if on_home else ""
     flows_class = "is-current" if is_flows_page else ""
     reports_class = "is-current" if is_reports_page else ""
     recurring_class = "is-current" if is_recurring_page else ""
+    websites_class = "is-current" if is_websites_page else ""
 
-    # Path depth: homepage = 0, /flows/ /reports/ /recurring/ = 1, /weeks/YYYY-MM-DD/ = 2
+    # Path depth: homepage = 0, /flows/ /reports/ /recurring/ /websites/ = 1, /weeks/YYYY-MM-DD/ = 2
     if active_iso:
         # week page, 2 levels deep
         home_href = "../../index.html"
         flows_href = "../../flows/"
         reports_href = "../../reports/"
         recurring_href = "../../recurring/"
+        websites_href = "../../websites/"
         logo_path = "../../assets/img/jordys-logo.webp"
     elif is_flows_page:
         home_href = "../index.html"
         flows_href = "index.html"
         reports_href = "../reports/"
         recurring_href = "../recurring/"
+        websites_href = "../websites/"
         logo_path = "../assets/img/jordys-logo.webp"
     elif is_reports_page:
         home_href = "../index.html"
         flows_href = "../flows/"
         reports_href = "index.html"
         recurring_href = "../recurring/"
+        websites_href = "../websites/"
         logo_path = "../assets/img/jordys-logo.webp"
     elif is_recurring_page:
         home_href = "../index.html"
         flows_href = "../flows/"
         reports_href = "../reports/"
         recurring_href = "index.html"
+        websites_href = "../websites/"
+        logo_path = "../assets/img/jordys-logo.webp"
+    elif is_websites_page:
+        home_href = "../index.html"
+        flows_href = "../flows/"
+        reports_href = "../reports/"
+        recurring_href = "../recurring/"
+        websites_href = "index.html"
         logo_path = "../assets/img/jordys-logo.webp"
     else:
         # homepage
@@ -482,6 +519,7 @@ def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page
         flows_href = "flows/"
         reports_href = "reports/"
         recurring_href = "recurring/"
+        websites_href = "websites/"
         logo_path = "assets/img/jordys-logo.webp"
 
     # Build nav items grouped by past / current / upcoming relative to today's "current week"
@@ -597,6 +635,12 @@ def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page
           <span class="nav-meta">Always-on</span>
         </a>
       </li>
+      <li class="nav-item {websites_class}">
+        <a href="{websites_href}">
+          <span class="nav-date">Websites</span>
+          <span class="nav-meta">Updates</span>
+        </a>
+      </li>
     </ul>
 
     <div class="nav-section-title">Plan weeks</div>
@@ -658,7 +702,7 @@ def section_email_campaign(week_full: str) -> str:
     form_id = f"email-{week_slug}"
     return f'''      <section class="section">
         <div class="section-header">
-          <div class="section-num">02</div>
+          <div class="section-num">01</div>
           <h2 class="section-title">Email Campaign</h2>
         </div>
         <div class="card">
@@ -765,54 +809,67 @@ def section_ig_stories() -> str:
       </section>'''
 
 
-def section_website(week_full: str) -> str:
+def section_website(week_full: str, week_iso: str) -> str:
+    """Return website update section ONLY if there's a WEBSITE_UPDATES entry for this week.
+    Otherwise return empty string (section is hidden)."""
+    update = next((u for u in WEBSITE_UPDATES if u.get("week_iso") == week_iso), None)
+    if not update:
+        return ""
+
     week_slug = week_full.replace(' ', '-').lower()
     form_id = f"website-{week_slug}"
+    preview_file = update.get("preview_file") or "website.html"
+    url_value = update.get("url") or "To confirm"
+    url_display = f'<a href="{url_value}" target="_blank" rel="noopener">{url_value}</a>' if update.get("url") else tc()
+
     return f'''      <section class="section">
         <div class="section-header">
-          <div class="section-num">05</div>
-          <h2 class="section-title">Website Updates</h2>
+          <div class="section-num">02</div>
+          <h2 class="section-title">Website Update</h2>
         </div>
         <div class="card">
           <div class="card-header">
             <div class="card-header-main">
-              <div class="card-title">{tc()}</div>
-              <div class="card-sub">Page or section: {tc()}</div>
+              <div class="card-title">{update["title"]}</div>
+              <div class="card-sub">Page: {update["page"]}</div>
             </div>
             <span class="card-tag is-website">Website</span>
           </div>
           <div class="meta-grid">
             <div class="meta-cell">
               <div class="meta-label">What's changing</div>
-              <div class="meta-value">{tc()}</div>
+              <div class="meta-value">{update["description"]}</div>
             </div>
             <div class="meta-cell">
-              <div class="meta-label">Why</div>
-              <div class="meta-value">{tc()}</div>
+              <div class="meta-label">Page</div>
+              <div class="meta-value">{update["page"]}</div>
             </div>
             <div class="meta-cell">
               <div class="meta-label">Live date</div>
-              <div class="meta-value">{tc()}</div>
+              <div class="meta-value">{update["live_date"]}</div>
             </div>
             <div class="meta-cell">
               <div class="meta-label">URL</div>
-              <div class="meta-value">{tc()}</div>
+              <div class="meta-value">{url_display}</div>
             </div>
           </div>
           <div class="preview-wrap">
             <div class="preview-toolbar">
               <span class="preview-toolbar-label">Website preview</span>
-              <a class="preview-toolbar-link" href="website.html" target="_blank" rel="noopener">Open in new tab</a>
+              <a class="preview-toolbar-link" href="../../websites/{preview_file}" target="_blank" rel="noopener">Open in new tab</a>
             </div>
-            <iframe class="preview-frame" src="website.html" title="Website update preview"></iframe>
+            <iframe class="preview-frame" src="../../websites/{preview_file}" title="Website update preview"></iframe>
           </div>
-          {approval_form(form_id, f"Week of {week_full} | Website updates", "Website update sign-off")}
+          {approval_form(form_id, f"Week of {week_full} | Website update", "Website update sign-off")}
         </div>
       </section>'''
 
 
 def week_page(week: dict) -> str:
     sidebar = sidebar_html(week["iso"])
+    has_website = any(u.get("week_iso") == week["iso"] for u in WEBSITE_UPDATES)
+    section_count = 2 if has_website else 1
+
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -831,9 +888,9 @@ def week_page(week: dict) -> str:
   <main class="main">
 
     <header class="page-header">
-      <div class="header-label">Weekly marketing plan</div>
+      <div class="header-label">Weekly campaign</div>
       <h1 class="header-title">Week of {week["full"]}</h1>
-      <div class="header-sub">Email campaign, Instagram content, and website updates for review</div>
+      <div class="header-sub">Email campaign{' and website update' if has_website else ''} for review</div>
       <div class="header-meta">
         <div class="header-meta-item">
           <div class="meta-label">Prepared by</div>
@@ -852,15 +909,9 @@ def week_page(week: dict) -> str:
 
     <div class="content">
 
-{section_overview(week["full"])}
-
 {section_email_campaign(week["full"])}
 
-{section_ig_posts()}
-
-{section_ig_stories()}
-
-{section_website(week["full"])}
+{section_website(week["full"], week["iso"])}
 
     </div>
   </main>
@@ -1106,13 +1157,13 @@ def home_page() -> str:
       <div class="home-intro">
         <div class="intro-label">Marketing plan hub</div>
         <h1 class="intro-title">Hi Jordan | here's the plan for the week.</h1>
-        <p class="intro-sub">Open the current week below to review this week's email, social and website changes. The flows, reports and recurring automations live on their own pages | jump to any of them from the sidebar or the tiles below.</p>
+        <p class="intro-sub">Open the current week below to review this week's email campaign and any website changes. Flows, reports, recurring automations and website history live on their own pages | jump to any from the sidebar or the tiles below.</p>
       </div>
 
       <a href="weeks/{current["iso"]}/index.html" class="hero">
         <div class="hero-label">Current week | review now</div>
         <div class="hero-title">Week of {current["full"]}</div>
-        <div class="hero-sub">Open this week's plan to review the email campaign, Instagram posts and stories, and any website changes scheduled for the next seven days.</div>
+        <div class="hero-sub">Open this week's plan to review the email campaign and any website changes scheduled for the next seven days.</div>
         <span class="hero-cta">Open this week's plan →</span>
       </a>
 
@@ -1120,7 +1171,7 @@ def home_page() -> str:
         <div class="section-block-header">
           <div class="section-block-num">02</div>
           <div class="section-block-title">Hub sections</div>
-          <div class="section-block-meta">3 areas</div>
+          <div class="section-block-meta">4 areas</div>
         </div>
         <div class="hub-tile-grid">
           <a href="reports/" class="hub-tile">
@@ -1140,6 +1191,12 @@ def home_page() -> str:
             <div class="hub-tile-title">Recurring Flows</div>
             <div class="hub-tile-sub">{len(RECURRING)} flow{"s" if len(RECURRING) != 1 else ""} | seasonal sends across Christmas, EOFY and more</div>
             <span class="hub-tile-cta">Open recurring →</span>
+          </a>
+          <a href="websites/" class="hub-tile">
+            <div class="hub-tile-label">Squarespace</div>
+            <div class="hub-tile-title">Website Updates</div>
+            <div class="hub-tile-sub">{len(WEBSITE_UPDATES)} update{"s" if len(WEBSITE_UPDATES) != 1 else ""} | every change made to jordyscasuarina.com</div>
+            <span class="hub-tile-cta">Open updates →</span>
           </a>
         </div>
       </section>
@@ -1544,6 +1601,105 @@ def recurring_page() -> str:
 </html>'''
 
 
+def websites_page() -> str:
+    """Dedicated /websites/ page listing every website update across all weeks.
+    Newest at the top. Empty state shown when there are no updates yet."""
+    sidebar = sidebar_html(active_iso=None, show_admin=False, is_websites_page=True)
+
+    sorted_updates = sorted(WEBSITE_UPDATES, key=lambda u: u["sort_date"], reverse=True)
+
+    if not sorted_updates:
+        body = '''      <div class="empty-block">
+        No website updates logged yet. When you do website work, add an entry to the
+        <code>WEBSITE_UPDATES</code> list in <code>build.py</code> and drop the preview HTML into
+        the <code>websites/</code> folder. The card will appear here.
+      </div>'''
+    else:
+        cards = ""
+        for u in sorted_updates:
+            week_link = ""
+            if u.get("week_iso"):
+                week_link = f'<span class="website-card-week">Tied to week of {u["week_iso"]}</span>'
+            preview_link = ""
+            if u.get("preview_file"):
+                preview_link = f'<a class="website-card-cta" href="{u["preview_file"]}" target="_blank" rel="noopener">Open preview →</a>'
+            url_link = ""
+            if u.get("url"):
+                url_link = f'<a class="website-card-url" href="{u["url"]}" target="_blank" rel="noopener">{u["url"]}</a>'
+
+            cards += f'''        <div class="website-card">
+          <div class="website-card-head">
+            <div class="website-card-meta">
+              <span class="website-card-date">{u["live_date"]}</span>
+              {week_link}
+            </div>
+            <h3 class="website-card-title">{u["title"]}</h3>
+            <p class="website-card-sub">Page: {u["page"]}</p>
+          </div>
+          <p class="website-card-desc">{u["description"]}</p>
+          {url_link}
+          {preview_link}
+        </div>
+'''
+        body = f'''      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">All website updates</h2>
+          <div class="section-meta">{len(sorted_updates)} update{"s" if len(sorted_updates) != 1 else ""}</div>
+        </div>
+        <div class="website-grid">
+{cards}        </div>
+      </section>'''
+
+    return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Updates | Jordy's Casuarina Marketing Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+<div class="layout">
+
+{sidebar}
+
+  <main class="main">
+
+    <header class="page-header">
+      <div class="header-label">Squarespace</div>
+      <h1 class="header-title">Website Updates</h1>
+      <div class="header-sub">Every change made to jordyscasuarina.com</div>
+      <div class="header-meta">
+        <div class="header-meta-item">
+          <div class="meta-label">Implemented by</div>
+          <div class="meta-value">Matt</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="meta-label">Total updates</div>
+          <div class="meta-value">{len(sorted_updates)}</div>
+        </div>
+        <div class="header-meta-item">
+          <div class="meta-label">Most recent</div>
+          <div class="meta-value">{sorted_updates[0]["live_date"] if sorted_updates else "None yet"}</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+{body}
+
+    </div>
+  </main>
+</div>
+
+<script src="../assets/nav.js"></script>
+</body>
+</html>'''
+
+
 def _status_count(items: list, status: str) -> int:
     return sum(1 for i in items if i.get("status") == status)
 
@@ -1838,15 +1994,7 @@ def template_page() -> str:
 
     <div class="content">
 
-{section_overview(week_full)}
-
 {section_email_campaign(week_full)}
-
-{section_ig_posts()}
-
-{section_ig_stories()}
-
-{section_website(week_full)}
 
     </div>
   </main>
@@ -1913,6 +2061,13 @@ def main():
             f.write_text(flow_placeholder())
     print("✓ recurring/")
 
+    # Websites | /websites/index.html is always rewritten.
+    # Individual website preview files are uploaded manually (no placeholders).
+    websites_dir = ROOT / "websites"
+    websites_dir.mkdir(exist_ok=True)
+    (websites_dir / "index.html").write_text(websites_page())
+    print("✓ websites/")
+
     # Admin | injects cadence stats + new sections into admin/_source.html
     # and writes admin/index.html. Source file is the template; index is generated.
     admin_dir = ROOT / "admin"
@@ -1920,7 +2075,7 @@ def main():
         (admin_dir / "index.html").write_text(admin_page())
         print("✓ admin/")
 
-    print(f"\nBuilt {len(WEEKS)} week folders + flows + reports + recurring + admin")
+    print(f"\nBuilt {len(WEEKS)} week folders + flows + reports + recurring + websites + admin")
 
 
 if __name__ == "__main__":

@@ -1579,11 +1579,17 @@ a:hover { text-decoration: underline; }
 
 .hub-tile-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1100px) {
+  .hub-tile-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
   .hub-tile-grid {
     grid-template-columns: 1fr;
   }
@@ -1642,4 +1648,104 @@ a:hover { text-decoration: underline; }
   color: var(--terracotta);
   margin-top: auto;
   padding-top: 12px;
+}
+
+/* ==========================================================================
+   WEBSITE UPDATES (websites page)
+   ========================================================================== */
+
+.website-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .website-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.website-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.website-card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.website-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.website-card-date {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+.website-card-week {
+  font-size: 11px;
+  color: var(--light);
+  font-style: italic;
+}
+
+.website-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--dark);
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.website-card-sub {
+  font-size: 13px;
+  color: var(--mid);
+  margin: 0;
+}
+
+.website-card-desc {
+  font-size: 14px;
+  color: var(--dark);
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.website-card-url {
+  font-size: 13px;
+  color: var(--mid);
+  text-decoration: none;
+  word-break: break-all;
+  border-bottom: 1px dotted var(--border);
+  padding-bottom: 8px;
+}
+
+.website-card-url:hover {
+  color: var(--terracotta);
+}
+
+.website-card-cta {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  text-decoration: none;
+  margin-top: 4px;
 }

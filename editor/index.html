@@ -602,11 +602,8 @@
     <div class="side-section-title">Sections</div>
     <ul class="toc">
       <li><a href="#sec-meta"><span>Week setup</span><span class="toc-num">00</span></a></li>
-      <li><a href="#sec-overview"><span>Weekly overview</span><span class="toc-num">01</span></a></li>
-      <li><a href="#sec-email"><span>Email campaign</span><span class="toc-num">02</span></a></li>
-      <li><a href="#sec-posts"><span>Instagram posts</span><span class="toc-num">03</span></a></li>
-      <li><a href="#sec-stories"><span>Instagram stories</span><span class="toc-num">04</span></a></li>
-      <li><a href="#sec-website"><span>Website updates</span><span class="toc-num">05</span></a></li>
+      <li><a href="#sec-email"><span>Email campaign</span><span class="toc-num">01</span></a></li>
+      <li><a href="#sec-website"><span>Website update</span><span class="toc-num">02</span></a></li>
     </ul>
 
     <div class="side-actions">
@@ -655,34 +652,10 @@
         </div>
       </section>
 
-      <!-- 01 OVERVIEW -->
-      <section class="section" id="sec-overview">
-        <div class="section-head">
-          <div class="section-num">01</div>
-          <h2 class="section-title">Weekly overview</h2>
-        </div>
-        <div class="field">
-          <label class="label">Main campaign focus</label>
-          <input type="text" id="overview-focus" placeholder="e.g. Mother's Day reactivation push">
-        </div>
-        <div class="field">
-          <label class="label">Key offer / special</label>
-          <input type="text" id="overview-offer" placeholder="e.g. $10 wed/thu drinks">
-        </div>
-        <div class="field">
-          <label class="label">Main customer message</label>
-          <input type="text" id="overview-message" placeholder="e.g. mum eats free with any pizza">
-        </div>
-        <div class="field">
-          <label class="label">Primary CTA</label>
-          <input type="text" id="overview-cta" placeholder="e.g. book a table for sunday">
-        </div>
-      </section>
-
-      <!-- 02 EMAIL -->
+      <!-- 01 EMAIL -->
       <section class="section" id="sec-email">
         <div class="section-head">
-          <div class="section-num">02</div>
+          <div class="section-num">01</div>
           <h2 class="section-title">Email campaign</h2>
           <div class="section-meta">1 per week</div>
         </div>
@@ -721,84 +694,10 @@
         </div>
       </section>
 
-      <!-- 03 INSTAGRAM POSTS -->
-      <section class="section" id="sec-posts">
-        <div class="section-head">
-          <div class="section-num">03</div>
-          <h2 class="section-title">Instagram posts</h2>
-          <div class="section-meta">2 per week</div>
-        </div>
-
-        <div class="card-block">
-          <div class="card-block-head">
-            <div class="card-block-title">Post 1</div>
-            <span class="card-block-tag tag-social">IG post</span>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label class="label">Scheduled date</label>
-              <input type="date" id="post1-date">
-            </div>
-            <div class="field">
-              <label class="label">Image <span class="label-helper">(jpg/png)</span></label>
-              <input type="file" id="post1-image" accept="image/*">
-              <div class="image-preview" id="post1-preview">
-                <img src="" alt="">
-                <div class="filename"></div>
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label">Caption</label>
-            <textarea id="post1-caption" placeholder="lowercase, no emojis, no exclamation marks"></textarea>
-          </div>
-        </div>
-
-        <div class="card-block">
-          <div class="card-block-head">
-            <div class="card-block-title">Post 2</div>
-            <span class="card-block-tag tag-social">IG post</span>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label class="label">Scheduled date</label>
-              <input type="date" id="post2-date">
-            </div>
-            <div class="field">
-              <label class="label">Image</label>
-              <input type="file" id="post2-image" accept="image/*">
-              <div class="image-preview" id="post2-preview">
-                <img src="" alt="">
-                <div class="filename"></div>
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <label class="label">Caption</label>
-            <textarea id="post2-caption"></textarea>
-          </div>
-        </div>
-      </section>
-
-      <!-- 04 INSTAGRAM STORIES -->
-      <section class="section" id="sec-stories">
-        <div class="section-head">
-          <div class="section-num">04</div>
-          <h2 class="section-title">Instagram stories</h2>
-          <div class="section-meta">5 per week</div>
-        </div>
-        <div class="helper-text" style="margin-bottom: 14px; padding: 10px 12px; background: var(--terracotta-pale); border-radius: 4px; color: var(--mid);">
-          <strong style="color: var(--terracotta);">MP4 plays everywhere</strong> | MOV works on Mac/iOS but can fail on some Android browsers. If Jordan reviews on his phone and a video won't play, re-export as MP4 (H.264) and replace the file in the folder.
-        </div>
-        <div class="stories-grid" id="stories-grid">
-          <!-- 5 story blocks injected by JS -->
-        </div>
-      </section>
-
-      <!-- 05 WEBSITE -->
+      <!-- 02 WEBSITE -->
       <section class="section" id="sec-website">
         <div class="section-head">
-          <div class="section-num">05</div>
+          <div class="section-num">02</div>
           <h2 class="section-title">Website updates</h2>
         </div>
         <div class="card-block">
@@ -1393,7 +1292,7 @@ ${storiesGridHtml}
 
   const websiteHtml = `      <section class="section">
         <div class="section-header">
-          <div class="section-num">05</div>
+          <div class="section-num">02</div>
           <h2 class="section-title">Website Updates</h2>
         </div>
         <div class="card">
@@ -1478,13 +1377,7 @@ ${sidebar}
 
     <div class="content">
 
-${overviewHtml}
-
 ${emailHtml}
-
-${postsHtml}
-
-${storiesHtml}
 
 ${websiteHtml}
 
