@@ -938,6 +938,24 @@ a:hover { text-decoration: underline; }
 .approval-row {
   background: var(--bg);
   border-top: 1px solid var(--border);
+  padding: 0;
+}
+
+.approval-form {
+  display: block;
+}
+
+/* Honeypot — hidden from real users, shown to bots */
+.approval-form .hp {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.approval-collapsed {
   padding: 16px 24px;
   display: flex;
   align-items: center;
@@ -945,6 +963,121 @@ a:hover { text-decoration: underline; }
   gap: 16px;
   flex-wrap: wrap;
 }
+.approval-collapsed[hidden] { display: none; }
+
+.approval-expanded {
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.approval-expanded[hidden] { display: none; }
+
+.approval-expanded-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.approval-mode {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.approval-mode .mode-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 3px;
+  margin-right: 8px;
+  font-size: 10px;
+}
+.approval-mode .mode-tag.is-approve { background: var(--green-pale); color: var(--green); }
+.approval-mode .mode-tag.is-changes { background: var(--terracotta-pale); color: var(--terracotta); }
+
+.approval-cancel {
+  background: transparent;
+  border: none;
+  color: var(--light);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 3px;
+  transition: all 0.15s;
+}
+.approval-cancel:hover {
+  background: var(--white);
+  color: var(--mid);
+}
+
+.approval-message {
+  width: 100%;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--white);
+  color: var(--dark);
+  resize: vertical;
+  min-height: 70px;
+  line-height: 1.5;
+}
+.approval-message:focus {
+  outline: none;
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(194,114,76,0.12);
+}
+
+.approval-send-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.approval-status {
+  font-size: 12px;
+  color: var(--light);
+  font-style: italic;
+  min-height: 18px;
+}
+.approval-status.is-error {
+  color: #b04a3a;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.approval-thanks {
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--green-pale);
+  color: var(--green);
+}
+.approval-thanks[hidden] { display: none; }
+.approval-thanks-tick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--green);
+  color: var(--white);
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.approval-thanks-text {
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .approval-label {
   font-size: 11px;
   font-weight: 700;
@@ -989,6 +1122,19 @@ a:hover { text-decoration: underline; }
 .btn-changes:hover {
   background: var(--terracotta-pale);
   text-decoration: none;
+}
+.btn-send {
+  background: var(--dark);
+  color: var(--white);
+  border-color: var(--dark);
+}
+.btn-send:hover {
+  background: #2a2a2a;
+  text-decoration: none;
+}
+.btn-send:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* ==========================================================================

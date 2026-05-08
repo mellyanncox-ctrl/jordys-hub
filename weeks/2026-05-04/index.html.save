@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mon 1 June 2026 | Jordy's Casuarina Marketing Plan</title>
+<title>Mon 4 May 2026 | Jordy's Casuarina Marketing Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/site.css">
 </head>
@@ -26,17 +26,11 @@
           <span class="nav-meta">All weeks</span>
         </a>
       </li>
-      <li class="nav-item ">
-        <a href="../../flows/">
-          <span class="nav-date">Flows</span>
-          <span class="nav-meta">TalkBox</span>
-        </a>
-      </li>
     </ul>
 
     <div class="nav-section-title">Plan weeks</div>
     <ul class="nav-list">
-        <li class="nav-item is-current">
+        <li class="nav-item is-current is-current">
           <a href="../2026-05-04/index.html">
             <span class="nav-date">4 May</span>
             <span class="nav-meta">Current</span>
@@ -60,7 +54,7 @@
             <span class="nav-meta">Upcoming</span>
           </a>
         </li>
-        <li class="nav-item is-upcoming is-current">
+        <li class="nav-item is-upcoming">
           <a href="../2026-06-01/index.html">
             <span class="nav-date">1 Jun</span>
             <span class="nav-meta">Upcoming</span>
@@ -130,7 +124,7 @@
 
     <header class="page-header">
       <div class="header-label">Weekly marketing plan</div>
-      <h1 class="header-title">Week of 1 June 2026</h1>
+      <h1 class="header-title">Week of 4 May 2026</h1>
       <div class="header-sub">Email campaign, Instagram content, and website updates for review</div>
       <div class="header-meta">
         <div class="header-meta-item">
@@ -159,7 +153,7 @@
           <div class="overview-grid">
             <div class="overview-row">
               <div class="overview-label">Week commencing</div>
-              <div class="overview-value">1 June 2026</div>
+              <div class="overview-value">4 May 2026</div>
             </div>
             <div class="overview-row">
               <div class="overview-label">Main campaign focus</div>
@@ -219,39 +213,12 @@
             </div>
             <iframe class="preview-frame" src="campaign.html" title="Email campaign preview"></iframe>
           </div>
-          <div class="approval-row" data-form="email-1-june-2026">
-            <form class="approval-form" data-form-id="email-1-june-2026" novalidate>
-              <input type="hidden" name="access_key" value="07799a89-dc1c-420f-b83d-2684932da1ad">
-              <input type="hidden" name="subject" value="Week of 1 June 2026 | Email campaign">
-              <input type="hidden" name="from_name" value="Jordy's Marketing Hub">
-              <input type="text" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
-
-              <div class="approval-collapsed">
-                <div class="approval-label">Campaign sign-off</div>
-                <div class="approval-actions">
-                  <button type="button" class="btn btn-changes" data-action="changes">Request changes</button>
-                  <button type="button" class="btn btn-approve" data-action="approve">Approve</button>
-                </div>
-              </div>
-
-              <div class="approval-expanded" hidden>
-                <div class="approval-expanded-head">
-                  <div class="approval-mode" data-mode-text></div>
-                  <button type="button" class="approval-cancel" data-cancel>Cancel</button>
-                </div>
-                <input type="hidden" name="action" value="">
-                <textarea name="message" class="approval-message" rows="3" placeholder="Optional message"></textarea>
-                <div class="approval-send-row">
-                  <span class="approval-status" data-status></span>
-                  <button type="submit" class="btn btn-send">Send</button>
-                </div>
-              </div>
-
-              <div class="approval-thanks" hidden>
-                <span class="approval-thanks-tick">✓</span>
-                <span class="approval-thanks-text" data-thanks-text></span>
-              </div>
-            </form>
+          <div class="approval-row">
+            <div class="approval-label">Campaign sign-off</div>
+            <div class="approval-actions">
+              <a class="btn btn-changes" href="mailto:hello@theserviceedit.com?subject=Week%20of%204%20May%202026%20%7C%20Email%20campaign%20%7C%20Request%20changes&body=Hi%20Mel%2C%0A%0ARe%3A%20Email%20campaign%20for%20week%20of%204%20May%202026%0A%0A">Request changes</a>
+              <a class="btn btn-approve" href="mailto:hello@theserviceedit.com?subject=Week%20of%204%20May%202026%20%7C%20Email%20campaign%20%7C%20Approve&body=Hi%20Mel%2C%0A%0ARe%3A%20Email%20campaign%20for%20week%20of%204%20May%202026%0A%0A">Approve campaign</a>
+            </div>
           </div>
         </div>
       </section>
@@ -280,7 +247,10 @@
             </div>
             <div class="caption-block">
               <div class="caption-label">Caption</div>
-              <div class="caption-value"><span class="tc-pill">To confirm</span></div>
+              <div class="caption-value">•book the table•💐<br>mum deserves it. tables filling fast for Sunday night</div>git add weeks/2026-05-04/index.html
+git commit -m "Add Post 1 caption"
+git push
+<div class="caption-value"><span class="tc-pill">To confirm</span></div>
             </div>
           </div>
         </div>
@@ -426,39 +396,12 @@
             </div>
             <iframe class="preview-frame" src="website.html" title="Website update preview"></iframe>
           </div>
-          <div class="approval-row" data-form="website-1-june-2026">
-            <form class="approval-form" data-form-id="website-1-june-2026" novalidate>
-              <input type="hidden" name="access_key" value="07799a89-dc1c-420f-b83d-2684932da1ad">
-              <input type="hidden" name="subject" value="Week of 1 June 2026 | Website updates">
-              <input type="hidden" name="from_name" value="Jordy's Marketing Hub">
-              <input type="text" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
-
-              <div class="approval-collapsed">
-                <div class="approval-label">Website update sign-off</div>
-                <div class="approval-actions">
-                  <button type="button" class="btn btn-changes" data-action="changes">Request changes</button>
-                  <button type="button" class="btn btn-approve" data-action="approve">Approve</button>
-                </div>
-              </div>
-
-              <div class="approval-expanded" hidden>
-                <div class="approval-expanded-head">
-                  <div class="approval-mode" data-mode-text></div>
-                  <button type="button" class="approval-cancel" data-cancel>Cancel</button>
-                </div>
-                <input type="hidden" name="action" value="">
-                <textarea name="message" class="approval-message" rows="3" placeholder="Optional message"></textarea>
-                <div class="approval-send-row">
-                  <span class="approval-status" data-status></span>
-                  <button type="submit" class="btn btn-send">Send</button>
-                </div>
-              </div>
-
-              <div class="approval-thanks" hidden>
-                <span class="approval-thanks-tick">✓</span>
-                <span class="approval-thanks-text" data-thanks-text></span>
-              </div>
-            </form>
+          <div class="approval-row">
+            <div class="approval-label">Website update sign-off</div>
+            <div class="approval-actions">
+              <a class="btn btn-changes" href="mailto:hello@theserviceedit.com?subject=Week%20of%204%20May%202026%20%7C%20Website%20updates%20%7C%20Request%20changes&body=Hi%20Mel%2C%0A%0ARe%3A%20Website%20updates%20for%20week%20of%204%20May%202026%0A%0A">Request changes</a>
+              <a class="btn btn-approve" href="mailto:hello@theserviceedit.com?subject=Week%20of%204%20May%202026%20%7C%20Website%20updates%20%7C%20Approve&body=Hi%20Mel%2C%0A%0ARe%3A%20Website%20updates%20for%20week%20of%204%20May%202026%0A%0A">Approve update</a>
+            </div>
           </div>
         </div>
       </section>
@@ -467,6 +410,5 @@
   </main>
 </div>
 
-<script src="../../assets/approval.js"></script>
 </body>
 </html>

@@ -23,7 +23,57 @@ for i in range(TOTAL_WEEKS):
 
 CURRENT_INDEX = 0  # First week is current; everything after is upcoming
 
+# Web3Forms access key for inline approval forms.
+# Submissions land in the inbox associated with this key.
+WEB3FORMS_ACCESS_KEY = "07799a89-dc1c-420f-b83d-2684932da1ad"
 
+
+def approval_form(form_id: str, subject: str, label: str) -> str:
+    """Render an inline approval form with Approve / Request changes states.
+
+    form_id   | unique HTML id for this form (no spaces, slashes, or quotes)
+    subject   | what gets sent as the email subject line
+    label     | shown in the form header e.g. "Email campaign sign-off"
+    """
+    # Escape the subject for safe HTML embedding
+    safe_subject = subject.replace('"', '&quot;')
+    return f'''<div class="approval-row" data-form="{form_id}">
+            <form class="approval-form" data-form-id="{form_id}" novalidate>
+              <input type="hidden" name="access_key" value="{WEB3FORMS_ACCESS_KEY}">
+              <input type="hidden" name="subject" value="{safe_subject}">
+              <input type="hidden" name="from_name" value="Jordy's Marketing Hub">
+              <input type="text" name="botcheck" class="hp" tabindex="-1" autocomplete="off">
+
+              <div class="approval-collapsed">
+                <div class="approval-label">{label}</div>
+                <div class="approval-actions">
+                  <button type="button" class="btn btn-changes" data-action="changes">Request changes</button>
+                  <button type="button" class="btn btn-approve" data-action="approve">Approve</button>
+                </div>
+              </div>
+
+              <div class="approval-expanded" hidden>
+                <div class="approval-expanded-head">
+                  <div class="approval-mode" data-mode-text></div>
+                  <button type="button" class="approval-cancel" data-cancel>Cancel</button>
+                </div>
+                <input type="hidden" name="action" value="">
+                <textarea name="message" class="approval-message" rows="3" placeholder="Optional message"></textarea>
+                <div class="approval-send-row">
+                  <span class="approval-status" data-status></span>
+                  <button type="submit" class="btn btn-send">Send</button>
+                </div>
+              </div>
+
+              <div class="approval-thanks" hidden>
+                <span class="approval-thanks-tick">✓</span>
+                <span class="approval-thanks-text" data-thanks-text></span>
+              </div>
+            </form>
+          </div>'''
+
+
+# Kept for backward compatibility | not currently called anywhere
 def mailto(week_full: str, section: str, action: str) -> str:
     """Build a mailto URL with safe encoding. No em dashes anywhere in TSE work."""
     subject = f"Week of {week_full} | {section} | {action}"
@@ -255,8 +305,8 @@ def section_overview(week_full: str) -> str:
 
 
 def section_email_campaign(week_full: str) -> str:
-    approve_link = mailto(week_full, "Email campaign", "Approve")
-    changes_link = mailto(week_full, "Email campaign", "Request changes")
+    week_slug = week_full.replace(' ', '-').lower()
+    form_id = f"email-{week_slug}"
     return f'''      <section class="section">
         <div class="section-header">
           <div class="section-num">02</div>
@@ -295,13 +345,7 @@ def section_email_campaign(week_full: str) -> str:
             </div>
             <iframe class="preview-frame" src="campaign.html" title="Email campaign preview"></iframe>
           </div>
-          <div class="approval-row">
-            <div class="approval-label">Campaign sign-off</div>
-            <div class="approval-actions">
-              <a class="btn btn-changes" href="{changes_link}">Request changes</a>
-              <a class="btn btn-approve" href="{approve_link}">Approve campaign</a>
-            </div>
-          </div>
+          {approval_form(form_id, f"Week of {week_full} | Email campaign", "Campaign sign-off")}
         </div>
       </section>'''
 
@@ -373,8 +417,8 @@ def section_ig_stories() -> str:
 
 
 def section_website(week_full: str) -> str:
-    approve_link = mailto(week_full, "Website updates", "Approve")
-    changes_link = mailto(week_full, "Website updates", "Request changes")
+    week_slug = week_full.replace(' ', '-').lower()
+    form_id = f"website-{week_slug}"
     return f'''      <section class="section">
         <div class="section-header">
           <div class="section-num">05</div>
@@ -413,13 +457,7 @@ def section_website(week_full: str) -> str:
             </div>
             <iframe class="preview-frame" src="website.html" title="Website update preview"></iframe>
           </div>
-          <div class="approval-row">
-            <div class="approval-label">Website update sign-off</div>
-            <div class="approval-actions">
-              <a class="btn btn-changes" href="{changes_link}">Request changes</a>
-              <a class="btn btn-approve" href="{approve_link}">Approve update</a>
-            </div>
-          </div>
+          {approval_form(form_id, f"Week of {week_full} | Website updates", "Website update sign-off")}
         </div>
       </section>'''
 
@@ -479,6 +517,7 @@ def week_page(week: dict) -> str:
   </main>
 </div>
 
+<script src="../../assets/approval.js"></script>
 </body>
 </html>'''
 
@@ -806,8 +845,7 @@ def flows_page() -> str:
         </div>
 '''
         for flow in week_flows:
-            approve_link = flow_mailto(flow["name"], "Approve")
-            changes_link = flow_mailto(flow["name"], "Request changes")
+            form_id = f"flow-{flow['slug']}"
             sections += f'''        <section class="section flow-section">
           <div class="section-header">
             <h2 class="section-title">{flow["name"]}</h2>
@@ -831,13 +869,7 @@ def flows_page() -> str:
               </div>
               <iframe class="preview-frame" src="{flow["slug"]}.html" title="{flow["name"]} preview"></iframe>
             </div>
-            <div class="approval-row">
-              <div class="approval-label">{flow["name"]} sign-off</div>
-              <div class="approval-actions">
-                <a class="btn btn-changes" href="{changes_link}">Request changes</a>
-                <a class="btn btn-approve" href="{approve_link}">Approve flow</a>
-              </div>
-            </div>
+            {approval_form(form_id, f"TalkBox flow | {flow['name']}", f"{flow['name']} sign-off")}
           </div>
         </section>
 '''
@@ -888,6 +920,7 @@ def flows_page() -> str:
   </main>
 </div>
 
+<script src="../assets/approval.js"></script>
 </body>
 </html>'''
 
@@ -965,6 +998,7 @@ def template_page() -> str:
   </main>
 </div>
 
+<script src="../assets/approval.js"></script>
 </body>
 </html>'''
 
