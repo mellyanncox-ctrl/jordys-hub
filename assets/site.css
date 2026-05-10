@@ -1749,3 +1749,60 @@ a:hover { text-decoration: underline; }
   text-decoration: none;
   margin-top: 4px;
 }
+
+/* ==========================================================================
+   FLOW VARIANTS (e.g. multiple hero image options)
+   ========================================================================== */
+
+.variant-callout {
+  background: var(--terracotta-pale);
+  border-left: 3px solid var(--terracotta);
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--dark);
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.variant-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .variant-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.variant-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  background: var(--bg);
+}
+
+.variant-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.variant-block .preview-wrap {
+  margin-bottom: 0;
+}
+
+.variant-block .preview-frame {
+  height: 480px;
+}
+
+.variant-block .approval-row {
+  margin-top: 0;
+}

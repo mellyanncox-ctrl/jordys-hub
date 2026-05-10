@@ -181,6 +181,10 @@ FLOWS = [
         "timing": "Sends within 24 hours of 10th visit",
         "subject": "This feels committed",
         "preview": "10 visits says a lot",
+        "variants": [
+            {"label": "Option A", "slug": "milestone-10-a"},
+            {"label": "Option B", "slug": "milestone-10-b"},
+        ],
     },
     {
         "slug": "milestone-15",
@@ -1282,7 +1286,67 @@ def flows_page() -> str:
 '''
         for flow in week_flows:
             form_id = f"flow-{flow['slug']}"
-            sections += f'''        <section class="section flow-section">
+            variants = flow.get("variants")
+
+            if variants:
+                # Variant card | shows multiple options side by side, each with its own approval form
+                variant_blocks = ""
+                for v in variants:
+                    v_form_id = f"flow-{v['slug']}"
+                    variant_blocks += f'''              <div class="variant-block">
+                <div class="variant-label">{v["label"]}</div>
+                <div class="preview-wrap">
+                  <div class="preview-toolbar">
+                    <span class="preview-toolbar-label">Flow preview</span>
+                    <a class="preview-toolbar-link" href="{v["slug"]}.html" target="_blank" rel="noopener">Open in new tab</a>
+                  </div>
+                  <iframe class="preview-frame" src="{v["slug"]}.html" title="{flow["name"]} {v["label"]} preview"></iframe>
+                </div>
+                {approval_form(v_form_id, f"TalkBox flow | {flow['name']} | {v['label']}", f"{flow['name']} | {v['label']}")}
+              </div>
+'''
+                sections += f'''        <section class="section flow-section">
+          <div class="section-header">
+            <h2 class="section-title">{flow["name"]}</h2>
+            <div class="section-header-meta">
+              {status_badge(flow["status"])}
+              <span class="section-meta">{flow["where"]}</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-header-main">
+                <div class="card-title">{tc_or(flow.get("subject"))}</div>
+                <div class="card-sub">{flow.get("timing", "")}</div>
+              </div>
+              <span class="card-tag is-flow">TalkBox flow</span>
+            </div>
+            <div class="meta-grid">
+              <div class="meta-cell">
+                <div class="meta-label">Subject line</div>
+                <div class="meta-value">{tc_or(flow.get("subject"))}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Preview text</div>
+                <div class="meta-value">{tc_or(flow.get("preview"))}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">When it sends</div>
+                <div class="meta-value">{tc_or(flow.get("timing"))}</div>
+              </div>
+              <div class="meta-cell">
+                <div class="meta-label">Where it lives</div>
+                <div class="meta-value">{flow["where"]}</div>
+              </div>
+            </div>
+            <div class="variant-callout">Two options below | approve the one you prefer.</div>
+            <div class="variant-grid">
+{variant_blocks}            </div>
+          </div>
+        </section>
+'''
+            else:
+                sections += f'''        <section class="section flow-section">
           <div class="section-header">
             <h2 class="section-title">{flow["name"]}</h2>
             <div class="section-header-meta">
