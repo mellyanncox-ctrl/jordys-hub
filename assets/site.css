@@ -2082,3 +2082,78 @@ a:hover { text-decoration: underline; }
 .carousel-dot:hover {
   background: rgba(255,255,255,0.75);
 }
+
+/* ==========================================================================
+   IG POSTS: side-by-side layout with 4:5 image aspect ratio
+   ==========================================================================
+   Applies to any .section whose cards have the social tag (Instagram posts).
+   Both single-image posts and carousels render at 4:5 ratio.
+   ========================================================================== */
+
+.section:has(.card-tag.is-social) .card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* The two post cards inside an IG section sit side by side */
+.section:has(> .card .card-tag.is-social) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* Section header spans both columns */
+.section:has(> .card .card-tag.is-social) > .section-header {
+  grid-column: 1 / -1;
+}
+
+/* Cards themselves don't have grid styling; they're just cells */
+.section:has(> .card .card-tag.is-social) > .card {
+  margin: 0;
+}
+
+/* Force 4:5 (portrait Instagram) aspect ratio on single-image posts */
+.section:has(.card-tag.is-social) .image-slot {
+  aspect-ratio: 4 / 5;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.section:has(.card-tag.is-social) .image-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Override the carousel's default 1:1 to use 4:5 inside IG sections */
+.section:has(.card-tag.is-social) .carousel {
+  max-width: 100%;
+}
+
+.section:has(.card-tag.is-social) .carousel-track {
+  aspect-ratio: 4 / 5;
+}
+
+/* Make arrows a touch smaller since cards are narrower now */
+.section:has(.card-tag.is-social) .carousel-arrow {
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+}
+.section:has(.card-tag.is-social) .carousel-prev { left: 8px; }
+.section:has(.card-tag.is-social) .carousel-next { right: 8px; }
+
+/* Caption text size smaller in IG sections so it fits the narrower column */
+.section:has(.card-tag.is-social) .caption-value {
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* Stack to single column on narrow screens */
+@media (max-width: 768px) {
+  .section:has(> .card .card-tag.is-social) {
+    grid-template-columns: 1fr;
+  }
+}
