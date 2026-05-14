@@ -361,6 +361,74 @@
     font-size: 11px;
     color: var(--light);
   }
+
+  /* Carousel thumbnail strip for post slots */
+  .carousel-thumbs {
+    margin-top: 8px;
+    display: none;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .carousel-thumbs.has-file {
+    display: flex;
+  }
+  .carousel-thumb {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--white);
+  }
+  .carousel-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .carousel-thumb-num {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 10px;
+    line-height: 1;
+  }
+  .carousel-thumb-remove {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    border: 0;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  .carousel-thumb-remove:hover {
+    background: rgba(0,0,0,0.85);
+  }
+  .carousel-thumb-count {
+    width: 100%;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--light);
+    margin-top: 2px;
+    letter-spacing: 0.04em;
+  }
   .video-thumb {
     position: relative;
     width: 130px;
@@ -588,7 +656,9 @@
     <ul class="toc">
       <li><a href="#sec-meta"><span>Week setup</span><span class="toc-num">00</span></a></li>
       <li><a href="#sec-email"><span>Email campaign</span><span class="toc-num">01</span></a></li>
-      <li><a href="#sec-website"><span>Website update</span><span class="toc-num">02</span></a></li>
+      <li><a href="#sec-posts"><span>Instagram posts</span><span class="toc-num">03</span></a></li>
+      <li><a href="#sec-stories"><span>Instagram stories</span><span class="toc-num">04</span></a></li>
+      <li><a href="#sec-website"><span>Website update</span><span class="toc-num">05</span></a></li>
     </ul>
 
     <div class="side-actions">
@@ -679,10 +749,68 @@
         </div>
       </section>
 
-      <!-- 02 WEBSITE -->
+      <!-- 03 INSTAGRAM POSTS -->
+      <section class="section" id="sec-posts">
+        <div class="section-head">
+          <div class="section-num">03</div>
+          <h2 class="section-title">Instagram posts</h2>
+          <div class="section-helper">2 per week</div>
+        </div>
+
+        <div class="card-block">
+          <div class="card-block-header">Post 1</div>
+          <div class="field-grid">
+            <div class="field">
+              <label class="label">Scheduled date</label>
+              <input type="date" id="post1-date">
+            </div>
+            <div class="field">
+              <label class="label">Images <span class="label-helper">(1 image = single post, 2-10 = carousel)</span></label>
+              <input type="file" id="post1-image" accept="image/*" multiple>
+              <div class="carousel-thumbs" id="post1-preview"></div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Caption</label>
+            <textarea id="post1-caption" rows="4"></textarea>
+          </div>
+        </div>
+
+        <div class="card-block">
+          <div class="card-block-header">Post 2</div>
+          <div class="field-grid">
+            <div class="field">
+              <label class="label">Scheduled date</label>
+              <input type="date" id="post2-date">
+            </div>
+            <div class="field">
+              <label class="label">Images <span class="label-helper">(1 image = single post, 2-10 = carousel)</span></label>
+              <input type="file" id="post2-image" accept="image/*" multiple>
+              <div class="carousel-thumbs" id="post2-preview"></div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Caption</label>
+            <textarea id="post2-caption" rows="4"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 INSTAGRAM STORIES -->
+      <section class="section" id="sec-stories">
+        <div class="section-head">
+          <div class="section-num">04</div>
+          <h2 class="section-title">Instagram stories</h2>
+          <div class="section-helper">5 per week</div>
+        </div>
+
+        <div id="stories-grid" class="stories-grid"></div>
+      </section>
+
+      <!-- 05 WEBSITE -->
       <section class="section" id="sec-website">
         <div class="section-head">
-          <div class="section-num">02</div>
+          <div class="section-num">05</div>
           <h2 class="section-title">Website updates</h2>
         </div>
         <div class="card-block">
@@ -753,11 +881,18 @@ const SCALAR_FIELDS = [
 // Story fields are injected dynamically
 for (let i = 1; i <= 5; i++) SCALAR_FIELDS.push(`story${i}-caption`);
 
-// File slots: id -> {file, dataURL, filename}
+// Single-file slots: id -> {file, dataURL, filename, isVideo}
+// Used for story videos. Post images use postSlots (multi-file) below.
 const fileSlots = {
-  'post1-image': null,
-  'post2-image': null,
   'story1-image': null, 'story2-image': null, 'story3-image': null, 'story4-image': null, 'story5-image': null,
+};
+
+// Multi-file slots for post carousels.
+// Keyed by post number (1, 2). Each value is an array of {file, dataURL, filename}.
+// 1 file = single post, 2-10 files = carousel.
+const postSlots = {
+  1: [],
+  2: [],
 };
 
 // =========================================================================
@@ -832,11 +967,75 @@ function handleFile(inputId, previewId) {
   });
 }
 
+// Multi-file handler for post carousel slots
+function handlePostFiles(postNum) {
+  const input = document.getElementById(`post${postNum}-image`);
+  const preview = document.getElementById(`post${postNum}-preview`);
+  if (!input || !preview) return;
+
+  input.addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) {
+      postSlots[postNum] = [];
+      renderPostThumbs(postNum);
+      return;
+    }
+    // Cap at 10 (IG limit) and load each as dataURL
+    const capped = files.slice(0, 10);
+    const loaded = await Promise.all(capped.map(f => new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = ev => resolve({
+        file: f,
+        dataURL: ev.target.result,
+        filename: f.name,
+      });
+      reader.readAsDataURL(f);
+    })));
+    postSlots[postNum] = loaded;
+    renderPostThumbs(postNum);
+    markDirty();
+  });
+}
+
+function renderPostThumbs(postNum) {
+  const preview = document.getElementById(`post${postNum}-preview`);
+  if (!preview) return;
+  const slots = postSlots[postNum] || [];
+  if (slots.length === 0) {
+    preview.innerHTML = '';
+    preview.classList.remove('has-file');
+    return;
+  }
+  preview.classList.add('has-file');
+  preview.innerHTML = slots.map((s, i) => `
+    <div class="carousel-thumb">
+      <img src="${s.dataURL}" alt="">
+      <div class="carousel-thumb-num">${i + 1}</div>
+      <button type="button" class="carousel-thumb-remove" data-post="${postNum}" data-idx="${i}" title="Remove">&times;</button>
+    </div>
+  `).join('') + (slots.length > 1 ? `<div class="carousel-thumb-count">${slots.length} images | carousel</div>` : '<div class="carousel-thumb-count">1 image | single post</div>');
+
+  // Wire remove buttons
+  preview.querySelectorAll('.carousel-thumb-remove').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const num = parseInt(btn.dataset.post);
+      const idx = parseInt(btn.dataset.idx);
+      postSlots[num].splice(idx, 1);
+      renderPostThumbs(num);
+      markDirty();
+    });
+  });
+}
+
 function bindFileInputs() {
+  // Story slots (single file each)
   Object.keys(fileSlots).forEach(id => {
     const previewId = id.replace('-image', '-preview');
     handleFile(id, previewId);
   });
+  // Post slots (multi-file)
+  handlePostFiles(1);
+  handlePostFiles(2);
 }
 
 // =========================================================================
@@ -883,6 +1082,16 @@ function collectFormData() {
       };
     }
   });
+  // Post carousel slots (multi-file)
+  data.postSlots = {};
+  Object.keys(postSlots).forEach(num => {
+    if (postSlots[num] && postSlots[num].length > 0) {
+      data.postSlots[num] = postSlots[num].map(s => ({
+        filename: s.filename,
+        dataURL: s.dataURL,
+      }));
+    }
+  });
   return data;
 }
 
@@ -926,6 +1135,16 @@ function loadDraft() {
         if (fname) fname.textContent = f.filename;
         preview.classList.add('has-file');
       }
+    });
+    // Restore post carousel slots
+    Object.keys(data.postSlots || {}).forEach(num => {
+      const items = data.postSlots[num];
+      postSlots[num] = items.map(s => ({
+        file: dataURLtoBlob(s.dataURL, s.filename),
+        dataURL: s.dataURL,
+        filename: s.filename,
+      }));
+      renderPostThumbs(num);
     });
     updateFolderName();
     toast('Draft loaded', 'Form filled in from your last saved draft.', 'success');
@@ -1193,20 +1412,46 @@ function generateIndexHtml() {
   function postCard(num) {
     const date = v(`post${num}-date`);
     const dateLong = date ? formatLongDate(date) : '';
-    const fileSlot = fileSlots[`post${num}-image`];
-    const filename = fileSlot ? `ig-post-${num}.${getExt(fileSlot.filename)}` : `ig-post-${num}.jpg`;
+    const slots = postSlots[num] || [];
+    const count = slots.length;
+
+    // Determine filenames | ig-post-1.jpg if single, ig-post-1-1.jpg / ig-post-1-2.jpg / etc if multi
+    let mediaHtml;
+    if (count === 0) {
+      mediaHtml = `<div class="image-slot">${imgOrPlaceholder(`ig-post-${num}.jpg`, '', 'Drop the post image into this folder')}</div>`;
+    } else if (count === 1) {
+      const filename = `ig-post-${num}.${getExt(slots[0].filename)}`;
+      mediaHtml = `<div class="image-slot">${imgOrPlaceholder(filename, '', 'Drop the post image into this folder')}</div>`;
+    } else {
+      // Carousel
+      const slides = slots.map((s, i) => {
+        const filename = `ig-post-${num}-${i + 1}.${getExt(s.filename)}`;
+        return `<div class="carousel-slide${i === 0 ? ' is-active' : ''}"><img src="${filename}" alt=""></div>`;
+      }).join('\n              ');
+      const dots = slots.map((_, i) => `<button type="button" class="carousel-dot${i === 0 ? ' is-active' : ''}" data-idx="${i}" aria-label="Go to slide ${i + 1}"></button>`).join('');
+      mediaHtml = `<div class="carousel" data-count="${count}">
+            <div class="carousel-track">
+              ${slides}
+            </div>
+            <button type="button" class="carousel-arrow carousel-prev" aria-label="Previous">&lsaquo;</button>
+            <button type="button" class="carousel-arrow carousel-next" aria-label="Next">&rsaquo;</button>
+            <div class="carousel-counter">1 / ${count}</div>
+            <div class="carousel-dots">${dots}</div>
+          </div>`;
+    }
+
+    const tag = count > 1 ? `<span class="card-tag is-social">Instagram carousel | ${count}</span>` : `<span class="card-tag is-social">Instagram post</span>`;
+
     return `        <div class="card">
           <div class="card-header">
             <div class="card-header-main">
               <div class="card-title">Post ${num}</div>
               <div class="card-sub">Scheduled: ${tcOr(dateLong)}</div>
             </div>
-            <span class="card-tag is-social">Instagram post</span>
+            ${tag}
           </div>
           <div class="card-body">
-            <div class="image-slot">
-              ${imgOrPlaceholder(filename, '', 'Drop the post image into this folder')}
-            </div>
+            ${mediaHtml}
             <div class="caption-block">
               <div class="caption-label">Caption</div>
               <div class="caption-value">${tcOr(v(`post${num}-caption`))}</div>
@@ -1265,7 +1510,7 @@ ${storiesGridHtml}
 
   const websiteHtml = `      <section class="section">
         <div class="section-header">
-          <div class="section-num">02</div>
+          <div class="section-num">05</div>
           <h2 class="section-title">Website Updates</h2>
         </div>
         <div class="card">
@@ -1346,6 +1591,10 @@ ${sidebar}
 
 ${emailHtml}
 
+${postsHtml}
+
+${storiesHtml}
+
 ${websiteHtml}
 
     </div>
@@ -1354,6 +1603,7 @@ ${websiteHtml}
 
 <script src="../../assets/approval.js"><\/script>
 <script src="../../assets/nav.js"><\/script>
+<script src="../../assets/carousel.js"><\/script>
 </body>
 </html>`;
 }
@@ -1448,24 +1698,45 @@ function previewWeek() {
   );
   // For images, replace relative paths with dataURLs we have in memory
   let processedHtml = previewHtml;
+  // Story slots (single-file)
   Object.keys(fileSlots).forEach(slotId => {
     if (!fileSlots[slotId]) return;
     const slot = fileSlots[slotId];
     let filename;
-    if (slotId.startsWith('post')) {
-      const num = slotId.match(/post(\d+)/)[1];
-      filename = `ig-post-${num}.${getExt(slot.filename)}`;
-    } else if (slotId.startsWith('story')) {
+    if (slotId.startsWith('story')) {
       const num = slotId.match(/story(\d+)/)[1];
       filename = `ig-story-${num}.${getExt(slot.filename)}`;
     }
     if (filename) {
-      // Replace src="filename" and href="filename" with the dataURL
       const escFilename = filename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       processedHtml = processedHtml.replace(
         new RegExp(`(src|href)="${escFilename}"`, 'g'),
         `$1="${slot.dataURL}"`
       );
+    }
+  });
+  // Post carousel slots (multi-file)
+  Object.keys(postSlots).forEach(num => {
+    const slots = postSlots[num] || [];
+    if (slots.length === 1) {
+      // Single image | filename is ig-post-N.ext
+      const slot = slots[0];
+      const filename = `ig-post-${num}.${getExt(slot.filename)}`;
+      const escFilename = filename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      processedHtml = processedHtml.replace(
+        new RegExp(`(src|href)="${escFilename}"`, 'g'),
+        `$1="${slot.dataURL}"`
+      );
+    } else if (slots.length > 1) {
+      // Carousel | filenames are ig-post-N-1.ext, ig-post-N-2.ext, etc
+      slots.forEach((slot, i) => {
+        const filename = `ig-post-${num}-${i + 1}.${getExt(slot.filename)}`;
+        const escFilename = filename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        processedHtml = processedHtml.replace(
+          new RegExp(`(src|href)="${escFilename}"`, 'g'),
+          `$1="${slot.dataURL}"`
+        );
+      });
     }
   });
 
@@ -1523,20 +1794,28 @@ async function generateZip() {
   zip.file('website.html', websiteHtmlFile);
 
   // Image and video files
+  // Story slots (single-file)
   for (const slotId of Object.keys(fileSlots)) {
     const slot = fileSlots[slotId];
     if (!slot) continue;
     const ext = getExt(slot.filename);
-    let filename;
-    if (slotId.startsWith('post')) {
-      const num = slotId.match(/post(\d+)/)[1];
-      filename = `ig-post-${num}.${ext}`;
-    } else if (slotId.startsWith('story')) {
+    if (slotId.startsWith('story')) {
       const num = slotId.match(/story(\d+)/)[1];
-      filename = `ig-story-${num}.${ext}`;
+      zip.file(`ig-story-${num}.${ext}`, slot.file);
     }
-    if (filename) {
-      zip.file(filename, slot.file);
+  }
+  // Post slots (multi-file | single image = ig-post-N.ext, carousel = ig-post-N-1.ext, etc)
+  for (const num of Object.keys(postSlots)) {
+    const slots = postSlots[num] || [];
+    if (slots.length === 1) {
+      const slot = slots[0];
+      const ext = getExt(slot.filename);
+      zip.file(`ig-post-${num}.${ext}`, slot.file);
+    } else if (slots.length > 1) {
+      slots.forEach((slot, i) => {
+        const ext = getExt(slot.filename);
+        zip.file(`ig-post-${num}-${i + 1}.${ext}`, slot.file);
+      });
     }
   }
 
@@ -1605,6 +1884,7 @@ function toast(title, body, type = 'success') {
 // INIT
 // =========================================================================
 
+buildStoriesGrid();
 bindFileInputs();
 
 document.getElementById('week-date').addEventListener('change', updateFolderName);

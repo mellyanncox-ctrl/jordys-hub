@@ -438,39 +438,6 @@ WEBSITE_UPDATES = [
 ]
 
 
-# Instagram planning content per week.
-# Keyed by week iso (YYYY-MM-DD). Missing weeks show an empty state.
-# Each entry has:
-#   - posts: list of 2 dicts | {"image_url", "caption", "scheduled"}
-#   - stories: list of up to 5 dicts | {"video_url" OR "image_url", "scheduled"}
-# Images and videos should be hosted (Squarespace CDN, Cloudinary, etc) | paste the URL.
-# For stories, videos render in a 9:16 frame; images render in 9:16 too.
-IG_PLANS = {
-    # Example entry (delete/replace when planning starts):
-    # "2026-05-11": {
-    #     "posts": [
-    #         {
-    #             "image_url": "https://images.squarespace-cdn.com/.../post-1.jpg",
-    #             "caption": "Caption goes here. Lowercase, no exclamation marks.",
-    #             "scheduled": "Mon 12 May 6pm",
-    #         },
-    #         {
-    #             "image_url": "https://images.squarespace-cdn.com/.../post-2.jpg",
-    #             "caption": "Second post caption.",
-    #             "scheduled": "Thu 15 May 7pm",
-    #         },
-    #     ],
-    #     "stories": [
-    #         {"video_url": "https://.../story-1.mp4", "scheduled": "Mon 12 May"},
-    #         {"video_url": "https://.../story-2.mp4", "scheduled": "Tue 13 May"},
-    #         {"image_url": "https://.../story-3.jpg", "scheduled": "Wed 14 May"},
-    #         {"video_url": "https://.../story-4.mp4", "scheduled": "Thu 15 May"},
-    #         {"video_url": "https://.../story-5.mp4", "scheduled": "Fri 16 May"},
-    #     ],
-    # },
-}
-
-
 # Per-week campaign metadata.
 # Keyed by week iso (YYYY-MM-DD). Missing weeks show "To confirm" placeholders.
 # Fields: subject, preview, send_date, send_time, segments.
@@ -943,82 +910,10 @@ def section_website(week_full: str, week_iso: str) -> str:
       </section>'''
 
 
-def section_ig(week_iso: str, section_num: str = "03") -> str:
-    """IG planning section | reads IG_PLANS[week_iso] if present, otherwise renders empty state.
-    No approval row | this is for Mel's planning, not Jordan's sign-off."""
-    plan = IG_PLANS.get(week_iso)
-
-    if not plan:
-        return f'''      <section class="section">
-        <div class="section-header">
-          <div class="section-num">{section_num}</div>
-          <h2 class="section-title">Instagram | Planning</h2>
-        </div>
-        <div class="empty-block">
-          No IG planned this week.
-        </div>
-      </section>'''
-
-    posts = plan.get("posts", [])
-    stories = plan.get("stories", [])
-
-    # Posts grid (2 posts)
-    posts_html = ""
-    if posts:
-        post_cards = ""
-        for i, p in enumerate(posts, 1):
-            img = p.get("image_url", "")
-            img_html = f'<img src="{img}" alt="IG post {i}" class="ig-post-img" onerror="this.style.display=\'none\'">' if img else '<div class="ig-post-placeholder">No image</div>'
-            post_cards += f'''          <div class="ig-post-card">
-            <div class="ig-post-num">Post {i}</div>
-            <div class="ig-post-media">{img_html}</div>
-            <div class="ig-post-caption">{p.get("caption", "")}</div>
-            <div class="ig-post-meta">{p.get("scheduled", "Not scheduled")}</div>
-          </div>'''
-        posts_html = f'''        <div class="ig-subsection-label">Feed posts</div>
-        <div class="ig-posts-grid">
-{post_cards}
-        </div>'''
-
-    # Stories grid (up to 5 stories)
-    stories_html = ""
-    if stories:
-        story_cards = ""
-        for i, s in enumerate(stories, 1):
-            video = s.get("video_url", "")
-            image = s.get("image_url", "")
-            if video:
-                media = f'<video src="{video}" muted playsinline loop class="ig-story-media" onloadeddata="this.play()" onerror="this.style.display=\'none\'"></video>'
-            elif image:
-                media = f'<img src="{image}" alt="IG story {i}" class="ig-story-media" onerror="this.style.display=\'none\'">'
-            else:
-                media = '<div class="ig-story-placeholder">No media</div>'
-            story_cards += f'''          <div class="ig-story-card">
-            <div class="ig-story-num">Story {i}</div>
-            <div class="ig-story-media-wrap">{media}</div>
-            <div class="ig-story-meta">{s.get("scheduled", "")}</div>
-          </div>'''
-        stories_html = f'''        <div class="ig-subsection-label">Stories</div>
-        <div class="ig-stories-grid">
-{story_cards}
-        </div>'''
-
-    return f'''      <section class="section">
-        <div class="section-header">
-          <div class="section-num">{section_num}</div>
-          <h2 class="section-title">Instagram | Planning</h2>
-        </div>
-{posts_html}
-{stories_html}
-      </section>'''
-
-
 def week_page(week: dict) -> str:
     sidebar = sidebar_html(week["iso"])
     has_website = any(u.get("week_iso") == week["iso"] for u in WEBSITE_UPDATES)
     section_count = 2 if has_website else 1
-    # IG section gets number 03 if both email and website are shown, else 02
-    ig_num = "03" if has_website else "02"
 
     return f'''<!DOCTYPE html>
 <html lang="en">
@@ -1040,7 +935,7 @@ def week_page(week: dict) -> str:
     <header class="page-header">
       <div class="header-label">Weekly campaign</div>
       <h1 class="header-title">Week of {week["full"]}</h1>
-      <div class="header-sub">Email campaign{' and website update' if has_website else ''}{' | plus IG planning' if week["iso"] in IG_PLANS else ''}</div>
+      <div class="header-sub">Email campaign{' and website update' if has_website else ''}</div>
       <div class="header-meta">
         <div class="header-meta-item">
           <div class="meta-label">Prepared by</div>
@@ -1063,14 +958,13 @@ def week_page(week: dict) -> str:
 
 {section_website(week["full"], week["iso"])}
 
-{section_ig(week["iso"], ig_num)}
-
     </div>
   </main>
 </div>
 
 <script src="../../assets/approval.js"></script>
 <script src="../../assets/nav.js"></script>
+<script src="../../assets/carousel.js"></script>
 </body>
 </html>'''
 
