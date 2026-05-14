@@ -1072,26 +1072,9 @@ function collectFormData() {
     const el = document.getElementById(id);
     if (el) data.fields[id] = el.value;
   });
-  // Files: store filenames + dataURLs (yes, base64 is bulky but works for drafts)
-  data.files = {};
-  Object.keys(fileSlots).forEach(id => {
-    if (fileSlots[id]) {
-      data.files[id] = {
-        filename: fileSlots[id].filename,
-        dataURL: fileSlots[id].dataURL,
-      };
-    }
-  });
-  // Post carousel slots (multi-file)
-  data.postSlots = {};
-  Object.keys(postSlots).forEach(num => {
-    if (postSlots[num] && postSlots[num].length > 0) {
-      data.postSlots[num] = postSlots[num].map(s => ({
-        filename: s.filename,
-        dataURL: s.dataURL,
-      }));
-    }
-  });
+  // NOTE: file dataURLs are NOT saved to localStorage because they're
+  // huge (videos especially). Files must be re-selected each session.
+  // Only the form text fields get auto-saved.
   return data;
 }
 
@@ -1117,37 +1100,8 @@ function loadDraft() {
       const el = document.getElementById(id);
       if (el) el.value = data.fields[id];
     });
-    Object.keys(data.files || {}).forEach(id => {
-      const f = data.files[id];
-      // Recreate fake "fileSlot" entry (we have the dataURL but not the original File object)
-      // We'll convert dataURL back to a Blob for zip generation
-      fileSlots[id] = {
-        file: dataURLtoBlob(f.dataURL, f.filename),
-        dataURL: f.dataURL,
-        filename: f.filename,
-      };
-      const previewId = id.replace('-image', '-preview');
-      const preview = document.getElementById(previewId);
-      if (preview) {
-        const img = preview.querySelector('img');
-        const fname = preview.querySelector('.filename');
-        if (img) img.src = f.dataURL;
-        if (fname) fname.textContent = f.filename;
-        preview.classList.add('has-file');
-      }
-    });
-    // Restore post carousel slots
-    Object.keys(data.postSlots || {}).forEach(num => {
-      const items = data.postSlots[num];
-      postSlots[num] = items.map(s => ({
-        file: dataURLtoBlob(s.dataURL, s.filename),
-        dataURL: s.dataURL,
-        filename: s.filename,
-      }));
-      renderPostThumbs(num);
-    });
     updateFolderName();
-    toast('Draft loaded', 'Form filled in from your last saved draft.', 'success');
+    toast('Draft loaded', 'Form text restored. Re-select your image and video files.', 'success');
   } catch (err) {
     toast('Load failed', err.message, 'error');
   }
