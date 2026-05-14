@@ -1738,43 +1738,58 @@ async function generateZip() {
     return;
   }
 
-  const zip = new JSZip();
-  const indexHtml = generateIndexHtml();
-  const campaignHtml = generateCampaignHtml();
-  const websiteHtmlFile = generateWebsiteHtml();
-
-  zip.file('index.html', indexHtml);
-  zip.file('campaign.html', campaignHtml);
-  zip.file('website.html', websiteHtmlFile);
-
-  // Image and video files
-  // Story slots (single-file)
-  for (const slotId of Object.keys(fileSlots)) {
-    const slot = fileSlots[slotId];
-    if (!slot) continue;
-    const ext = getExt(slot.filename);
-    if (slotId.startsWith('story')) {
-      const num = slotId.match(/story(\d+)/)[1];
-      zip.file(`ig-story-${num}.${ext}`, slot.file);
+  try {
+    if (typeof JSZip === 'undefined') {
+      throw new Error('JSZip library failed to load. Check your internet connection and refresh.');
     }
-  }
-  // Post slots (multi-file | single image = ig-post-N.ext, carousel = ig-post-N-1.ext, etc)
-  for (const num of Object.keys(postSlots)) {
-    const slots = postSlots[num] || [];
-    if (slots.length === 1) {
-      const slot = slots[0];
-      const ext = getExt(slot.filename);
-      zip.file(`ig-post-${num}.${ext}`, slot.file);
-    } else if (slots.length > 1) {
-      slots.forEach((slot, i) => {
+
+    const zip = new JSZip();
+    const indexHtml = generateIndexHtml();
+    const campaignHtml = generateCampaignHtml();
+    const websiteHtmlFile = generateWebsiteHtml();
+
+    zip.file('index.html', indexHtml);
+    zip.file('campaign.html', campaignHtml);
+    zip.file('website.html', websiteHtmlFile);
+
+    // Track filenames added for README
+    const fileList = [];
+
+    // Story slots (single-file each)
+    for (const slotId of Object.keys(fileSlots)) {
+      const slot = fileSlots[slotId];
+      if (!slot) continue;
+      if (slotId.startsWith('story')) {
+        const m = slotId.match(/story(\d+)/);
+        if (!m) continue;
+        const num = m[1];
         const ext = getExt(slot.filename);
-        zip.file(`ig-post-${num}-${i + 1}.${ext}`, slot.file);
-      });
+        const filename = `ig-story-${num}.${ext}`;
+        zip.file(filename, slot.file);
+        fileList.push(`- ${filename}  (Instagram story video)`);
+      }
     }
-  }
+    // Post slots (multi-file | single image = ig-post-N.ext, carousel = ig-post-N-1.ext, etc)
+    for (const num of Object.keys(postSlots)) {
+      const slots = postSlots[num] || [];
+      if (slots.length === 1) {
+        const slot = slots[0];
+        const ext = getExt(slot.filename);
+        const filename = `ig-post-${num}.${ext}`;
+        zip.file(filename, slot.file);
+        fileList.push(`- ${filename}  (Instagram post image)`);
+      } else if (slots.length > 1) {
+        slots.forEach((slot, i) => {
+          const ext = getExt(slot.filename);
+          const filename = `ig-post-${num}-${i + 1}.${ext}`;
+          zip.file(filename, slot.file);
+          fileList.push(`- ${filename}  (Instagram carousel image ${i + 1} of ${slots.length})`);
+        });
+      }
+    }
 
-  // README inside the zip with deploy instructions
-  const readme = `# Week of ${formatLongDate(folderName)}
+    // README inside the zip with deploy instructions
+    const readme = `# Week of ${formatLongDate(folderName)}
 
 Drop these files into your local repo at:
 
@@ -1793,16 +1808,11 @@ Files in this zip:
 - index.html         (the rendered week page)
 - campaign.html      (TalkBox campaign HTML, or a placeholder)
 - website.html       (Squarespace HTML/Liquid block, or a placeholder)
-${Object.keys(fileSlots).filter(k => fileSlots[k]).map(k => {
-  const ext = getExt(fileSlots[k].filename);
-  if (k.startsWith('post')) return `- ig-post-${k.match(/post(\\d+)/)[1]}.${ext}  (Instagram post image)`;
-  if (k.startsWith('story')) return `- ig-story-${k.match(/story(\\d+)/)[1]}.${ext}  (Instagram story video)`;
-  return '';
-}).filter(Boolean).join('\n')}
+${fileList.join('\n')}
 `;
-  zip.file('README.txt', readme);
+    zip.file('README.txt', readme);
 
-  try {
+    toast('Building zip...', 'Packaging your files, hold on.', 'success');
     const blob = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -1814,7 +1824,8 @@ ${Object.keys(fileSlots).filter(k => fileSlots[k]).map(k => {
     URL.revokeObjectURL(url);
     toast('Zip generated', `Downloaded as week-${folderName}.zip. Extract into weeks/${folderName}/`, 'success');
   } catch (err) {
-    toast('Zip failed', err.message, 'error');
+    console.error('Zip generation failed:', err);
+    toast('Zip failed', err.message || 'Unknown error. Check the browser console for details.', 'error');
   }
 }
 
