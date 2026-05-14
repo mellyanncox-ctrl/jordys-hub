@@ -62,16 +62,16 @@
 
     <div class="nav-section-title">Plan weeks</div>
     <ul class="nav-list">
-        <li class="nav-item is-current">
+        <li class="nav-item is-past">
           <a href="weeks/2026-05-04/index.html">
             <span class="nav-date">4 May</span>
-            <span class="nav-meta">Current</span>
+            <span class="nav-meta">Past</span>
           </a>
         </li>
-        <li class="nav-item is-upcoming">
+        <li class="nav-item is-current">
           <a href="weeks/2026-05-11/index.html">
             <span class="nav-date">11 May</span>
-            <span class="nav-meta">Upcoming</span>
+            <span class="nav-meta">Current</span>
           </a>
         </li>
         <li class="nav-item is-upcoming">
@@ -148,8 +148,14 @@
             <span class="nav-meta">Upcoming</span>
           </a>
         </li>
+        <li class="nav-item is-upcoming">
+          <a href="weeks/2026-08-10/index.html">
+            <span class="nav-date">10 Aug</span>
+            <span class="nav-meta">Upcoming</span>
+          </a>
+        </li>
       </ul>
-      <button class="nav-expand-btn" onclick="this.previousElementSibling.classList.toggle('is-shown'); this.textContent = this.textContent.includes('+') ? 'Show fewer' : '+ 9 more weeks';">+ 9 more weeks</button>
+      <button class="nav-expand-btn" onclick="this.previousElementSibling.classList.toggle('is-shown'); this.textContent = this.textContent.includes('+') ? 'Show fewer' : '+ 10 more weeks';">+ 10 more weeks</button>
 
     <div class="nav-admin">
       <a href="admin/" class="nav-admin-link">
@@ -168,9 +174,9 @@
         <p class="intro-sub">Open the current week below to review this week's email campaign and any website changes. Flows, reports, recurring automations and website history live on their own pages | jump to any from the sidebar or the tiles below.</p>
       </div>
 
-      <a href="weeks/2026-05-04/index.html" class="hero">
+      <a href="weeks/2026-05-11/index.html" class="hero">
         <div class="hero-label">Current week | review now</div>
-        <div class="hero-title">Week of 4 May 2026</div>
+        <div class="hero-title">Week of 11 May 2026</div>
         <div class="hero-sub">Open this week's plan to review the email campaign and any website changes scheduled for the next seven days.</div>
         <span class="hero-cta">Open this week's plan →</span>
       </a>
@@ -185,7 +191,7 @@
           <a href="reports/" class="hub-tile">
             <div class="hub-tile-label">Performance</div>
             <div class="hub-tile-title">Reports</div>
-            <div class="hub-tile-sub">6 reports | campaign attribution and monthly summaries</div>
+            <div class="hub-tile-sub">7 reports | campaign attribution and monthly summaries</div>
             <span class="hub-tile-cta">Open reports →</span>
           </a>
           <a href="flows/" class="hub-tile">
@@ -213,10 +219,13 @@
         <div class="section-block-header">
           <div class="section-block-num">03</div>
           <div class="section-block-title">Past weeks</div>
-          <div class="section-block-meta">Archive</div>
+          <div class="section-block-meta">1 archived</div>
         </div>
-        <div class="empty-block">
-          No past weeks yet | this is the launch week. Approved weeks will appear here as the plan rolls forward.
+        <div class="past-grid">
+        <a href="weeks/2026-05-04/index.html" class="past-card">
+          <div class="past-card-date">4 May</div>
+          <div class="past-card-title">Approved</div>
+        </a>
         </div>
       </section>
 
@@ -227,10 +236,6 @@
           <div class="section-block-meta">13 scheduled</div>
         </div>
         <ul class="upcoming-list">
-        <a href="weeks/2026-05-11/index.html" class="upcoming-item">
-          <span class="upcoming-date">Mon 11 May 2026</span>
-          <span class="upcoming-status">Awaiting plan</span>
-        </a>
         <a href="weeks/2026-05-18/index.html" class="upcoming-item">
           <span class="upcoming-date">Mon 18 May 2026</span>
           <span class="upcoming-status">Awaiting plan</span>
@@ -277,6 +282,10 @@
         </a>
         <a href="weeks/2026-08-03/index.html" class="upcoming-item">
           <span class="upcoming-date">Mon 3 August 2026</span>
+          <span class="upcoming-status">Awaiting plan</span>
+        </a>
+        <a href="weeks/2026-08-10/index.html" class="upcoming-item">
+          <span class="upcoming-date">Mon 10 August 2026</span>
           <span class="upcoming-status">Awaiting plan</span>
         </a>
         </ul>

@@ -6,12 +6,13 @@ from urllib.parse import quote
 
 ROOT = Path(__file__).parent
 APPROVAL_EMAIL = "hello@theserviceedit.com"
-CURRENT_WEEK = datetime(2026, 5, 4)
-TOTAL_WEEKS = 14  # current + 13 future
+CURRENT_WEEK = datetime(2026, 5, 11)
+PAST_WEEKS = 1   # number of past weeks to include (bump this each Monday after the current week passes)
+TOTAL_FUTURE = 13  # number of future weeks beyond current
 
-# Build week list
+# Build week list | past first, then current, then upcoming
 WEEKS = []
-for i in range(TOTAL_WEEKS):
+for i in range(-PAST_WEEKS, TOTAL_FUTURE + 1):
     d = CURRENT_WEEK + timedelta(weeks=i)
     WEEKS.append({
         "iso": d.strftime("%Y-%m-%d"),
@@ -21,7 +22,7 @@ for i in range(TOTAL_WEEKS):
         "datetime": d,
     })
 
-CURRENT_INDEX = 0  # First week is current; everything after is upcoming
+CURRENT_INDEX = PAST_WEEKS  # where the current week sits in the list
 
 # Web3Forms access key for inline approval forms.
 # Submissions land in the inbox associated with this key.
