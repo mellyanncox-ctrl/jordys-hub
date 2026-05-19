@@ -965,6 +965,7 @@ def week_page(week: dict) -> str:
 <script src="../../assets/approval.js"></script>
 <script src="../../assets/nav.js"></script>
 <script src="../../assets/carousel.js"></script>
+<script src="../../assets/ig-download.js"></script>
 </body>
 </html>'''
 

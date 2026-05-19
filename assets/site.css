@@ -2157,3 +2157,49 @@ a:hover { text-decoration: underline; }
     grid-template-columns: 1fr;
   }
 }
+
+/* ==========================================================================
+   IG DOWNLOAD BUTTONS
+   ========================================================================== */
+
+.ig-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 7px 12px;
+  background: var(--bg);
+  color: var(--dark);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.ig-download-btn:hover {
+  background: var(--terracotta);
+  color: #fff;
+  border-color: var(--terracotta);
+}
+
+.ig-download-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.ig-download-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 0;
+}
+
+.ig-download-row .ig-download-btn {
+  margin: 0;
+  font-size: 11px;
+  padding: 5px 10px;
+}
