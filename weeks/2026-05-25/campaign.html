@@ -2,52 +2,72 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Campaign placeholder</title>
-<style>
-  body {
-    font-family: 'Lato', -apple-system, sans-serif;
-    background: #faf8f6;
-    color: #888;
-    margin: 0;
-    padding: 40px 24px;
-    text-align: center;
-  }
-  .ph-mark {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #c2724c;
-    margin-bottom: 12px;
-  }
-  .ph-title {
-    font-size: 18px;
-    font-weight: 900;
-    color: #1a1a1a;
-    margin-bottom: 8px;
-  }
-  .ph-sub {
-    font-size: 13px;
-    line-height: 1.6;
-    max-width: 460px;
-    margin: 0 auto;
-  }
-  code {
-    background: #fff;
-    padding: 2px 8px;
-    border: 1px solid #e8e0db;
-    border-radius: 3px;
-    font-size: 12px;
-    color: #444;
-  }
-</style>
+<title>Campaign preview</title>
 </head>
 <body>
-  <div class="ph-mark">Awaiting campaign</div>
-  <div class="ph-title">Email campaign preview</div>
-  <div class="ph-sub">
-    Replace <code>campaign.html</code> in this folder with the TalkBox campaign HTML.
-    The preview will render here automatically.
+<style>
+  a[href*="view"], .view-online, .browser-link {
+    display: none !important;
+    visibility: hidden !important;
+    mso-hide: all;
+  }
+  body { margin: 0 !important; padding: 0 !important; background: #ffffff; font-family: Arial, Helvetica, sans-serif; }
+  * { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+  table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; }
+  img { border: 0; outline: none; text-decoration: none; display: block; -ms-interpolation-mode: bicubic; }
+  div[style*="margin: 16px 0"] { margin: 0 !important; }
+</style>
+
+<div style="max-width: 600px; margin: 0 auto; background: #ffffff;">
+
+  <!-- FULL BLEED HERO — headline overlaid via dark gradient -->
+  <div style="position: relative; font-size: 0; line-height: 0;">
+    <img src="https://images.squarespace-cdn.com/content/5ee715c4af5f2c14ccec67c1/3287d7ec-a166-4bff-be23-4286f259efa2/JORDYS+ENTRANCE.png?content-type=image%2Fpng" alt="Jordy's" width="600" style="width: 100%; max-width: 600px; height: 580px; display: block; object-fit: cover; object-position: center 50%;" />
+    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 300px; background: linear-gradient(to bottom, rgba(26,26,26,0) 0%, rgba(26,26,26,0.88) 60%, rgba(26,26,26,1) 100%);"></div>
+    <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 0 40px 36px;">
+      <p style="font-size: 11px; color: #c2724c; font-family: Arial, Helvetica, sans-serif; letter-spacing: 0.12em; text-transform: uppercase; margin: 0 0 12px; padding: 0; line-height: 1;">open from 5pm</p>
+      <p style="font-size: 42px; color: #ffffff; font-family: Georgia, serif; font-weight: 700; line-height: 1.05; margin: 0; padding: 0;">you free<br>tonight?</p>
+    </div>
   </div>
+
+  <!-- BODY — dark background continues from hero -->
+  <div style="background: #1a1a1a; padding: 32px 40px 0;">
+    <p style="font-size: 14px; color: rgba(255,255,255,0.4); font-family: Arial, Helvetica, sans-serif; line-height: 1.9; margin: 0 0 16px; padding: 0; font-style: italic;">Hey [First Name],</p>
+    <p style="font-size: 15px; color: rgba(255,255,255,0.85); font-family: Arial, Helvetica, sans-serif; line-height: 1.85; margin: 0 0 16px; padding: 0;">Good tables. Cold margaritas. No reason to wait for Friday.</p>
+    <p style="font-size: 15px; color: #c2724c; font-family: Arial, Helvetica, sans-serif; line-height: 1.85; margin: 0; padding: 0;">Happy Nights: $10 beer, wine + margs with any pizza. Every Wednesday + Thursday from 5pm.</p>
+  </div>
+
+  <!-- IMAGE CTAs -->
+  <div style="background: #1a1a1a; padding: 28px 40px 36px; text-align: center;">
+    <table width="95%" cellpadding="0" cellspacing="0" border="0" align="center">
+      <tr>
+        <td style="padding-right: 12px;">
+          <a href="https://bookings.nowbookit.com?accountid=933ec4b6-ecbc-4f71-bb42-cd00e0176c00&colors=hex%2Cc2724c&font=Lato&theme=light&venueid=10578" style="display: block;">
+            <img src="https://images.squarespace-cdn.com/content/5ee715c4af5f2c14ccec67c1/11c66013-eeed-475a-80ea-3dbac14c1c6a/CTA-BOOK.png?content-type=image%2Fpng" alt="Book a table" width="170" style="width: 170px; height: auto; display: block;" />
+          </a>
+        </td>
+        <td style="padding-right: 12px;">
+          <a href="https://www.meandu.app/jordys/pickup" style="display: block;">
+            <img src="https://images.squarespace-cdn.com/content/5ee715c4af5f2c14ccec67c1/f50ac228-5787-45a0-b4a3-d56165b68a40/CTA-ORDER.png?content-type=image%2Fpng" alt="Order online" width="170" style="width: 170px; height: auto; display: block;" />
+          </a>
+        </td>
+        <td>
+          <a href="https://jordyscasuarina.com/menu" style="display: block;">
+            <img src="https://images.squarespace-cdn.com/content/5ee715c4af5f2c14ccec67c1/2efaedf8-7f7d-4ae0-a474-b82c89b489d6/CTA-MENU.png?content-type=image%2Fpng" alt="View the menu" width="170" style="width: 170px; height: auto; display: block;" />
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- SIGN OFF -->
+  <div style="background: #1a1a1a; padding: 0 40px 32px;">
+    <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px;">
+      <p style="font-size: 12px; color: rgba(255,255,255,0.25); font-family: Arial, Helvetica, sans-serif; margin: 0 0 4px; padding: 0;">eat your crust,</p>
+      <p style="font-size: 36px; color: #c2724c; font-family: Georgia, serif; font-weight: 700; margin: 0; padding: 0; line-height: 1.1;">Jordy</p>
+    </div>
+  </div>
+
+</div>
 </body>
 </html>
