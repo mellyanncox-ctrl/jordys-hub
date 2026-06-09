@@ -74,28 +74,30 @@
             <span class="nav-meta">Past</span>
           </a>
         </li>
-        <li class="nav-item is-past">
+        <li class="nav-item is-current">
           <a href="weeks/2026-05-18/index.html">
             <span class="nav-date">18 May</span>
-            <span class="nav-meta">Past</span>
+            <span class="nav-meta">Current</span>
           </a>
         </li>
-        <li class="nav-item is-past">
+        <li class="nav-item is-upcoming">
           <a href="weeks/2026-05-25/index.html">
             <span class="nav-date">25 May</span>
-            <span class="nav-meta">Past</span>
+            <span class="nav-meta">Upcoming</span>
           </a>
         </li>
-        <li class="nav-item is-past">
+        <li class="nav-item is-upcoming">
           <a href="weeks/2026-06-01/index.html">
             <span class="nav-date">1 Jun</span>
-            <span class="nav-meta">Past</span>
+            <span class="nav-meta">Upcoming</span>
           </a>
         </li>
-        <li class="nav-item is-current">
+    </ul>
+      <ul class="nav-list nav-hidden" id="nav-extra">
+        <li class="nav-item is-upcoming">
           <a href="weeks/2026-06-08/index.html">
             <span class="nav-date">8 Jun</span>
-            <span class="nav-meta">Current</span>
+            <span class="nav-meta">Upcoming</span>
           </a>
         </li>
         <li class="nav-item is-upcoming">
@@ -116,8 +118,6 @@
             <span class="nav-meta">Upcoming</span>
           </a>
         </li>
-    </ul>
-      <ul class="nav-list nav-hidden" id="nav-extra">
         <li class="nav-item is-upcoming">
           <a href="weeks/2026-07-06/index.html">
             <span class="nav-date">6 Jul</span>
@@ -155,7 +155,7 @@
           </a>
         </li>
       </ul>
-      <button class="nav-expand-btn" onclick="this.previousElementSibling.classList.toggle('is-shown'); this.textContent = this.textContent.includes('+') ? 'Show fewer' : '+ 6 more weeks';">+ 6 more weeks</button>
+      <button class="nav-expand-btn" onclick="this.previousElementSibling.classList.toggle('is-shown'); this.textContent = this.textContent.includes('+') ? 'Show fewer' : '+ 10 more weeks';">+ 10 more weeks</button>
 
     <div class="nav-admin">
       <a href="admin/" class="nav-admin-link">
@@ -174,9 +174,9 @@
         <p class="intro-sub">Open the current week below to review this week's email campaign and any website changes. Flows, reports, recurring automations and website history live on their own pages | jump to any from the sidebar or the tiles below.</p>
       </div>
 
-      <a href="weeks/2026-06-08/index.html" class="hero">
+      <a href="weeks/2026-05-18/index.html" class="hero">
         <div class="hero-label">Current week | review now</div>
-        <div class="hero-title">Week of 8 Jun 2026</div>
+        <div class="hero-title">Week of 18 May 2026</div>
         <div class="hero-sub">Open this week's plan to review the email campaign and any website changes scheduled for the next seven days.</div>
         <span class="hero-cta">Open this week's plan →</span>
       </a>
@@ -219,21 +219,9 @@
         <div class="section-block-header">
           <div class="section-block-num">03</div>
           <div class="section-block-title">Past weeks</div>
-          <div class="section-block-meta">5 archived</div>
+          <div class="section-block-meta">2 archived</div>
         </div>
         <div class="past-grid">
-        <a href="weeks/2026-06-01/index.html" class="past-card">
-          <div class="past-card-date">1 Jun</div>
-          <div class="past-card-title">No campaign</div>
-        </a>
-        <a href="weeks/2026-05-25/index.html" class="past-card">
-          <div class="past-card-date">25 May</div>
-          <div class="past-card-title">No campaign</div>
-        </a>
-        <a href="weeks/2026-05-18/index.html" class="past-card">
-          <div class="past-card-date">18 May</div>
-          <div class="past-card-title">No campaign</div>
-        </a>
         <a href="weeks/2026-05-11/index.html" class="past-card">
           <div class="past-card-date">11 May</div>
           <div class="past-card-title">Approved</div>
@@ -249,9 +237,21 @@
         <div class="section-block-header">
           <div class="section-block-num">04</div>
           <div class="section-block-title">Upcoming weeks</div>
-          <div class="section-block-meta">9 scheduled</div>
+          <div class="section-block-meta">12 scheduled</div>
         </div>
         <ul class="upcoming-list">
+        <a href="weeks/2026-05-25/index.html" class="upcoming-item">
+          <span class="upcoming-date">Mon 25 May 2026</span>
+          <span class="upcoming-status">Awaiting plan</span>
+        </a>
+        <a href="weeks/2026-06-01/index.html" class="upcoming-item">
+          <span class="upcoming-date">Mon 1 June 2026</span>
+          <span class="upcoming-status">Awaiting plan</span>
+        </a>
+        <a href="weeks/2026-06-08/index.html" class="upcoming-item">
+          <span class="upcoming-date">Mon 8 June 2026</span>
+          <span class="upcoming-status">Awaiting plan</span>
+        </a>
         <a href="weeks/2026-06-15/index.html" class="upcoming-item">
           <span class="upcoming-date">Mon 15 June 2026</span>
           <span class="upcoming-status">Awaiting plan</span>
