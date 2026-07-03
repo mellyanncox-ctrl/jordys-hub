@@ -21,6 +21,73 @@
     return a;
   }
 
+  /* ------------------------------------------------------------------
+     Save-to-camera-roll via the native share sheet (iOS / Android).
+     Websites can't write to Photos directly, but sharing the video file
+     opens the share sheet where "Save Video" puts it in the camera roll.
+     Falls back to a normal download if anything fails.
+     ------------------------------------------------------------------ */
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ||
+    (navigator.maxTouchPoints > 1 && /Mac/i.test(navigator.userAgent));
+
+  function canShareVideoFiles() {
+    if (!isMobile || !navigator.share || !navigator.canShare) return false;
+    try {
+      const probe = new File([''], 'probe.mov', { type: 'video/quicktime' });
+      return navigator.canShare({ files: [probe] });
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function mimeFor(name) {
+    const n = name.toLowerCase();
+    if (n.endsWith('.mp4') || n.endsWith('.m4v')) return 'video/mp4';
+    return 'video/quicktime';
+  }
+
+  function fallbackDownload(href) {
+    const a = document.createElement('a');
+    a.href = href;
+    a.setAttribute('download', '');
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  function wireVideoShare(btn, href) {
+    if (!canShareVideoFiles()) return;
+
+    btn.innerHTML = '<span class="ig-download-icon">⤓</span> Save to camera roll';
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (btn.dataset.busy) return;
+      btn.dataset.busy = '1';
+      const original = btn.innerHTML;
+      btn.innerHTML = '<span class="ig-download-icon">…</span> Preparing video';
+
+      fetch(href)
+        .then(r => {
+          if (!r.ok) throw new Error('fetch failed');
+          return r.blob();
+        })
+        .then(blob => {
+          const name = href.split('/').pop().split('?')[0];
+          const file = new File([blob], name, { type: mimeFor(name) });
+          if (!navigator.canShare({ files: [file] })) throw new Error('cannot share');
+          return navigator.share({ files: [file] });
+        })
+        .catch(err => {
+          if (!err || err.name !== 'AbortError') fallbackDownload(href);
+        })
+        .finally(() => {
+          delete btn.dataset.busy;
+          btn.innerHTML = original;
+        });
+    });
+  }
+
   function processPosts() {
     // Each post card with social tag gets a download under the image/carousel
     document.querySelectorAll('.section .card').forEach(card => {
@@ -68,7 +135,10 @@
         const href = link.getAttribute('href');
         if (!href || href === '#') return;
         const btn = makeDownloadButton(href, 'Download video');
-        if (btn) link.after(btn);
+        if (btn) {
+          link.after(btn);
+          wireVideoShare(btn, href);
+        }
         return;
       }
 
@@ -78,7 +148,10 @@
         const src = video.getAttribute('src');
         if (!src) return;
         const btn = makeDownloadButton(src, 'Download video');
-        if (btn) video.after(btn);
+        if (btn) {
+          video.after(btn);
+          wireVideoShare(btn, src);
+        }
       }
     });
   }
