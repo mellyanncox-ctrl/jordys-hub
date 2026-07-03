@@ -58,21 +58,27 @@
   }
 
   function processStories() {
-    // Story videos | each story-image anchor wraps a thumb; add download below
     document.querySelectorAll('.story-card, .stories-grid > *').forEach(card => {
-      // Find the media link inside
-      const link = card.querySelector('a.story-image, a.story-video-link');
-      if (!link) return;
-      const href = link.getAttribute('href');
-      if (!href || href === '#') return;
-
       // Don't double-inject if already there
       if (card.querySelector('.ig-download-btn')) return;
 
-      const btn = makeDownloadButton(href, 'Download video');
-      if (btn) {
-        // Put it right after the link (above the caption)
-        link.after(btn);
+      // Old markup | thumbnail anchor linking to the video file
+      const link = card.querySelector('a.story-image, a.story-video-link');
+      if (link) {
+        const href = link.getAttribute('href');
+        if (!href || href === '#') return;
+        const btn = makeDownloadButton(href, 'Download video');
+        if (btn) link.after(btn);
+        return;
+      }
+
+      // New markup | inline <video> player, no anchor
+      const video = card.querySelector('video[src]');
+      if (video) {
+        const src = video.getAttribute('src');
+        if (!src) return;
+        const btn = makeDownloadButton(src, 'Download video');
+        if (btn) video.after(btn);
       }
     });
   }
