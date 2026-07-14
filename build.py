@@ -6,8 +6,8 @@ from urllib.parse import quote
 
 ROOT = Path(__file__).parent
 APPROVAL_EMAIL = "hello@theserviceedit.com"
-CURRENT_WEEK = datetime(2026, 5, 11)
-PAST_WEEKS = 1   # number of past weeks to include (bump this each Monday after the current week passes)
+CURRENT_WEEK = datetime(2026, 7, 13)
+PAST_WEEKS = 10   # number of past weeks to include (bump this each Monday after the current week passes)
 TOTAL_FUTURE = 13  # number of future weeks beyond current
 
 # Build week list | past first, then current, then upcoming
@@ -447,6 +447,13 @@ WEEK_METADATA = {
         "subject": "Don't pretend you're cooking tonight",
         "preview": "$10 drinks. Hot pizza. Margs that fight back.",
         "send_date": "13 May 2026",
+        "send_time": "07:00",
+        "segments": "All Segments",
+    },
+    "2026-07-13": {
+        "subject": "One more reason to book",
+        "preview": "Dry-aged kingfish. Crispy capers. Orange zest 🐟🍊",
+        "send_date": "15 July 2026",
         "send_time": "07:00",
         "segments": "All Segments",
     },
