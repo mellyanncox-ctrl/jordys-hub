@@ -6,9 +6,9 @@ from urllib.parse import quote
 
 ROOT = Path(__file__).parent
 APPROVAL_EMAIL = "hello@theserviceedit.com"
-CURRENT_WEEK = datetime(2026, 7, 13)
-PAST_WEEKS = 10   # number of past weeks to include (bump this each Monday after the current week passes)
-TOTAL_FUTURE = 13  # number of future weeks beyond current
+CURRENT_WEEK = datetime(2026, 8, 3)
+PAST_WEEKS = 13   # number of past weeks to include (bump this each Monday after the current week passes)
+TOTAL_FUTURE = 10  # number of future weeks beyond current
 
 # Build week list | past first, then current, then upcoming
 WEEKS = []
@@ -457,6 +457,13 @@ WEEK_METADATA = {
         "send_time": "07:00",
         "segments": "All Segments",
     },
+    "2026-08-03": {
+        "subject": "Ten dollars.",
+        "preview": "Wednesday and Thursday, we can do a bit better than that.",
+        "send_date": "To confirm",
+        "send_time": "07:00",
+        "segments": "All Segments",
+    },
     # Add more weeks as you plan them:
     # "2026-05-18": {
     #     "subject": "...",
@@ -599,13 +606,22 @@ def sidebar_html(active_iso: str | None, show_admin: bool = False, is_flows_page
             "index": i,
         })
 
-    # Visible by default = 4 nearest weeks + current
-    # "4 nearest" = 2 before + current + 2 after, but we have no past weeks here
-    # So show: current + next 4 = 5 visible; rest hidden behind expander
+    # Visible by default = the current week + the next 4.
+    # Past weeks live behind the expander so the sidebar stays anchored on "now"
+    # as the plan rolls forward. If you're viewing a past week, that week is
+    # pinned into the visible list too so you can see where you are.
     visible_count = 5
 
-    visible_items = items[:visible_count]
-    hidden_items = items[visible_count:]
+    window = items[CURRENT_INDEX:CURRENT_INDEX + visible_count]
+    window_indexes = {it["index"] for it in window}
+
+    active_item = next((it for it in items if it["is_active"]), None)
+    if active_item and active_item["index"] not in window_indexes:
+        window = [active_item] + window
+        window_indexes.add(active_item["index"])
+
+    visible_items = window
+    hidden_items = [it for it in items if it["index"] not in window_indexes]
 
     def render_item(it: dict) -> str:
         return f'''        <li class="nav-item {it["classes"]}">
@@ -930,6 +946,10 @@ def week_page(week: dict) -> str:
 <title>{week["display"]} | Jordy's Casuarina Marketing Plan</title>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../assets/site.css">
+<link rel="icon" href="../../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../../assets/img/favicon-16x16.png">
+<link rel="apple-touch-icon" href="../../assets/img/apple-touch-icon.png">
 </head>
 <body>
 
