@@ -216,6 +216,15 @@ FLOWS = [
 # 'kind' is "monthly" or "weekly".
 REPORTS = [
     {
+        "slug": "yoy-jun-aug-2026",
+        "title": "Winter trading 2026 vs 2025",
+        "subtitle": "Year-on-year trading report",
+        "date": "11 Jun – 7 Aug 2026",
+        "sort_date": "2026-08-07",
+        "kind": "monthly",
+        "summary": "Bookings, covers and me&u ordering for 11 June – 7 August 2026 against the same 34 trading nights in 2025. Covers +21.9%, bookings +12.9%, me&u revenue +29.6%.",
+    },
+    {
         "slug": "march-april-2026",
         "title": "March–April 2026",
         "subtitle": "Monthly campaign report",

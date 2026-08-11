@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jordy's Casuarina | Trading Year-on-Year — 11 June to 7 August 2026 vs 2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Fraunces:opsz,wght@9..144,400..900&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terracotta: #c2724c;
+    --terracotta-light: #d4896a;
+    --terracotta-pale: #f5ede8;
+    --dark: #1a1a1a;
+    --mid: #444;
+    --light: #888;
+    --border: #e8e0db;
+    --bg: #faf8f6;
+    --white: #ffffff;
+    --green: #4a7c59;
+    --green-pale: #edf3ef;
+    --amber: #b5821a;
+    --amber-pale: #fdf6e7;
+    --navy: #2f3d55;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .display {
+    font-family: 'Fraunces', 'Windsor D', Georgia, serif;
+    font-variation-settings: 'SOFT' 90, 'WONK' 1, 'opsz' 144;
+    font-weight: 590;
+  }
+  .label {
+    font-family: 'Clarika Geometric', 'Jost', 'Lato', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+  }
+
+  /* HEADER */
+  .report-header {
+    background: var(--dark);
+    padding: 52px 56px 44px;
+    position: relative;
+    overflow: hidden;
+  }
+  .arches {
+    position: absolute;
+    right: -40px;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .arch {
+    width: 84px;
+    height: 132px;
+    border-radius: 84px 84px 0 0;
+  }
+  .arch.solid { background: var(--terracotta); }
+  .arch.outline { border: 2px solid var(--terracotta); border-bottom: none; }
+  .arch.short { height: 88px; }
+  .arch.tall { height: 170px; }
+
+  .header-inner { position: relative; z-index: 2; max-width: 680px; }
+  .wordmark {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 90, 'WONK' 1, 'opsz' 144;
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--white);
+    letter-spacing: -0.01em;
+    line-height: 1;
+    margin-bottom: 22px;
+  }
+  .wordmark span { color: var(--terracotta); }
+  .header-label {
+    font-size: 10px;
+    color: var(--terracotta);
+    margin-bottom: 14px;
+  }
+  .header-title {
+    font-size: 42px;
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .header-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+  }
+  .header-meta {
+    margin-top: 30px;
+    display: flex;
+    gap: 34px;
+    flex-wrap: wrap;
+  }
+  .header-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .meta-label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.4);
+  }
+  .meta-value { font-size: 13px; color: rgba(255,255,255,0.88); font-weight: 400; }
+
+  /* LAYOUT */
+  .report-body { max-width: 960px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* SECTIONS */
+  .section { margin-bottom: 52px; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--terracotta);
+  }
+  .section-num { font-size: 10px; color: var(--terracotta); }
+  .section-title { font-size: 24px; color: var(--dark); letter-spacing: -0.01em; }
+
+  .lede { font-size: 16px; color: var(--mid); margin-bottom: 22px; max-width: 74ch; }
+  .lede strong { color: var(--dark); }
+
+  /* STAT GRID */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 20px 18px;
+  }
+  .stat-card.highlight { background: var(--terracotta); border-color: var(--terracotta); }
+  .stat-card.highlight .stat-label { color: rgba(255,255,255,0.75); }
+  .stat-card.highlight .stat-note { color: rgba(255,255,255,0.8); }
+  .stat-card.highlight .stat-value { color: white; }
+  .stat-card.ink { background: var(--dark); border-color: var(--dark); }
+  .stat-card.ink .stat-label { color: rgba(255,255,255,0.45); }
+  .stat-card.ink .stat-note { color: rgba(255,255,255,0.5); }
+  .stat-card.ink .stat-value { color: var(--terracotta); }
+  .stat-label { font-size: 9px; color: var(--light); margin-bottom: 10px; }
+  .stat-value {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 90, 'WONK' 1, 'opsz' 144;
+    font-weight: 600;
+    font-size: 34px;
+    color: var(--dark);
+    line-height: 1;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .stat-note { font-size: 11.5px; color: var(--light); font-weight: 400; line-height: 1.45; }
+  .stat-note strong { color: var(--mid); }
+
+  /* TABLES */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .data-table th {
+    background: var(--dark);
+    color: rgba(255,255,255,0.7);
+    font-family: 'Clarika Geometric', 'Jost', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 13px 18px;
+    text-align: left;
+  }
+  .data-table th.num, .data-table td.num { text-align: right; }
+  .data-table td { padding: 13px 18px; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--dark); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tbody tr:hover td { background: var(--terracotta-pale); }
+  .data-table td.num { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .data-table .row-head { font-weight: 700; }
+  .data-table .total-row td {
+    background: var(--terracotta-pale);
+    font-weight: 700;
+    border-top: 2px solid var(--terracotta);
+  }
+  .data-table .sub td { color: var(--light); font-size: 13px; }
+  .data-table caption {
+    caption-side: top;
+    text-align: left;
+    font-family: 'Clarika Geometric', 'Jost', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--light);
+    padding-bottom: 9px;
+  }
+
+  .up { color: var(--green); font-weight: 700; }
+  .down { color: var(--terracotta); font-weight: 700; }
+  .flat { color: var(--light); font-weight: 700; }
+
+  /* BARS */
+  .bar-block { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 22px 24px; }
+  .bar-chart-row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+  .bar-chart-row:last-child { margin-bottom: 0; }
+  .bar-label {
+    font-family: 'Clarika Geometric', 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--mid);
+    width: 128px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .bar-track { flex: 1; height: 30px; background: #f0e9e4; border-radius: 4px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 12px; }
+  .bar-fill.y25 { background: var(--navy); }
+  .bar-fill.y26 { background: var(--terracotta); }
+  .bar-val { font-size: 11.5px; font-weight: 700; color: white; white-space: nowrap; }
+  .bar-delta { font-size: 12px; width: 62px; flex-shrink: 0; font-weight: 700; }
+
+  .legend { display: flex; gap: 18px; margin-bottom: 16px; }
+  .legend-item {
+    display: flex; align-items: center; gap: 7px;
+    font-family: 'Clarika Geometric', 'Jost', sans-serif;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--mid);
+  }
+  .swatch { width: 12px; height: 12px; border-radius: 3px; }
+  .swatch.y25 { background: var(--navy); }
+  .swatch.y26 { background: var(--terracotta); }
+
+  /* CALLOUTS */
+  .insight-box, .caveat, .action-box {
+    border-radius: 0 6px 6px 0;
+    padding: 15px 20px;
+    font-size: 13.5px;
+    color: var(--mid);
+    margin-top: 16px;
+  }
+  .insight-box { background: var(--green-pale); border-left: 3px solid var(--green); }
+  .insight-box strong { color: var(--green); }
+  .caveat { background: var(--amber-pale); border-left: 3px solid var(--amber); }
+  .caveat strong { color: var(--amber); }
+  .action-box { background: var(--terracotta-pale); border-left: 3px solid var(--terracotta); }
+  .action-box strong { color: var(--terracotta); }
+
+  /* ACTION LIST */
+  .actions { display: grid; gap: 14px; }
+  .action {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 22px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+  .action-num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-variation-settings: 'SOFT' 90, 'WONK' 1;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--white);
+    background: var(--terracotta);
+    width: 38px; height: 38px;
+    border-radius: 38px 38px 4px 4px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .action-title { font-size: 15px; font-weight: 900; color: var(--dark); margin-bottom: 4px; }
+  .action-body { font-size: 13.5px; color: var(--mid); }
+  .action-body strong { color: var(--dark); }
+
+  /* METHOD */
+  .method-list { list-style: none; display: grid; gap: 12px; }
+  .method-list li {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 15px 20px;
+    font-size: 13.5px;
+    color: var(--mid);
+  }
+  .method-list li strong { color: var(--dark); }
+
+  /* FOOTER */
+  .report-footer {
+    background: var(--dark);
+    padding: 30px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-left { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .footer-right { font-size: 12px; color: var(--terracotta); font-weight: 700; }
+
+  .note-inline { font-size: 12px; color: var(--light); margin-top: 10px; font-style: italic; }
+
+  @media (max-width: 760px) {
+    .report-header { padding: 34px 24px 30px; }
+    .arches { display: none; }
+    .header-title { font-size: 30px; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .bar-label { width: 92px; font-size: 9px; }
+    .report-footer { padding: 24px; }
+    .data-table th, .data-table td { padding: 11px 12px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="report-header">
+  <div class="arches" aria-hidden="true">
+    <div class="arch outline short"></div>
+    <div class="arch solid"></div>
+    <div class="arch outline tall"></div>
+    <div class="arch solid short"></div>
+  </div>
+  <div class="header-inner">
+    <div class="wordmark">jordy's<span>.</span></div>
+    <div class="header-label label">Trading Performance | Year on Year</div>
+    <h1 class="header-title display">Winter trading is up<br>on every measure</h1>
+    <div class="header-sub">11 June – 7 August 2026 compared with the same 34 trading nights in 2025</div>
+    <div class="header-meta">
+      <div class="header-meta-item">
+        <span class="meta-label label">Period</span>
+        <span class="meta-value">11 Jun – 7 Aug 2026</span>
+      </div>
+      <div class="header-meta-item">
+        <span class="meta-label label">Compared with</span>
+        <span class="meta-value">11 Jun – 7 Aug 2025</span>
+      </div>
+      <div class="header-meta-item">
+        <span class="meta-label label">Trading nights</span>
+        <span class="meta-value">34 each year</span>
+      </div>
+      <div class="header-meta-item">
+        <span class="meta-label label">Sources</span>
+        <span class="meta-value">Now Book It + me&amp;u</span>
+      </div>
+      <div class="header-meta-item">
+        <span class="meta-label label">Prepared by</span>
+        <span class="meta-value">The Service Edit</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="report-body">
+
+  <!-- 01 HEADLINE -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num label">01</span>
+      <span class="section-title display">The headline</span>
+    </div>
+
+    <p class="lede">Same two months, same number of trading nights, one year apart. <strong>Covers are growing nearly twice as fast as bookings</strong> — the venue isn't just taking more reservations, it's taking bigger ones. Digital ordering revenue is up almost 30%.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card highlight">
+        <div class="stat-label label">Covers</div>
+        <div class="stat-value">+21.9%</div>
+        <div class="stat-note">1,949 → <strong>2,376</strong> &nbsp;(+427)</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-label label">Bookings</div>
+        <div class="stat-value">+12.9%</div>
+        <div class="stat-note">575 → <strong>649</strong> &nbsp;(+74)</div>
+      </div>
+      <div class="stat-card highlight">
+        <div class="stat-label label">me&amp;u revenue</div>
+        <div class="stat-value">+29.6%</div>
+        <div class="stat-note">$44,786 → <strong>$58,058</strong></div>
+      </div>
+      <div class="stat-card ink">
+        <div class="stat-label label">Average party</div>
+        <div class="stat-value">+8.0%</div>
+        <div class="stat-note">3.39 → <strong>3.66 people</strong></div>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <strong>One number matters more than the rest: average party size.</strong> Covers up 21.9% on bookings up 12.9% means roughly two-thirds of the extra volume came from the tables getting bigger, not from more tables. That is the cheapest growth available — no extra marketing spend, no extra covers to seat, just more chairs filled per reservation.
+    </div>
+  </section>
+
+  <!-- 02 BOOKINGS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num label">02</span>
+      <span class="section-title display">Bookings and covers</span>
+    </div>
+
+    <p class="lede">Source: Now Book It, all services, all sections. Walk-ins are included where they were logged at the pass.</p>
+
+    <table class="data-table">
+      <caption>11 June – 7 August, year on year</caption>
+      <thead>
+        <tr>
+          <th>Measure</th>
+          <th class="num">2025</th>
+          <th class="num">2026</th>
+          <th class="num">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-head">Bookings</td>
+          <td class="num">575</td>
+          <td class="num">649</td>
+          <td class="num"><span class="up">+12.9%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">Covers</td>
+          <td class="num">1,949</td>
+          <td class="num">2,376</td>
+          <td class="num"><span class="up">+21.9%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">Average party size</td>
+          <td class="num">3.39</td>
+          <td class="num">3.66</td>
+          <td class="num"><span class="up">+8.0%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">Covers per trading night</td>
+          <td class="num">57.3</td>
+          <td class="num">69.9</td>
+          <td class="num"><span class="up">+21.9%</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin: 30px 0 14px; font-size: 15px;" class="label">Covers by section</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Section</th>
+          <th class="num">2025 covers</th>
+          <th class="num">2026 covers</th>
+          <th class="num">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-head">Outside</td>
+          <td class="num">1,439</td>
+          <td class="num">1,802</td>
+          <td class="num"><span class="up">+25.2%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">Inside</td>
+          <td class="num">355</td>
+          <td class="num">461</td>
+          <td class="num"><span class="up">+29.9%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">Bar</td>
+          <td class="num">112</td>
+          <td class="num">94</td>
+          <td class="num"><span class="down">−16.1%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">Wait list</td>
+          <td class="num">43</td>
+          <td class="num">19</td>
+          <td class="num"><span class="down">−55.8%</span></td>
+        </tr>
+        <tr class="total-row">
+          <td>Total</td>
+          <td class="num">1,949</td>
+          <td class="num">2,376</td>
+          <td class="num">+21.9%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="caveat">
+      <strong>Watch the bar.</strong> Bar bookings rose from 38 to 48, but bar covers fell from 112 to 94 — average party at the bar dropped from 2.9 to 2.0. The bar is being used for pairs and singles, not groups. Fine if that is deliberate; a lost seating opportunity on a full Saturday if it isn't.
+    </div>
+
+    <h3 style="margin: 30px 0 14px; font-size: 15px;" class="label">How people book</h3>
+    <div class="bar-block">
+      <div class="legend">
+        <div class="legend-item"><span class="swatch y25"></span> 2025</div>
+        <div class="legend-item"><span class="swatch y26"></span> 2026</div>
+      </div>
+      <div class="bar-chart-row">
+        <div class="bar-label">Online 2025</div>
+        <div class="bar-track"><div class="bar-fill y25" style="width: 59%;"><span class="bar-val">59%</span></div></div>
+        <div class="bar-delta"></div>
+      </div>
+      <div class="bar-chart-row">
+        <div class="bar-label">Online 2026</div>
+        <div class="bar-track"><div class="bar-fill y26" style="width: 64%;"><span class="bar-val">64%</span></div></div>
+        <div class="bar-delta up">+5pts</div>
+      </div>
+      <div class="bar-chart-row" style="margin-top:18px;">
+        <div class="bar-label">Walk-in 2025</div>
+        <div class="bar-track"><div class="bar-fill y25" style="width: 32%;"><span class="bar-val">32%</span></div></div>
+        <div class="bar-delta"></div>
+      </div>
+      <div class="bar-chart-row">
+        <div class="bar-label">Walk-in 2026</div>
+        <div class="bar-track"><div class="bar-fill y26" style="width: 31%;"><span class="bar-val">31%</span></div></div>
+        <div class="bar-delta flat">−1pt</div>
+      </div>
+      <div class="bar-chart-row" style="margin-top:18px;">
+        <div class="bar-label">Phone 2025</div>
+        <div class="bar-track"><div class="bar-fill y25" style="width: 9%;"><span class="bar-val" style="color:var(--mid); margin-left:6px;">9%</span></div></div>
+        <div class="bar-delta"></div>
+      </div>
+      <div class="bar-chart-row">
+        <div class="bar-label">Phone 2026</div>
+        <div class="bar-track"><div class="bar-fill y26" style="width: 5%;"><span class="bar-val" style="color:var(--mid); margin-left:6px;">5%</span></div></div>
+        <div class="bar-delta down">−4pts</div>
+      </div>
+      <p class="note-inline">Percentages are share of bookings, as reported by Now Book It.</p>
+    </div>
+
+    <div class="insight-box">
+      <strong>Phone bookings have halved.</strong> 9% to 5% of a larger booking base means the phone is ringing about as often as last year while the venue takes 74 more reservations. Every point that moves from phone to online is floor-staff time returned to service.
+    </div>
+  </section>
+
+  <!-- 03 ME&U -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num label">03</span>
+      <span class="section-title display">me&amp;u ordering</span>
+    </div>
+
+    <p class="lede">Source: me&amp;u. Revenue is gross including GST. This is digital ordering only — anything paid at the POS sits outside these numbers.</p>
+
+    <table class="data-table">
+      <caption>11 June – 7 August, year on year</caption>
+      <thead>
+        <tr>
+          <th>Measure</th>
+          <th class="num">2025</th>
+          <th class="num">2026</th>
+          <th class="num">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-head">Revenue (inc GST)</td>
+          <td class="num">$44,785.50</td>
+          <td class="num">$58,058.00</td>
+          <td class="num"><span class="up">+29.6%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">Transactions</td>
+          <td class="num">640</td>
+          <td class="num">765</td>
+          <td class="num"><span class="up">+19.5%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">Average order</td>
+          <td class="num">$69.98</td>
+          <td class="num">$75.89</td>
+          <td class="num"><span class="up">+8.4%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">Revenue per trading night</td>
+          <td class="num">$1,317</td>
+          <td class="num">$1,708</td>
+          <td class="num"><span class="up">+29.6%</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin: 30px 0 14px; font-size: 15px;" class="label">Split across the period</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Window</th>
+          <th class="num">2025</th>
+          <th class="num">2026</th>
+          <th class="num">Revenue</th>
+          <th class="num">Orders</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-head">11 Jun – 10 Jul</td>
+          <td class="num">$24,558</td>
+          <td class="num">$30,377</td>
+          <td class="num"><span class="up">+23.7%</span></td>
+          <td class="num"><span class="up">+20.3%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">11 Jul – 7 Aug</td>
+          <td class="num">$20,228</td>
+          <td class="num">$27,681</td>
+          <td class="num"><span class="up">+36.8%</span></td>
+          <td class="num"><span class="up">+18.6%</span></td>
+        </tr>
+        <tr class="sub">
+          <td>Average order, second half</td>
+          <td class="num">$68.57</td>
+          <td class="num">$79.09</td>
+          <td class="num" colspan="2"><span class="up">+15.3%</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="insight-box">
+      <strong>Growth accelerated in the back half, and it was spend-led.</strong> Orders grew at a steady ~19% across both halves, but revenue growth jumped from +23.7% to +36.8% because the average order went from $68.57 to $79.09 in the second window. Something changed around mid-July — menu, pricing, upsell, or the mix of what people ordered. Whatever it was, it is worth identifying and repeating, because it is the highest-yield lever in this report.
+    </div>
+  </section>
+
+  <!-- 04 CROSS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num label">04</span>
+      <span class="section-title display">Where the growth actually came from</span>
+    </div>
+
+    <p class="lede">Reading the two platforms against each other separates real growth from a change in behaviour.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Cross-platform measure</th>
+          <th class="num">2025</th>
+          <th class="num">2026</th>
+          <th class="num">Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-head">me&amp;u spend per cover</td>
+          <td class="num">$22.98</td>
+          <td class="num">$24.44</td>
+          <td class="num"><span class="up">+6.3%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">me&amp;u orders per cover</td>
+          <td class="num">0.33</td>
+          <td class="num">0.32</td>
+          <td class="num"><span class="flat">−1.9%</span></td>
+        </tr>
+        <tr>
+          <td class="row-head">Covers per trading night</td>
+          <td class="num">57.3</td>
+          <td class="num">69.9</td>
+          <td class="num"><span class="up">+21.9%</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="action-box">
+      <strong>Digital penetration hasn't moved.</strong> Roughly one me&amp;u order per three covers, both years. The extra $13,272 is more people through the door spending slightly more each — not a shift in how they order. That matters for planning: the me&amp;u revenue line is currently a passenger on foot traffic. Order-per-cover is the untouched lever, and it is the one that scales without another cover walking in.
+    </div>
+  </section>
+
+  <!-- 05 ACTIONS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num label">05</span>
+      <span class="section-title display">What to do with this</span>
+    </div>
+
+    <div class="actions">
+      <div class="action">
+        <div class="action-num">1</div>
+        <div>
+          <div class="action-title">Find out what happened in mid-July</div>
+          <div class="action-body">Average order jumped <strong>$10.52</strong> between the first and second halves of the period. Check the menu changes, price moves and specials that landed around 11 July. If it was deliberate, do it again in spring. If it was accidental, it is still repeatable.</div>
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-num">2</div>
+        <div>
+          <div class="action-title">Protect the party-size gain</div>
+          <div class="action-body">Bigger tables are carrying the growth. Anything that makes groups of 5+ easy to book — visible group availability, a set menu for 6+, a stated large-group policy — defends the single most valuable trend in this report.</div>
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-num">3</div>
+        <div>
+          <div class="action-title">Attack me&amp;u orders per cover</div>
+          <div class="action-body">Flat at <strong>0.32</strong> for two years running. Table talkers, a second-round prompt, or QR placement per seat rather than per table would move it. Lifting it to 0.40 on 2026 volume is roughly <strong>$14,000</strong> of additional revenue over the same two months — without a single extra booking.</div>
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-num">4</div>
+        <div>
+          <div class="action-title">Decide what the bar is for</div>
+          <div class="action-body">Bar covers are down 16% while bar bookings are up 26%. It is being used for pairs. Either that is the plan, or the bar is quietly losing seats on the busiest nights.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 METHOD -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num label">06</span>
+      <span class="section-title display">Method and caveats</span>
+    </div>
+
+    <ul class="method-list">
+      <li><strong>Aligned windows.</strong> Both years use 11 June – 7 August, which is 34 payout-recorded trading nights in each year. The window ends 7 August because me&amp;u settlement data for 8–10 August 2026 had not yet cleared at the time of reporting.</li>
+      <li><strong>Bookings data</strong> comes from the Now Book It Overview report, all services, all sections, run over identical date ranges in each year.</li>
+      <li><strong>2025 me&amp;u figures are reconstructed.</strong> The me&amp;u Daily Sales report only retains 90 days, so 2025 could not be read directly. It was rebuilt from the payout ledger as payout amount + platform fees + card fees, which reconstructs gross revenue including GST.</li>
+      <li><strong>The reconstruction was validated.</strong> Running the same method against 2026 returned <strong>$58,058.00</strong> against the me&amp;u portal's own reported revenue of <strong>$58,058.00</strong> — an exact match to the cent. The 2025 figure is sound on the same basis.</li>
+      <li><strong>Transactions vs orders.</strong> me&amp;u counts 765 transactions and 762 orders for 2026; the gap is split payments on the same order. Transactions are used throughout for consistency with the 2025 payout records.</li>
+      <li><strong>me&amp;u is not total revenue.</strong> These figures cover digital ordering only. Anything paid at the POS is excluded, so treat the revenue line as digital-ordering revenue rather than total takings.</li>
+    </ul>
+  </section>
+
+</div>
+
+<footer class="report-footer">
+  <div class="footer-left">Jordy's Casuarina | Trading year-on-year | 11 June – 7 August 2026 vs 2025</div>
+  <div class="footer-right">Prepared by The Service Edit | 11 August 2026</div>
+</footer>
+
+</body>
+</html>
